@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using backend.Enums;
 
 namespace backend.Entities;
 
@@ -17,8 +18,9 @@ public class Post
     public DateTime CreatedDate { get; set; }
     [ForeignKey("UserId")]
     public long UserId { get; set; }
-    //PostVisibility
 
-    //PostTag
+    public PostVisibility Visibility { get; set; }
+
+    public PostTag Tag { get; set; }
 }
 
