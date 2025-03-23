@@ -10,6 +10,8 @@ namespace SocialApp.Enums
     {
         Food,
         Workout,
-        Misc
+        Misc,
+        Blessed,
+        Travel
     }
 }
