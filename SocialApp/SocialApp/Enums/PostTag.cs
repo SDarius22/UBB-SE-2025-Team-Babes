@@ -11,6 +11,7 @@ namespace SocialApp.Enums
         Food,
         Workout,
         Misc,
-        Blessed
+        Blessed,
+        Travel
     }
 }
