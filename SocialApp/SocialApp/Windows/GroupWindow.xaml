@@ -58,9 +58,9 @@
             Grid.Row="1">
 
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" MinWidth="100"/>
+                <ColumnDefinition Width="Auto" MinWidth="150"/>
                 <ColumnDefinition MinWidth="800"/>
-                <ColumnDefinition Width="Auto" MinWidth="100"/>
+                <ColumnDefinition Width="Auto" MinWidth="150"/>
             </Grid.ColumnDefinitions>
 
             <!-- Details -->
@@ -91,6 +91,21 @@
             </StackPanel>
 
             <!-- Members Panel -->
+            <StackPanel
+                x:Name="MembersPanel"
+                Orientation="Vertical"
+                Background="#393E46"
+                Padding="10"
+                Margin="10 10 0 20 "
+                Width="150"
+                HorizontalAlignment="Center">
+
+                <TextBlock 
+                    Text="Members"/>
+
+                <ListView 
+                    x:Name="MembersList"/>
+            </StackPanel>
 
             <!-- Create and Edit Buttons-->
             <Grid
