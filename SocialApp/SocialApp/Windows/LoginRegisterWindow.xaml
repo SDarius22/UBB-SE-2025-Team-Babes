@@ -23,6 +23,17 @@
             Background="#393E46"
             Padding="20"
             MinHeight="40">
+            <Border 
+                x:Name="Logo"
+                Width="40" 
+                Height="40" 
+                CornerRadius="20"
+                HorizontalAlignment="Left"
+                Background="Red">
+                <Image 
+                    Source="../Assets/Logo.png" 
+                    Stretch="UniformToFill"/>
+            </Border>
             <TextBlock 
                 x:Name="PageName"
                 Text="Login/Register" 

@@ -30,6 +30,7 @@ namespace SocialApp.Windows.GroupWindow
         {
             this.InitializeComponent();
             SetVisibilities();
+            SetContent();
         }
 
         private void SetVisibilities()
@@ -57,6 +58,11 @@ namespace SocialApp.Windows.GroupWindow
         }
 
         private void SetRemoveButtonsCollapsed()
+        {
+
+        }
+
+        private void SetContent()
         {
 
         }
