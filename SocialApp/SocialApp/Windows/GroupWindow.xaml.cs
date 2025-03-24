@@ -23,9 +23,42 @@ namespace SocialApp.Windows.GroupWindow
     /// </summary>
     public sealed partial class GroupWindow : Window
     {
+        private const Visibility collapsed = Visibility.Collapsed;
+        private const Visibility visible = Visibility.Visible;
+
         public GroupWindow()
         {
             this.InitializeComponent();
+            SetVisibilities();
+        }
+
+        private void SetVisibilities()
+        {
+            if (UserIsAdmin())
+            {
+                EditGroupButton.Visibility = visible;
+                SetRemoveButtonsVisible();
+            }
+            else
+            {
+                EditGroupButton.Visibility = collapsed;
+                SetRemoveButtonsCollapsed();
+            }
+        }
+
+        private bool UserIsAdmin()
+        {
+            return false;
+        }
+
+        private void SetRemoveButtonsVisible()
+        {
+
+        }
+
+        private void SetRemoveButtonsCollapsed()
+        {
+
         }
     }
 }
