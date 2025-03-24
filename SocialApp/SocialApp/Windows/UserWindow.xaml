@@ -94,12 +94,86 @@
         <Grid
             Grid.Row="1">
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" MinWidth="150"/>
-                <ColumnDefinition MinWidth="800"/>
-                <ColumnDefinition Width="Auto" MinWidth="150"/>
-            </Grid.ColumnDefinitions>
-            
+            <StackPanel
+                Orientation="Vertical">
+                <Border
+                    Background="White"
+                    MaxHeight="200">
+                    <Image
+                        x:Name="ProfileImage"
+                        Stretch="Uniform"
+                        Source="../Assets/User.png"/>
+                </Border>
+
+                <Grid>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" MinWidth="150"/>
+                        <ColumnDefinition MinWidth="800"/>
+                        <ColumnDefinition Width="Auto" MinWidth="150"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel
+                        Orientation="Vertical"
+                        Background="#222831"
+                        HorizontalAlignment="Center"
+                        Grid.Column="1">
+                        <TextBlock
+                            x:Name="Username"
+                            Text="User Name" 
+                            FontFamily="Segoe Script"
+                            TextAlignment="Center"
+                            FontSize="24" 
+                            Foreground="#00ADB5"/>
+
+                        <Button
+                            x:Name="FollowLogOutButton"
+                            Background="#D9D9D9"
+                            Foreground="Black"
+                            Content="Follow/LogOut"/>
+                    </StackPanel>
+
+                    <StackPanel
+                        x:Name="SideButtons"
+                        Grid.Column="0"
+                        VerticalAlignment="Center"
+                        Padding="10 50 0 0">
+                        <Button
+                            x:Name="PostsButton"
+                            Background="#D9D9D9"
+                            Foreground="Black"
+                            Content="Posts"
+                            Margin="0 20 0 0"
+                            Width="100"
+                            CornerRadius="5"/>
+                        <Button
+                            x:Name="WorkoutsButton"
+                            Background="#D9D9D9"
+                            Foreground="Black"
+                            Content="Workouts"
+                            Margin="0 20 0 0"
+                            Width="100"
+                            CornerRadius="5"/>
+                        <Button
+                            x:Name="MealsButton"
+                            Background="#D9D9D9"
+                            Foreground="Black"
+                            Content="Meals"
+                            Margin="0 20 0 0"
+                            Width="100"
+                            CornerRadius="5"/>
+                        <Button
+                            x:Name="FollowersButton"
+                            Background="#D9D9D9"
+                            Foreground="Black"
+                            Content="Followers"
+                            Margin="0 20 0 0"
+                            Width="100"
+                            CornerRadius="5"/>
+                    </StackPanel>
+                    
+                </Grid>
+            </StackPanel>
             
         </Grid>
     </Grid>
