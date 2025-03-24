@@ -7,10 +7,96 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <TextBlock Text="Welcome to the Home Screen" 
-                   VerticalAlignment="Center" 
-                   HorizontalAlignment="Center" 
-                   FontSize="24"/>
+    <Grid x:Name="RootGrid" Background="#222831">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Top Bar -->
+        <Grid 
+            Grid.Row="0"
+            Background="#393E46"
+            Padding="20"
+            MinHeight="40">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*" MinWidth="400"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Border 
+                x:Name="Logo"
+                Grid.Column="0"
+                Width="40" 
+                Height="40" 
+                CornerRadius="20"
+                HorizontalAlignment="Left"
+                Background="Red">
+                <Image 
+                    Source="../Assets/Logo.png" 
+                    Stretch="UniformToFill"/>
+            </Border>
+
+            <Grid
+                Grid.Column="1"
+                Padding="100 0 100 0">
+                <Button 
+                    x:Name="HomeButton"
+                    Content="Home" 
+                    FontSize="24" 
+                    Foreground="#EEEEEE" 
+                    Background="#393E46"
+                    BorderThickness="0"
+                    HorizontalAlignment="Left" 
+                    VerticalAlignment="Center" 
+                    FontFamily="Segoe Script"/>
+                <Button 
+                    x:Name="CreatePostButton"
+                    Content="Create Post" 
+                    FontSize="24" 
+                    Foreground="#EEEEEE" 
+                    Background="#393E46"
+                    BorderThickness="0"
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center" 
+                    FontFamily="Segoe Script"/>
+                <Button 
+                    x:Name="GroupsButton"
+                    Content="Groups" 
+                    FontSize="24" 
+                    Foreground="#EEEEEE" 
+                    Background="#393E46"
+                    BorderThickness="0"
+                    HorizontalAlignment="Right" 
+                    VerticalAlignment="Center" 
+                    FontFamily="Segoe Script"/>
+            </Grid>
+
+            <Border 
+                x:Name="User"
+                Grid.Column="2"
+                Width="40" 
+                Height="40" 
+                CornerRadius="20"
+                HorizontalAlignment="Right"
+                Background="Red">
+                <Image 
+                    Source="../Assets/User.jpg" 
+                    Stretch="UniformToFill"/>   
+            </Border>
+
+        </Grid>
+
+        <!-- Main Content -->
+        <Grid Grid.Row="1">
+            <TextBlock Text="Welcome to the Home Screen" 
+                       VerticalAlignment="Center" 
+                       HorizontalAlignment="Center" 
+                       FontSize="24"/>
+        </Grid>
     </Grid>
 </Page>
+
