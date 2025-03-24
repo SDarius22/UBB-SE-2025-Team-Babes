@@ -81,12 +81,13 @@
                 Width="40" 
                 Height="40" 
                 CornerRadius="20"
-                HorizontalAlignment="Right"
-                Background="Red">
+                HorizontalAlignment="Right">
                 <Image 
-                    Source="../Assets/User.jpg" 
-                    Stretch="UniformToFill"/>   
+                    Source="../Assets/User.png" 
+                    Stretch="UniformToFill"
+                    HorizontalAlignment="Center"/>
             </Border>
+
 
         </Grid>
 
