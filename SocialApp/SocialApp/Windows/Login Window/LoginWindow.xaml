@@ -70,7 +70,7 @@
 
             <!-- Continue Button -->
             <Button 
-            Content="Continue" 
+            Content="Login" 
             HorizontalAlignment="Center" 
             Background="#D9D9D9" 
             Foreground="#222831" 
