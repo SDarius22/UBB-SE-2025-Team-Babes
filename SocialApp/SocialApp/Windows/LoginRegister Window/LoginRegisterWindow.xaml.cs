@@ -85,7 +85,7 @@ namespace SocialApp.Windows.LoginRegister_Window
 
         private bool IsRegisteredEmail(String email)
         {
-            return true;
+            return false;
         }
 
         private void LoginFlow()
@@ -137,6 +137,38 @@ namespace SocialApp.Windows.LoginRegister_Window
         }
 
         private void RegisterFlow()
+        {
+            SetRegisterVisibilities();
+            SetRegisterContent();
+            SetRegisterHandlers();
+        }
+        private void SetRegisterVisibilities()
+        {
+            PasswordTextbox.Visibility = Visibility.Visible;
+            UploadedImage.Visibility = Visibility.Visible;
+            UploadImgButton.Visibility = Visibility.Visible;
+            RemoveImgButton.Visibility = Visibility.Visible;
+            CheckBox.Visibility = Visibility.Visible;
+        }
+
+        private void SetRegisterContent()
+        {
+            PageName.Text = "Register";
+            ContinueButton.Content = "Register";
+        }
+
+        private void SetRegisterHandlers()
+        {
+            ContinueButton.Click -= ContinueClick;
+            ContinueButton.Click += RegisterClick;
+        }
+
+        private void RegisterClick(object sender, RoutedEventArgs e)
+        {
+            Register();
+        }
+
+        private void Register()
         {
 
         }

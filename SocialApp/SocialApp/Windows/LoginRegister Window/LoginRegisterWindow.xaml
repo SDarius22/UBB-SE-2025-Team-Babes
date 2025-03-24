@@ -41,7 +41,7 @@
             Background="#393E46" 
             Padding="20" 
             CornerRadius="10" 
-            Width="300">
+            Width="Auto">
             <!-- Email TextBox -->
             <TextBox 
                 x:Name="EmailTextbox"
