@@ -74,13 +74,13 @@ namespace SocialApp.Windows.LoginRegister_Window
             }
             else
             {
-                ErrorTextbox.Text = "Wrong email format.";
+                ErrorTextbox.Text = "Provide a valid email.";
             }
         }
 
         private bool IsValidEmail(String email)
         {
-            return true;
+            return !email.Equals(String.Empty);
         }
 
         private bool IsRegisteredEmail(String email)
@@ -104,6 +104,7 @@ namespace SocialApp.Windows.LoginRegister_Window
         {
             PageName.Text = "Login";
             ContinueButton.Content = "Login";
+            ErrorTextbox.Text = "";
         }
 
         private void SetLoginHandlers()
@@ -155,6 +156,7 @@ namespace SocialApp.Windows.LoginRegister_Window
         {
             PageName.Text = "Register";
             ContinueButton.Content = "Register";
+            ErrorTextbox.Text = "";
         }
 
         private void SetRegisterHandlers()
