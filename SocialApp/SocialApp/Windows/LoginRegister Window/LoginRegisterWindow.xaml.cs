@@ -31,8 +31,9 @@ namespace SocialApp.Windows.LoginRegister_Window
 
         private void InitialFlow()
         {
-            this.SetInitialVisibilities();
-            this.SetInitialContent();
+            SetInitialVisibilities();
+            SetInitialContent();
+            SetInitialHandlers();
         }
 
         private void SetInitialVisibilities()
@@ -51,6 +52,11 @@ namespace SocialApp.Windows.LoginRegister_Window
         {
             PageName.Text = "Login/Register";
             ContinueButton.Content = "Continue";
+        }
+
+        private void SetInitialHandlers()
+        {
+            ContinueButton.Click += ContinueClick;
         }
 
         public void ContinueClick(object sender, RoutedEventArgs e)
@@ -74,7 +80,7 @@ namespace SocialApp.Windows.LoginRegister_Window
 
         private bool IsValidEmail(String email)
         {
-            return false;
+            return true;
         }
 
         private bool IsRegisteredEmail(String email)
@@ -84,8 +90,52 @@ namespace SocialApp.Windows.LoginRegister_Window
 
         private void LoginFlow()
         {
-
+            SetLoginVisibilities();
+            SetLoginContent();
+            SetLoginHandlers();
         }
+
+        private void SetLoginVisibilities()
+        {
+            PasswordTextbox.Visibility = Visibility.Visible;
+        }
+
+        private void SetLoginContent()
+        {
+            PageName.Text = "Login";
+            ContinueButton.Content = "Login";
+        }
+
+        private void SetLoginHandlers()
+        {
+            ContinueButton.Click -= ContinueClick;
+            ContinueButton.Click += LoginClick;
+        }
+
+        private void LoginClick(object sender, RoutedEventArgs e)
+        {
+            if (IsCorrectPassword(EmailTextbox.Text, PasswordTextbox.Text))
+            {
+                Login();
+            }
+            else
+            {
+                ErrorTextbox.Visibility = Visibility.Visible;
+                ErrorTextbox.Text = "Incorrect password.";
+                PasswordTextbox.Text = "";
+            }
+        }
+
+        private bool IsCorrectPassword(String username, String password)
+        {
+            return true;
+        }
+
+        private void Login()
+        {
+            
+        }
+
         private void RegisterFlow()
         {
 
