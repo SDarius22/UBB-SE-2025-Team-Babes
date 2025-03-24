@@ -23,6 +23,8 @@ namespace SocialApp.Windows.LoginRegister_Window
     /// </summary>
     public sealed partial class LoginRegisterWindow : Window
     {
+        private const Visibility collapsed = Visibility.Collapsed;
+        private const Visibility visible = Visibility.Visible;
         public LoginRegisterWindow()
         {
             this.InitializeComponent();
@@ -38,14 +40,14 @@ namespace SocialApp.Windows.LoginRegister_Window
 
         private void SetInitialVisibilities()
         {
-            EmailTextbox.Visibility = Visibility.Visible;
-            PasswordTextbox.Visibility = Visibility.Collapsed;
-            ConfirmPasswordTextbox.Visibility = Visibility.Collapsed;
-            UploadedImage.Visibility = Visibility.Collapsed;
-            UploadImgButton.Visibility = Visibility.Collapsed;
-            RemoveImgButton.Visibility = Visibility.Collapsed;
-            CheckBox.Visibility = Visibility.Collapsed;
-            ContinueButton.Visibility = Visibility.Visible;
+            EmailTextbox.Visibility = visible;
+            PasswordTextbox.Visibility = collapsed;
+            ConfirmPasswordTextbox.Visibility = collapsed;
+            UploadedImage.Visibility = collapsed;
+            UploadImgButton.Visibility = collapsed;
+            RemoveImgButton.Visibility = collapsed;
+            CheckBox.Visibility = collapsed;
+            ContinueButton.Visibility = visible;
         }
 
         private void SetInitialContent()
@@ -97,7 +99,7 @@ namespace SocialApp.Windows.LoginRegister_Window
 
         private void SetLoginVisibilities()
         {
-            PasswordTextbox.Visibility = Visibility.Visible;
+            PasswordTextbox.Visibility = visible;
         }
 
         private void SetLoginContent()
@@ -121,7 +123,7 @@ namespace SocialApp.Windows.LoginRegister_Window
             }
             else
             {
-                ErrorTextbox.Visibility = Visibility.Visible;
+                ErrorTextbox.Visibility = visible;
                 ErrorTextbox.Text = "Incorrect password.";
                 PasswordTextbox.Text = "";
             }
@@ -145,11 +147,11 @@ namespace SocialApp.Windows.LoginRegister_Window
         }
         private void SetRegisterVisibilities()
         {
-            PasswordTextbox.Visibility = Visibility.Visible;
-            UploadedImage.Visibility = Visibility.Visible;
-            UploadImgButton.Visibility = Visibility.Visible;
-            RemoveImgButton.Visibility = Visibility.Visible;
-            CheckBox.Visibility = Visibility.Visible;
+            PasswordTextbox.Visibility = visible;
+            UploadedImage.Visibility = visible;
+            UploadImgButton.Visibility = visible;
+            RemoveImgButton.Visibility = visible;
+            CheckBox.Visibility = visible;
         }
 
         private void SetRegisterContent()
