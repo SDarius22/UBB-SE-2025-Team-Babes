@@ -26,6 +26,69 @@ namespace SocialApp.Windows.LoginRegister_Window
         public LoginRegisterWindow()
         {
             this.InitializeComponent();
+            this.InitialFlow();
+        }
+
+        private void InitialFlow()
+        {
+            this.SetInitialVisibilities();
+            this.SetInitialContent();
+        }
+
+        private void SetInitialVisibilities()
+        {
+            EmailTextbox.Visibility = Visibility.Visible;
+            PasswordTextbox.Visibility = Visibility.Collapsed;
+            ConfirmPasswordTextbox.Visibility = Visibility.Collapsed;
+            UploadedImage.Visibility = Visibility.Collapsed;
+            UploadImgButton.Visibility = Visibility.Collapsed;
+            RemoveImgButton.Visibility = Visibility.Collapsed;
+            CheckBox.Visibility = Visibility.Collapsed;
+            ContinueButton.Visibility = Visibility.Visible;
+        }
+
+        private void SetInitialContent()
+        {
+            PageName.Text = "Login/Register";
+            ContinueButton.Content = "Continue";
+        }
+
+        public void ContinueClick(object sender, RoutedEventArgs e)
+        {
+            if (IsValidEmail(EmailTextbox.Text))
+            {
+                if (IsRegisteredEmail(EmailTextbox.Text))
+                {
+                    LoginFlow();
+                }
+                else
+                {
+                    RegisterFlow();
+                }
+            }
+            else
+            {
+                ErrorTextbox.Text = "Wrong email format.";
+            }
+        }
+
+        private bool IsValidEmail(String email)
+        {
+            return false;
+        }
+
+        private bool IsRegisteredEmail(String email)
+        {
+            return true;
+        }
+
+        private void LoginFlow()
+        {
+
+        }
+        private void RegisterFlow()
+        {
+
         }
     }
 }
