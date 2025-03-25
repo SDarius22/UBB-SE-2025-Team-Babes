@@ -15,6 +15,9 @@
   <ItemGroup>
     <None Remove="HomeScreen.xaml" />
   </ItemGroup>
+  <ItemGroup>
+    <Page Remove="Windows\GroupsScreen.xaml" />
+  </ItemGroup>
 
   <ItemGroup>
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -49,6 +52,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Components\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Windows\GroupsScreen.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
   </ItemGroup>
 
   <!--
