@@ -65,17 +65,20 @@
                 FontFamily="Segoe Script"/>
         </Grid>
 
-        <Border 
-            x:Name="User"
+        <Button 
+            x:Name="UserButton"
             Grid.Column="2"
             Width="40" 
             Height="40" 
             CornerRadius="20"
-            HorizontalAlignment="Right">
+            HorizontalAlignment="Right"
+            Background="Transparent"
+            BorderThickness="0"
+            Padding="0">
             <Image 
                 Source="../Assets/User.png" 
                 Stretch="UniformToFill"
                 HorizontalAlignment="Center"/>
-        </Border>
+        </Button>
     </Grid>
 </UserControl>

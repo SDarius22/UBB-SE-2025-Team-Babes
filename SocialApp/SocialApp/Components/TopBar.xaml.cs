@@ -9,5 +9,10 @@ namespace SocialApp.Components
         {
             this.InitializeComponent();
         }
+
+        public Button HomeButtonInstance => HomeButton;
+        public Button GroupsButtonInstance => GroupsButton;
+        public Button CreatePostButtonInstance => CreatePostButton;
+        public Button UserButtonInstance => UserButton;
     }
 }
