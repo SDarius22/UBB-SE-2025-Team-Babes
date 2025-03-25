@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="SocialApp.Pages.GroupPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:SocialApp.Pages"
+    xmlns:components="using:SocialApp.Components"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid x:Name="RootGrid" Background="#222831">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Top Bar -->
+        <components:TopBar Grid.Row="0"/>
+
+        <!-- Main Content -->
+        <Grid
+        Grid.Row="1">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" MinWidth="150"/>
+                <ColumnDefinition MinWidth="800"/>
+                <ColumnDefinition Width="Auto" MinWidth="150"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Details -->
+            <StackPanel
+            Grid.Column="1"
+            VerticalAlignment="Top" 
+            HorizontalAlignment="Center" 
+            Background="#393E46" 
+            Padding="20" 
+            CornerRadius="10" 
+            Margin="0,10,0,0"
+            Width="800">
+                <Image
+                x:Name="GroupImage"/>
+                <TextBlock
+                x:Name="GroupTitle"
+                FontSize="24" 
+                FontFamily="Segoe Script"
+                Text="[TITLE]"/>
+                <TextBlock
+                x:Name="GroupDescription"
+                Text="[DESCRIPTION]"/>
+            </StackPanel>
+
+            <!-- Feed-->
+            <StackPanel>
+
+            </StackPanel>
+
+            <!-- Members Panel -->
+            <StackPanel
+            x:Name="MembersPanel"
+            Orientation="Vertical"
+            Background="#393E46"
+            Padding="10"
+            Margin="10 10 0 20 "
+            Width="150"
+            HorizontalAlignment="Center">
+
+                <TextBlock 
+                Text="Members"/>
+
+                <ListView 
+                x:Name="MembersList"/>
+            </StackPanel>
+
+            <!-- Create and Edit Buttons-->
+            <Grid
+            Grid.Column="2"
+            VerticalAlignment="Bottom">
+                <StackPanel
+                Orientation="Vertical">
+                    <Button 
+                    x:Name="EditGroupButton"
+                    Content="Edit Group"
+                    Margin="20,10,20,0"
+                    Background="#D9D9D9"
+                    Foreground="Black"
+                    CornerRadius="5"
+                    Width="100"/>
+                    <Button
+                    Margin="20,10,20,20"
+                    x:Name="CreatePostInGroupButton"
+                    Content="Create Post"
+                    Background="#D9D9D9"
+                    Foreground="Black"
+                    CornerRadius="5"
+                    Width="100"/>
+                </StackPanel>
+            </Grid>
+
+        </Grid>
+
+    </Grid>
+</Page>

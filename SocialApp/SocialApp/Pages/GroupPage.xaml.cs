@@ -16,17 +16,17 @@ using Microsoft.UI.Xaml.Navigation;
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
-namespace SocialApp.Windows.GroupWindow
+namespace SocialApp.Pages
 {
     /// <summary>
-    /// An empty window that can be used on its own or navigated to within a Frame.
+    /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class GroupWindow : Window
+    public sealed partial class GroupPage : Page
     {
         private const Visibility collapsed = Visibility.Collapsed;
         private const Visibility visible = Visibility.Visible;
 
-        public GroupWindow()
+        public GroupPage()
         {
             this.InitializeComponent();
             SetVisibilities();

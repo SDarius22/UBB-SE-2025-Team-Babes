@@ -16,16 +16,16 @@ using Microsoft.UI.Xaml.Navigation;
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
-namespace SocialApp.Windows.LoginRegister_Window
+namespace SocialApp.Pages
 {
     /// <summary>
-    /// An empty window that can be used on its own or navigated to within a Frame.
+    /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class LoginRegisterWindow : Window
+    public sealed partial class LoginRegisterPage : Page
     {
         private const Visibility collapsed = Visibility.Collapsed;
         private const Visibility visible = Visibility.Visible;
-        public LoginRegisterWindow()
+        public LoginRegisterPage()
         {
             this.InitializeComponent();
             this.InitialFlow();
@@ -136,7 +136,7 @@ namespace SocialApp.Windows.LoginRegister_Window
 
         private void Login()
         {
-            
+
         }
 
         private void RegisterFlow()
