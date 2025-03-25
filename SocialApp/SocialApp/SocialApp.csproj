@@ -14,9 +14,7 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="HomeScreen.xaml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Page Remove="Windows\GroupsScreen.xaml" />
+    <None Remove="Windows\GroupsScreen.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -54,9 +52,9 @@
     <Folder Include="Components\" />
   </ItemGroup>
   <ItemGroup>
-    <None Update="Windows\GroupsScreen.xaml">
+    <Page Update="Windows\GroupsScreen.xaml">
       <Generator>MSBuild:Compile</Generator>
-    </None>
+    </Page>
   </ItemGroup>
 
   <!--
