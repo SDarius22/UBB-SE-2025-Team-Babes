@@ -24,7 +24,7 @@
                 <ColumnDefinition Width="74*"/>
                 <ColumnDefinition Width="13*"/>
             </Grid.ColumnDefinitions>
-            <components:PostComponent Grid.Column="1" Margin="10"/>
+            <components:PostsFeed Grid.Column="1" Margin="10"/>
         </Grid>
     </Grid>
 </Page>
