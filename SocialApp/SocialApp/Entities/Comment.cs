@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SocialApp.Entities
 {
-    internal class Comment
+    public class Comment
     {
         [Key]
         public long Id { get; set; }
