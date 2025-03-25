@@ -32,7 +32,19 @@ namespace SocialApp
 
         private void UserClick(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(UserPage));
+            if (IsLoggedIn())
+            {
+                Frame.Navigate(typeof(UserPage));
+            }
+            else
+            {
+                Frame.Navigate(typeof(LoginRegisterPage));
+            }
+        }
+
+        private bool IsLoggedIn()
+        {
+            return false;
         }
     }
 }

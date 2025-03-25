@@ -15,6 +15,7 @@ using Microsoft.UI.Xaml.Navigation;
 using Windows.UI;
 using System.Drawing;
 using SocialApp.Windows;
+using SocialApp.Pages;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -30,10 +31,17 @@ namespace SocialApp.Pages
         public UserPage()
         {
             this.InitializeComponent();
+
             SetNavigation();
             SetContent();
             SetPostsContent();
         }
+
+        private bool IsLoggedIn()
+        {
+            return false;
+        }
+
         private void SetNavigation()
         {
             TopBar.HomeButtonInstance.Click += HomeClick;
@@ -58,12 +66,7 @@ namespace SocialApp.Pages
 
         private void SetContent()
         {
-            FollowLogOutButton.Content = IsLoggedIn() ? "Log Out" : (IsFollowed() ? "Unfollow" : "Follow");
-        }
-
-        private bool IsLoggedIn()
-        {
-            return false;
+            FollowLogOutButton.Content = IsFollowed() ? "Unfollow" : "Follow";
         }
 
         private bool IsFollowed()

@@ -125,7 +125,7 @@ namespace SocialApp.Pages
 
         private void Login()
         {
-            // switch to HOME PAGE
+            Frame.Navigate(typeof(HomeScreen));
         }
 
         private void RegisterFlow()
@@ -198,7 +198,7 @@ namespace SocialApp.Pages
 
         private void Register()
         {
-
+            Frame.Navigate(typeof(HomeScreen));
         }
     }
 }
