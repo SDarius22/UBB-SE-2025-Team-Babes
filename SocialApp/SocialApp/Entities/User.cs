@@ -15,6 +15,6 @@ namespace SocialApp.Entities
         [EmailAddress]
         public required string Email { get; set; }
         public required string PasswordHash { get; set; }
-        public string? Image { get; set; }
+        public required string Image { get; set; }
     }
 }

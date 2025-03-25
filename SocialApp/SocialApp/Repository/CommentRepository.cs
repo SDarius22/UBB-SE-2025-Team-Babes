@@ -45,6 +45,31 @@ namespace SocialApp.Repository
             return ans;
         }
 
+        public List<Comment> GetCommentsForPost(long postId)
+        {
+            connection.Open();
+            List<Comment> ans = new List<Comment>();
+            SqlCommand selectCommand = new SqlCommand("SELECT * FROM Comments WHERE PostId = @PostId", connection);
+            string queryParam = postId.ToString();
+            selectCommand.Parameters.AddWithValue("@PostId", queryParam);
+            SqlDataReader reader = selectCommand.ExecuteReader();
+            while (reader.Read())
+            {
+                Comment comment = new Comment
+                {
+                    Id = reader.GetInt64(reader.GetOrdinal("Id")),
+                    UserId = reader.GetInt64(reader.GetOrdinal("UserId")),
+                    PostId = reader.GetInt64(reader.GetOrdinal("PostId")),
+                    Content = reader.GetString(reader.GetOrdinal("Content")),
+                    CreatedDate = reader.GetDateTime(reader.GetOrdinal("CreatedDate"))
+                };
+                ans.Add(comment);
+            }
+            reader.Close();
+            connection.Close();
+            return ans;
+        }
+
         public void DeleteById(long id)
         {
             connection.Open();

@@ -33,7 +33,69 @@ namespace SocialApp.Repository
                 {
                     Id = reader.GetInt64(reader.GetOrdinal("Id")),
                     Title = reader.GetString(reader.GetOrdinal("Title")),
-                    Content = reader.IsDBNull(reader.GetOrdinal("Description")) ? null : reader.GetString(reader.GetOrdinal("Description")),
+                    Content = reader.GetString(reader.GetOrdinal("Description")),
+                    CreatedDate = reader.GetDateTime(reader.GetOrdinal("CreatedDate")),
+                    UserId = reader.GetInt64(reader.GetOrdinal("UserId")),
+                    GroupId = reader.GetInt64(reader.GetOrdinal("GroupId")),
+                    Visibility = (PostVisibility)reader.GetInt32(reader.GetOrdinal("PostVisibility")),
+                    Tag = (PostTag)reader.GetInt32(reader.GetOrdinal("PostTag"))
+                };
+                posts.Add(post);
+            }
+
+            reader.Close();
+            connection.Close();
+            return posts;
+        }
+
+        public List<Post> GetHomeFeed(long userId)
+        {
+            connection.Open();
+            List<Post> posts = new List<Post>();
+            SqlCommand selectCommand = new SqlCommand(
+                "SELECT * FROM Posts WHERE UserId IN (SELECT FollowedId FROM UserFollowers WHERE FollowerId = @UserId) OR UserId = @UserId OR PostVisibility = 0",
+                connection
+            );
+            selectCommand.Parameters.AddWithValue("@UserId", userId);
+            SqlDataReader reader = selectCommand.ExecuteReader();
+            while (reader.Read())
+            {
+                Post post = new Post
+                {
+                    Id = reader.GetInt64(reader.GetOrdinal("Id")),
+                    Title = reader.GetString(reader.GetOrdinal("Title")),
+                    Content = reader.GetString(reader.GetOrdinal("Description")),
+                    CreatedDate = reader.GetDateTime(reader.GetOrdinal("CreatedDate")),
+                    UserId = reader.GetInt64(reader.GetOrdinal("UserId")),
+                    GroupId = reader.GetInt64(reader.GetOrdinal("GroupId")),
+                    Visibility = (PostVisibility)reader.GetInt32(reader.GetOrdinal("PostVisibility")),
+                    Tag = (PostTag)reader.GetInt32(reader.GetOrdinal("PostTag"))
+                };
+                posts.Add(post);
+            }
+            reader.Close();
+            connection.Close();
+            return posts;
+        }
+
+        public List<Post> GetGroupsFeed(long userId)
+        {
+            connection.Open();
+            List<Post> posts = new List<Post>();
+            SqlCommand selectCommand = new SqlCommand(
+                "SELECT * FROM Posts WHERE GroupId IN (SELECT GroupId FROM GroupUsers WHERE UserId = @UserId)",
+                connection
+            );
+            selectCommand.Parameters.AddWithValue("@UserId", userId);
+            SqlDataReader reader = selectCommand.ExecuteReader();
+
+            while (reader.Read())
+            {
+                Post post = new Post
+                {
+                    Id = reader.GetInt64(reader.GetOrdinal("Id")),
+                    Title = reader.GetString(reader.GetOrdinal("Title")),
+                    Content = reader.GetString(reader.GetOrdinal("Description")),
                     CreatedDate = reader.GetDateTime(reader.GetOrdinal("CreatedDate")),
                     UserId = reader.GetInt64(reader.GetOrdinal("UserId")),
                     GroupId = reader.GetInt64(reader.GetOrdinal("GroupId")),
@@ -61,7 +123,7 @@ namespace SocialApp.Repository
                 {
                     Id = reader.GetInt64(reader.GetOrdinal("Id")),
                     Title = reader.GetString(reader.GetOrdinal("Title")),
-                    Content = reader.IsDBNull(reader.GetOrdinal("Description")) ? null : reader.GetString(reader.GetOrdinal("Description")),
+                    Content = reader.GetString(reader.GetOrdinal("Description")),
                     CreatedDate = reader.GetDateTime(reader.GetOrdinal("CreatedDate")),
                     UserId = reader.GetInt64(reader.GetOrdinal("UserId")),
                     GroupId = reader.GetInt64(reader.GetOrdinal("GroupId")),
@@ -88,7 +150,7 @@ namespace SocialApp.Repository
                 {
                     Id = reader.GetInt64(reader.GetOrdinal("Id")),
                     Title = reader.GetString(reader.GetOrdinal("Title")),
-                    Content = reader.IsDBNull(reader.GetOrdinal("Description")) ? null : reader.GetString(reader.GetOrdinal("Description")),
+                    Content = reader.GetString(reader.GetOrdinal("Description")),
                     CreatedDate = reader.GetDateTime(reader.GetOrdinal("CreatedDate")),
                     UserId = reader.GetInt64(reader.GetOrdinal("UserId")),
                     GroupId = reader.GetInt64(reader.GetOrdinal("GroupId")),
@@ -117,7 +179,7 @@ namespace SocialApp.Repository
                 {
                     Id = reader.GetInt64(reader.GetOrdinal("Id")),
                     Title = reader.GetString(reader.GetOrdinal("Title")),
-                    Content = reader.IsDBNull(reader.GetOrdinal("Description")) ? null : reader.GetString(reader.GetOrdinal("Description")),
+                    Content = reader.GetString(reader.GetOrdinal("Description")),
                     CreatedDate = reader.GetDateTime(reader.GetOrdinal("CreatedDate")),
                     UserId = reader.GetInt64(reader.GetOrdinal("UserId")),
                     GroupId = reader.GetInt64(reader.GetOrdinal("GroupId")),
@@ -140,7 +202,7 @@ namespace SocialApp.Repository
                 connection
             );
             insertCommand.Parameters.AddWithValue("@Title", entity.Title);
-            insertCommand.Parameters.AddWithValue("@Description", entity.Description ?? (object)DBNull.Value);
+            insertCommand.Parameters.AddWithValue("@Description", entity.Content);
             insertCommand.Parameters.AddWithValue("@CreatedDate", entity.CreatedDate);
             insertCommand.Parameters.AddWithValue("@UserId", entity.UserId);
             insertCommand.Parameters.AddWithValue("@PostVisibility", (int)entity.Visibility);
@@ -152,7 +214,7 @@ namespace SocialApp.Repository
             connection.Close();
         }
 
-        public void UpdateById(long id, string title, string description, PostVisibility visibility, PostTag tag)
+        public void UpdateById(long id, string title, string content, PostVisibility visibility, PostTag tag)
         {
             connection.Open();
 
@@ -163,7 +225,7 @@ namespace SocialApp.Repository
 
             updateCommand.Parameters.AddWithValue("@Id", id);
             updateCommand.Parameters.AddWithValue("@Title", title);
-            updateCommand.Parameters.AddWithValue("@Description", description ?? (object)DBNull.Value);
+            updateCommand.Parameters.AddWithValue("@Description", content);
             updateCommand.Parameters.AddWithValue("@PostVisibility", (int)visibility);
             updateCommand.Parameters.AddWithValue("@PostTag", (int)tag);
 

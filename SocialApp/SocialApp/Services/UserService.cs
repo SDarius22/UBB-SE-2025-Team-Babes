@@ -17,7 +17,7 @@ namespace SocialApp.Services
             this.userRepository = userRepository;
         }
 
-        public void ValidateAdd(string username, string email, string password)
+        public void ValidateAdd(string username, string email, string password, string image)
         {
             if (username == null || username.Length == 0)
             {
@@ -31,7 +31,7 @@ namespace SocialApp.Services
             {
                 throw new Exception("Password cannot be empty");
             }
-            userRepository.Save(new User() { Username = username, Email = email, PasswordHash = password });
+            userRepository.Save(new User() { Username = username, Email = email, PasswordHash = password, Image = image });
         }
 
         public void ValidateDelete(long id)
@@ -43,13 +43,13 @@ namespace SocialApp.Services
             userRepository.DeleteById(id);
         }
 
-        public void ValidateUpdate(long id, string username, string email, string password)
+        public void ValidateUpdate(long id, string username, string email, string password, string? image)
         {
             if (userRepository.GetById(id) == null)
             {
                 throw new Exception("User does not exist");
             }
-            userRepository.UpdateById(id, username, email, password);
+            userRepository.UpdateById(id, username, email, password, image);
         }
 
         public List<User> GetAll()

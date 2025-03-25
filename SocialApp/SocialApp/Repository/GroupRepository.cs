@@ -35,7 +35,8 @@ namespace SocialApp.Repository
                     Id = reader.GetInt64(reader.GetOrdinal("Id")),
                     Name = reader.GetString(reader.GetOrdinal("Name")),
                     AdminId = reader.GetInt64(reader.GetOrdinal("AdminId")),
-                    Image = reader.IsDBNull(reader.GetOrdinal("Image")) ? null : reader.GetString(reader.GetOrdinal("Image"))
+                    Image = reader.GetString(reader.GetOrdinal("Image")),
+                    Description = reader.GetString(reader.GetOrdinal("Description"))
                 };
 
                 ans.Add(group);
@@ -65,7 +66,7 @@ namespace SocialApp.Repository
                     Username = reader.GetString(reader.GetOrdinal("Username")),
                     Email = reader.GetString(reader.GetOrdinal("Email")),
                     PasswordHash = reader.GetString(reader.GetOrdinal("PasswordHash")),
-                    Image = reader.IsDBNull(reader.GetOrdinal("Image")) ? null : reader.GetString(reader.GetOrdinal("Image"))
+                    Image = reader.GetString(reader.GetOrdinal("Image"))
                 };
                 ans.Add(user);
             }
@@ -73,6 +74,35 @@ namespace SocialApp.Repository
             connection.Close();
             return ans;
 
+        }
+
+
+        public List<Group> GetGroupsForUser(long userId)
+        {
+            connection.Open();
+            List<Group> ans = new List<Group>();
+            SqlCommand selectCommand = new SqlCommand(
+                "SELECT * FROM Groups WHERE Id IN (SELECT GroupId FROM GroupUsers WHERE UserId = @UserId)",
+                connection
+            );
+            selectCommand.Parameters.AddWithValue("@UserId", userId);
+            SqlDataReader reader = selectCommand.ExecuteReader();
+
+            while (reader.Read())
+            {
+                Group group = new Group
+                {
+                    Id = reader.GetInt64(reader.GetOrdinal("Id")),
+                    Name = reader.GetString(reader.GetOrdinal("Name")),
+                    AdminId = reader.GetInt64(reader.GetOrdinal("AdminId")),
+                    Image = reader.GetString(reader.GetOrdinal("Image")),
+                    Description = reader.GetString(reader.GetOrdinal("Description"))
+                };
+                ans.Add(group);
+            }
+            reader.Close();
+            connection.Close();
+            return ans;
         }
 
         public void DeleteById(long id)
@@ -102,7 +132,9 @@ namespace SocialApp.Repository
                 {
                     Id = reader.GetInt64(reader.GetOrdinal("Id")),
                     Name = reader.GetString(reader.GetOrdinal("Name")),
-                    AdminId = reader.GetInt64(reader.GetOrdinal("AdminId"))
+                    AdminId = reader.GetInt64(reader.GetOrdinal("AdminId")),
+                    Image = reader.GetString(reader.GetOrdinal("Image")),
+                    Description = reader.GetString(reader.GetOrdinal("Description"))
                 };
             }
 
@@ -116,28 +148,32 @@ namespace SocialApp.Repository
             connection.Open();
 
             SqlCommand insertCommand = new SqlCommand(
-                "INSERT INTO Groups (Name, AdminId) VALUES (@Name, @AdminId)",
+                "INSERT INTO Groups (Name, AdminId, Image, Description) VALUES (@Name, @AdminId, @Image, @Description)",
                 connection
             );
             insertCommand.Parameters.AddWithValue("@Name", entity.Name);
             insertCommand.Parameters.AddWithValue("@AdminId", entity.AdminId);
+            insertCommand.Parameters.AddWithValue("@Image", entity.Image);
+            insertCommand.Parameters.AddWithValue("@Description", entity.Description);
             insertCommand.ExecuteNonQuery();
 
             connection.Close();
         }
 
-        public void UpdateById(long id, string name, long adminId)
+        public void UpdateById(long id, string name, string image, string description, long adminId)
         {
             connection.Open();
 
             SqlCommand updateCommand = new SqlCommand(
-                "UPDATE Groups SET Name = @Name, AdminId = @AdminId WHERE Id = @Id",
+                "UPDATE Groups SET Name = @Name, AdminId = @AdminId, Description=@Description, Image=@Image WHERE Id = @Id",
                 connection
             );
 
             updateCommand.Parameters.AddWithValue("@Id", id);
             updateCommand.Parameters.AddWithValue("@Name", name);
             updateCommand.Parameters.AddWithValue("@AdminId", adminId);
+            updateCommand.Parameters.AddWithValue("@Description", description);
+            updateCommand.Parameters.AddWithValue("@Image", image);
             updateCommand.ExecuteNonQuery();
 
             connection.Close();

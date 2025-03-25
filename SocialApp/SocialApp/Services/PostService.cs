@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using SocialApp.Entities;
@@ -80,5 +81,18 @@ namespace SocialApp.Services
         {
             return postRepository.GetByGroup(groupId);
         }
+
+        public List<Post> GetHomeFeed(long userId)
+        {
+            return postRepository.GetHomeFeed(userId);
+        }
+
+        public List<Post> GetGroupsFeed(long userId)
+        {
+            return postRepository.GetGroupsFeed(userId);
+        }
+            
+
+
     }
 }

@@ -18,13 +18,15 @@ namespace SocialApp.Services
             this.ReactionRepository = ReactionRepository;
         }
 
-        public void ValidateAdd(long userId, long postId, ReactionType type)
+        public Reaction ValidateAdd(long userId, long postId, ReactionType type)
         {
             if (ReactionRepository.GetByUserAndPost(userId, postId) != null)
             {
                 ReactionRepository.UpdateByUserAndPost(userId, postId, type);
             }
-            ReactionRepository.Save(new Reaction() { UserId = userId, PostId = postId, Type=type });
+            Reaction reaction = new Reaction() { UserId = userId, PostId = postId, Type = type };
+            ReactionRepository.Save(reaction);
+            return reaction;
         }
 
         public void ValidateDelete(long userId, long postId)
@@ -41,7 +43,7 @@ namespace SocialApp.Services
             return ReactionRepository.GetAll();
         }
 
-        public List<Reaction> GetByPost(long postId)
+        public List<Reaction> GetReactionsForPost(long postId)
         {
             return ReactionRepository.GetByPost(postId);
         }

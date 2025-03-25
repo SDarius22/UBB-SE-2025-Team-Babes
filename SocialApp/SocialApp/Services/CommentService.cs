@@ -33,7 +33,7 @@ namespace SocialApp.Services
             {
                 throw new Exception("Post does not exist");
             }
-            Comment comment = new Comment() { Content = content, UserId = userId, PostId = postId };
+            Comment comment = new Comment() { Content = content, UserId = userId, PostId = postId, CreatedDate = DateTime.Now };
             CommentRepository.Save(comment);
             return comment;
         }
@@ -65,6 +65,11 @@ namespace SocialApp.Services
         public Comment GetById(int id)
         {
             return CommentRepository.GetById(id);
+        }
+
+        public List<Comment> GetCommentForPost(long postId)
+        {
+            return CommentRepository.GetCommentsForPost(postId);
         }
     }
 }
