@@ -41,6 +41,7 @@ namespace SocialApp.Pages
         private void SetInitialVisibilities()
         {
             EmailTextbox.Visibility = visible;
+            UsernameTextbox.Visibility = collapsed;
             PasswordTextbox.Visibility = collapsed;
             ConfirmPasswordTextbox.Visibility = collapsed;
             UploadedImage.Visibility = collapsed;
@@ -63,31 +64,19 @@ namespace SocialApp.Pages
 
         public void ContinueClick(object sender, RoutedEventArgs e)
         {
-            if (IsValidEmail(EmailTextbox.Text))
+            if (EmailExists(EmailTextbox.Text))
             {
-                if (IsRegisteredEmail(EmailTextbox.Text))
-                {
-                    LoginFlow();
-                }
-                else
-                {
-                    RegisterFlow();
-                }
+                LoginFlow();
             }
             else
             {
-                ErrorTextbox.Text = "Provide a valid email.";
+                RegisterFlow();
             }
         }
 
-        private bool IsValidEmail(String email)
+        private bool EmailExists(String email)
         {
             return !email.Equals(String.Empty);
-        }
-
-        private bool IsRegisteredEmail(String email)
-        {
-            return false;
         }
 
         private void LoginFlow()
@@ -117,7 +106,7 @@ namespace SocialApp.Pages
 
         private void LoginClick(object sender, RoutedEventArgs e)
         {
-            if (IsCorrectPassword(EmailTextbox.Text, PasswordTextbox.Text))
+            if (IsValidPassword(EmailTextbox.Text, PasswordTextbox.Text))
             {
                 Login();
             }
@@ -129,14 +118,14 @@ namespace SocialApp.Pages
             }
         }
 
-        private bool IsCorrectPassword(String username, String password)
+        private bool IsValidPassword(String username, String password)
         {
             return true;
         }
 
         private void Login()
         {
-
+            // switch to HOME PAGE
         }
 
         private void RegisterFlow()
@@ -148,6 +137,8 @@ namespace SocialApp.Pages
         private void SetRegisterVisibilities()
         {
             PasswordTextbox.Visibility = visible;
+            UsernameTextbox.Visibility = visible;
+            ConfirmPasswordTextbox.Visibility = visible;
             UploadedImage.Visibility = visible;
             UploadImgButton.Visibility = visible;
             RemoveImgButton.Visibility = visible;
@@ -167,9 +158,42 @@ namespace SocialApp.Pages
             ContinueButton.Click += RegisterClick;
         }
 
+        private void UploadImage(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void RemoveImage(object sender, RoutedEventArgs e)
+        {
+
+        }
+
         private void RegisterClick(object sender, RoutedEventArgs e)
         {
-            Register();
+            try
+            {
+                IsValidUsername(UsernameTextbox.Text);
+                PasswordsMatch(PasswordTextbox.Text, ConfirmPasswordTextbox.Text);
+                AreTermAccepted();
+                Register();
+            } catch (Exception ex) {
+                ErrorTextbox.Text = ex.Message;
+            }
+        }
+
+        private bool IsValidUsername(String username)
+        {
+            return true;
+        }
+
+        private bool PasswordsMatch(String password, String confirmedPassword)
+        {
+            return true;
+        }
+
+        private bool AreTermAccepted()
+        {
+            return true;
         }
 
         private void Register()

@@ -64,6 +64,17 @@
                 BorderThickness="0"
                 RequestedTheme="Dark"/>
 
+            <!-- Username TextBox -->
+            <TextBox 
+                x:Name="UsernameTextbox"
+                 PlaceholderText="Choose a username..." 
+                 Width="250" 
+                 Margin="0,0,0,20" 
+                 Background="#D9D9D9" 
+                 Foreground="#222831" 
+                 BorderThickness="0"
+                 RequestedTheme="Dark"/>
+
             <!-- Password TextBox -->
             <TextBox 
                 x:Name="PasswordTextbox"
@@ -92,11 +103,11 @@
                     x:Name="UploadedImage"
                     Width="40" 
                     Height="40" 
-                    CornerRadius="20"
-                    Background="Red">
+                    CornerRadius="20">
                     <Image 
-                        Source="Assets/logo.png" 
-                        Stretch="UniformToFill"/>
+                        Source="../Assets/User.png" 
+                        Stretch="UniformToFill"
+                        HorizontalAlignment="Center"/>
                 </Border>
 
                 <!-- Upload Image Button -->
@@ -107,7 +118,8 @@
                     Foreground="#222831" 
                     Padding="10,5" 
                     CornerRadius="5"
-                    Margin="10,0,5,0"/>
+                    Margin="10,0,5,0"
+                    Click="UploadImage"/>
 
                 <!-- Remove Image Button -->
                 <Button 
@@ -117,7 +129,8 @@
                     Foreground="#222831" 
                     Padding="10,5" 
                     CornerRadius="5"
-                    Margin="5,0,0,0"/>
+                    Margin="5,0,0,0"
+                    Click="RemoveImage"/>
             </StackPanel>
 
             <CheckBox 
