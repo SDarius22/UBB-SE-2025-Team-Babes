@@ -43,6 +43,31 @@ namespace SocialApp.Repository
             return reactions;
         }
 
+        public List<Reaction> GetByPost(long postId)
+        {
+            connection.Open();
+            List<Reaction> reactions = new List<Reaction>();
+            SqlCommand selectCommand = new SqlCommand(
+                "SELECT * FROM Reactions WHERE PostId = @PostId",
+                connection
+            );
+            selectCommand.Parameters.AddWithValue("@PostId", postId);
+            SqlDataReader reader = selectCommand.ExecuteReader();
+            while (reader.Read())
+            {
+                Reaction reaction = new Reaction
+                {
+                    UserId = reader.GetInt64(reader.GetOrdinal("UserId")),
+                    PostId = reader.GetInt64(reader.GetOrdinal("PostId")),
+                    Type = (ReactionType)reader.GetInt32(reader.GetOrdinal("Type"))
+                };
+                reactions.Add(reaction);
+            }
+            reader.Close();
+            connection.Close();
+            return reactions;
+        }
+
         public Reaction GetByUserAndPost(long userId, long postId)
         {
             connection.Open();

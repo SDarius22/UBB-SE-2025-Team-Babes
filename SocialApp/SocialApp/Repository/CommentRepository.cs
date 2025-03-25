@@ -45,6 +45,31 @@ namespace SocialApp.Repository
             return ans;
         }
 
+        public List<Comment> GetCommentsForPost(long postId)
+        {
+            connection.Open();
+            List<Comment> ans = new List<Comment>();
+            SqlCommand selectCommand = new SqlCommand("SELECT * FROM Comments WHERE PostId = @PostId", connection);
+            string queryParam = postId.ToString();
+            selectCommand.Parameters.AddWithValue("@PostId", queryParam);
+            SqlDataReader reader = selectCommand.ExecuteReader();
+            while (reader.Read())
+            {
+                Comment comment = new Comment
+                {
+                    Id = reader.GetInt64(reader.GetOrdinal("Id")),
+                    UserId = reader.GetInt64(reader.GetOrdinal("UserId")),
+                    PostId = reader.GetInt64(reader.GetOrdinal("PostId")),
+                    Content = reader.GetString(reader.GetOrdinal("Content")),
+                    CreatedDate = reader.GetDateTime(reader.GetOrdinal("CreatedDate"))
+                };
+                ans.Add(comment);
+            }
+            reader.Close();
+            connection.Close();
+            return ans;
+        }
+
         public void DeleteById(long id)
         {
             connection.Open();
@@ -101,20 +126,17 @@ namespace SocialApp.Repository
             connection.Close();
         }
 
-        public void UpdateById(long id, long userId, long postId, string content, DateTime createdDate)
+        public void UpdateById(long id, string content)
         {
             connection.Open();
 
             SqlCommand updateCommand = new SqlCommand(
-                "UPDATE Comments SET UserId = @UserId, PostId = @PostId, Content = @Content, CreatedDate = @CreatedDate WHERE Id = @Id",
+                "UPDATE Comments SET Content = @Content WHERE Id = @Id",
                 connection
             );
 
             updateCommand.Parameters.AddWithValue("@Id", id);
-            updateCommand.Parameters.AddWithValue("@UserId", userId);
-            updateCommand.Parameters.AddWithValue("@PostId", postId);
             updateCommand.Parameters.AddWithValue("@Content", content);
-            updateCommand.Parameters.AddWithValue("@CreatedDate", createdDate);
             updateCommand.ExecuteNonQuery();
 
             connection.Close();
