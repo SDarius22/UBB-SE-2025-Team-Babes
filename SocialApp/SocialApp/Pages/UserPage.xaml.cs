@@ -14,6 +14,7 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using Windows.UI;
 using System.Drawing;
+using SocialApp.Windows;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -29,8 +30,30 @@ namespace SocialApp.Pages
         public UserPage()
         {
             this.InitializeComponent();
+            SetNavigation();
             SetContent();
             SetPostsContent();
+        }
+        private void SetNavigation()
+        {
+            TopBar.HomeButtonInstance.Click += HomeClick;
+            TopBar.UserButtonInstance.Click += UserClick;
+            TopBar.GroupsButtonInstance.Click += GroupsClick;
+        }
+
+        private void HomeClick(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(HomeScreen));
+        }
+
+        private void GroupsClick(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(GroupsScreen));
+        }
+
+        private void UserClick(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(UserPage));
         }
 
         private void SetContent()

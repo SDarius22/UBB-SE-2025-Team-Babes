@@ -17,7 +17,7 @@
         </Grid.RowDefinitions>
 
         <!-- Top Bar -->
-        <components:TopBar Grid.Row="0"/>
+        <components:TopBar Grid.Row="0" x:Name="TopBar"/>
 
         <!-- Main Content -->
         <components:GroupsFeed Grid.Row="1" Margin="10"/>
