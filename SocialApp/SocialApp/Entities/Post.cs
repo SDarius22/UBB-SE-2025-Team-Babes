@@ -9,7 +9,7 @@ using SocialApp.Enums;
 
 namespace SocialApp.Entities
 {
-    internal class Post
+    public class Post
     {
         [Key]
         public long Id { get; set; }
