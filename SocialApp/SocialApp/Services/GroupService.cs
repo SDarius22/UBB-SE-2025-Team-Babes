@@ -22,10 +22,16 @@ namespace SocialApp.Services
             }
             Group group = new Group() { Name = name, AdminId = adminId };
 
+
         }
         public void ValidateDelete(long groupId)
         {
-            
+            if (groupId < 0)
+            {
+                throw new Exception("Group ID cannot be less than 0");
+            }
+
+
         }
         public void ValidateUpdate(Group group)
         {
