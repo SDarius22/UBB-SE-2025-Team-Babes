@@ -11,7 +11,6 @@ namespace SocialApp.Entities
     {
         public long UserId { get; set; }
         public long PostId { get; set; }
-
         public ReactionType Type { get; set; }
     }
 }

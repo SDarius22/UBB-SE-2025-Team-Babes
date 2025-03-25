@@ -101,20 +101,17 @@ namespace SocialApp.Repository
             connection.Close();
         }
 
-        public void UpdateById(long id, long userId, long postId, string content, DateTime createdDate)
+        public void UpdateById(long id, string content)
         {
             connection.Open();
 
             SqlCommand updateCommand = new SqlCommand(
-                "UPDATE Comments SET UserId = @UserId, PostId = @PostId, Content = @Content, CreatedDate = @CreatedDate WHERE Id = @Id",
+                "UPDATE Comments SET Content = @Content WHERE Id = @Id",
                 connection
             );
 
             updateCommand.Parameters.AddWithValue("@Id", id);
-            updateCommand.Parameters.AddWithValue("@UserId", userId);
-            updateCommand.Parameters.AddWithValue("@PostId", postId);
             updateCommand.Parameters.AddWithValue("@Content", content);
-            updateCommand.Parameters.AddWithValue("@CreatedDate", createdDate);
             updateCommand.ExecuteNonQuery();
 
             connection.Close();

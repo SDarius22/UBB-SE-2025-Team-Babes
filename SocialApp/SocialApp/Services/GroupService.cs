@@ -4,36 +4,44 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SocialApp.Entities;
+using SocialApp.Repository;
 
 namespace SocialApp.Services
 {
     class GroupService
     {
-        public GroupService() { }
-        public void ValidateAdd(string name, long adminId) 
+        GroupRepository GroupRepository;
+        UserRepository UserRepository;
+        public GroupService(GroupRepository groupRepository, UserRepository userRepository)
+        {
+            this.GroupRepository = groupRepository;
+            this.UserRepository = userRepository;
+        }
+
+        public Group ValidateAdd(string name, string desc, long adminId) 
         {
             if (name == null || name.Length == 0)
             {
                 throw new Exception("Group name cannot be empty");
             }
-            if (adminId < 0)
+            if (UserRepository.GetById(adminId) == null)
             {
-                throw new Exception("Admin ID cannot be less than 0");
+               throw new Exception("User does not exist");
             }
             Group group = new Group() { Name = name, AdminId = adminId };
-
-
+            GroupRepository.Save(group);
+            return group;
         }
         public void ValidateDelete(long groupId)
         {
-            if (groupId < 0)
+            if (GroupRepository.GetById(groupId) == null)
             {
-                throw new Exception("Group ID cannot be less than 0");
+                throw new Exception("Group does not exist");
             }
-
-
+            GroupRepository.DeleteById(groupId);
         }
-        public void ValidateUpdate(Group group)
+
+        public void ValidateUpdate()
         {
             
         }

@@ -14,7 +14,8 @@ namespace SocialApp.Entities
         [Key]
         public long Id { get; set; }
         public required string Title { get; set; }
-        public string? Description { get; set; }
+
+        public required string Content { get; set; }
         public required DateTime CreatedDate { get; set; }
         [ForeignKey("UserId")]
         public required long UserId { get; set; }

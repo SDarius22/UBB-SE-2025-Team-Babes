@@ -34,7 +34,8 @@ namespace SocialApp.Repository
                 {
                     Id = reader.GetInt64(reader.GetOrdinal("Id")),
                     Name = reader.GetString(reader.GetOrdinal("Name")),
-                    AdminId = reader.GetInt64(reader.GetOrdinal("AdminId"))
+                    AdminId = reader.GetInt64(reader.GetOrdinal("AdminId")),
+                    Image = reader.IsDBNull(reader.GetOrdinal("Image")) ? null : reader.GetString(reader.GetOrdinal("Image"))
                 };
 
                 ans.Add(group);
@@ -43,6 +44,35 @@ namespace SocialApp.Repository
             connection.Close();
 
             return ans;
+        }
+
+        public List<User> GetUsersFromGroup(long id)
+        {
+            connection.Open();
+            List<User> ans = new List<User>();
+            SqlCommand selectCommand = new SqlCommand(
+                "SELECT * FROM Users WHERE Id IN (SELECT UserId FROM GroupUsers WHERE GroupId = @Id)",
+                connection
+            );
+            selectCommand.Parameters.AddWithValue("@Id", id);
+
+            SqlDataReader reader = selectCommand.ExecuteReader();
+            while (reader.Read())
+            {
+                User user = new User
+                {
+                    Id = reader.GetInt64(reader.GetOrdinal("Id")),
+                    Username = reader.GetString(reader.GetOrdinal("Username")),
+                    Email = reader.GetString(reader.GetOrdinal("Email")),
+                    PasswordHash = reader.GetString(reader.GetOrdinal("PasswordHash")),
+                    Image = reader.IsDBNull(reader.GetOrdinal("Image")) ? null : reader.GetString(reader.GetOrdinal("Image"))
+                };
+                ans.Add(user);
+            }
+            reader.Close();
+            connection.Close();
+            return ans;
+
         }
 
         public void DeleteById(long id)

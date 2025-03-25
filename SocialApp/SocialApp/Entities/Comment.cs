@@ -14,11 +14,11 @@ namespace SocialApp.Entities
         public long Id { get; set; }
 
         [ForeignKey("UserId")]
-        public long UserId { get; set; }
+        public required long UserId { get; set; }
 
         [ForeignKey("PostId")]
-        public long PostId { get; set; }
+        public required long PostId { get; set; }
         public required string Content { get; set; }
-        public DateTime CreatedDate { get; set; }
+        public required DateTime CreatedDate { get; set; }
     }
 }

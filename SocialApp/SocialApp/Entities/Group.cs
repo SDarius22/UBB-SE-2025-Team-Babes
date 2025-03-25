@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,10 @@ namespace SocialApp.Entities
         [Key]
         public long Id { get; set; }
         public required string Name { get; set; }
-        public long AdminId { get; set; }
+        public required string Image { get; set; }
+        public string? Description { get; set; }
+
+        [ForeignKey("AdminId")]
+        public required long AdminId { get; set; }
     }
 }
