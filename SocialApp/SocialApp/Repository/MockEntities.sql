@@ -6,11 +6,11 @@ VALUES
 ('User3', 'user3@example.com', 'hashedpassword3');
 
 -- Insert Groups
-INSERT INTO [dbo].[Groups] ([Name], [AdminId])
+INSERT INTO [dbo].[Groups] ([Name], [Description], [AdminId])
 VALUES 
-('Group1', 1),
-('Group2', 2),
-('Group3', 3);
+('Group1', 'This is Group1', 1),
+('Group2', 'This is Group2', 2),
+('Group3', 'This is Group3', 3);
 
 -- Insert Posts
 INSERT INTO [dbo].[Posts] ([Title], [Description], [CreatedDate], [UserId], [PostVisibility], [GroupId], [PostTag])
