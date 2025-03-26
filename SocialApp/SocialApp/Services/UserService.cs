@@ -74,7 +74,28 @@ namespace SocialApp.Services
 
         public void FollowUser(long userId, long whoToFollowId)
         {
+            if (userRepository.GetById(userId) == null)
+            {
+                throw new Exception("User does not exist");
+            }
+            if (userRepository.GetById(whoToFollowId) == null)
+            {
+                throw new Exception("User to follow does not exist");
+            }
             userRepository.Follow(userId, whoToFollowId);
+        }
+
+        public void UnfollowUser(long userId, long whoToUnfollowId)
+        {
+            if (userRepository.GetById(userId) == null)
+            {
+                throw new Exception("User does not exist");
+            }
+            if (userRepository.GetById(whoToUnfollowId) == null)
+            {
+                throw new Exception("User to unfollow does not exist");
+            }
+            userRepository.Unfollow(userId, whoToUnfollowId);
         }
     }
 }
