@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SocialApp.Entities
 {
-    internal class User
+    public class User
     {
         [Key]
         public long Id { get; set; }
@@ -15,5 +15,6 @@ namespace SocialApp.Entities
         [EmailAddress]
         public required string Email { get; set; }
         public required string PasswordHash { get; set; }
+        public required string Image { get; set; }
     }
 }
