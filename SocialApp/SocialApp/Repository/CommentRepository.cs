@@ -17,9 +17,8 @@ namespace SocialApp.Repository
             "TrustServerCertificate=True";
         private SqlConnection connection;
 
-        public CommentRepository(string loginString)
+        public CommentRepository()
         {
-            this.loginString = loginString;
             this.connection = new SqlConnection(loginString);
         }
 

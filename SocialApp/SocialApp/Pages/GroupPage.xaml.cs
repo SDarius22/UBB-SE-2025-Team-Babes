@@ -13,6 +13,8 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using SocialApp.Windows;
+using SocialApp.Repository;
+using SocialApp.Services;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -26,14 +28,40 @@ namespace SocialApp.Pages
     {
         private const Visibility collapsed = Visibility.Collapsed;
         private const Visibility visible = Visibility.Visible;
+        private AppController controller;
+        private UserRepository userRepository;
+        private UserService userService;
+        private GroupRepository groupRepository;
+        private GroupService groupService;
+
+        public long GroupId { get; set; }
 
         public GroupPage()
         {
             this.InitializeComponent();
+            this.Loaded += DisplayPage;
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            if (e.Parameter is AppController controller)
+            {
+                this.controller = controller;
+            }
+        }
+
+        private void DisplayPage(object sender, RoutedEventArgs e)
+        {
+            userRepository = new UserRepository();
+            userService = new UserService(userRepository);
+            groupRepository = new GroupRepository();
+            groupService = new GroupService(groupRepository, userRepository);
+
             SetNavigation();
             SetVisibilities();
             SetContent();
         }
+
         private void SetNavigation()
         {
             TopBar.HomeButtonInstance.Click += HomeClick;
@@ -65,7 +93,7 @@ namespace SocialApp.Pages
 
         private bool IsLoggedIn()
         {
-            return false;
+            return controller.CurrentUser != null;
         }
 
         private void SetVisibilities()
@@ -84,7 +112,7 @@ namespace SocialApp.Pages
 
         private bool UserIsAdmin()
         {
-            return false;
+            return groupRepository.GetById(GroupId).AdminId == controller.CurrentUser.Id;
         }
 
         private void SetRemoveButtonsVisible()
