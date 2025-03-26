@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SocialApp.Entities
 {
-    internal class User
+    public class User
     {
         [Key]
         public long Id { get; set; }
