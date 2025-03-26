@@ -12,6 +12,7 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using SocialApp.Services;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -30,7 +31,7 @@ namespace SocialApp.Pages
         {
             this.InitializeComponent();
             this.InitialFlow();
-            controller = new AppController();
+            //controller = new AppController();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -74,7 +75,7 @@ namespace SocialApp.Pages
 
         public void ContinueClick(object sender, RoutedEventArgs e)
         {
-            if (EmailExists(EmailTextbox.Text))
+            if (controller.EmailExists(EmailTextbox.Text))
             {
                 LoginFlow();
             }
@@ -82,11 +83,6 @@ namespace SocialApp.Pages
             {
                 RegisterFlow();
             }
-        }
-
-        private bool EmailExists(String email)
-        {
-            return !email.Equals(String.Empty);
         }
 
         private void LoginFlow()
@@ -116,26 +112,16 @@ namespace SocialApp.Pages
 
         private void LoginClick(object sender, RoutedEventArgs e)
         {
-            if (IsValidPassword(EmailTextbox.Text, PasswordTextbox.Text))
-            {
-                Login();
-            }
-            else
+            if (!controller.Login(EmailTextbox.Text, PasswordTextbox.Text))
             {
                 ErrorTextbox.Visibility = visible;
                 ErrorTextbox.Text = "Incorrect password.";
                 PasswordTextbox.Text = "";
             }
-        }
-
-        private bool IsValidPassword(String username, String password)
-        {
-            return true;
-        }
-
-        private void Login()
-        {
-            Frame.Navigate(typeof(HomeScreen));
+            else
+            {
+                Frame.Navigate(typeof(HomeScreen), controller);
+            }
         }
 
         private void RegisterFlow()
@@ -182,7 +168,6 @@ namespace SocialApp.Pages
         {
             try
             {
-                IsValidUsername(UsernameTextbox.Text);
                 PasswordsMatch(PasswordTextbox.Text, ConfirmPasswordTextbox.Text);
                 AreTermAccepted();
                 Register();
@@ -191,24 +176,33 @@ namespace SocialApp.Pages
             }
         }
 
-        private bool IsValidUsername(String username)
+        private void PasswordsMatch(String password, String confirmedPassword)
         {
-            return true;
+            if (password != confirmedPassword)
+            {
+                throw new Exception("Passwords must match");
+            }
         }
 
-        private bool PasswordsMatch(String password, String confirmedPassword)
+        private void AreTermAccepted()
         {
-            return true;
-        }
-
-        private bool AreTermAccepted()
-        {
-            return true;
+            if (CheckBox.IsChecked == null || CheckBox.IsChecked == false)
+            {
+                throw new Exception("You must accept the terms and conditions!");
+            }
         }
 
         private void Register()
         {
-            Frame.Navigate(typeof(HomeScreen));
+            try
+            {
+                controller.Register(UsernameTextbox.Text, EmailTextbox.Text, PasswordTextbox.Text);
+                Frame.Navigate(typeof(HomeScreen), controller);
+            }
+            catch (Exception ex)
+            {
+                ErrorTextbox.Text = ex.Message;
+            }
         }
     }
 }

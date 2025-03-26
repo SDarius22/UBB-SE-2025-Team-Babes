@@ -15,7 +15,7 @@ namespace SocialApp
         {
             this.InitializeComponent();
             SetNavigation();
-            controller = new AppController();
+            //controller = new AppController();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)

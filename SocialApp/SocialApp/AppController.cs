@@ -9,6 +9,7 @@ using Windows.Graphics.Imaging;
 using Windows.Storage.Streams;
 using Windows.Storage;
 using SocialApp.Repository;
+using SocialApp.Services;
 
 namespace SocialApp
 {
@@ -22,6 +23,12 @@ namespace SocialApp
 
         public AppController() { }
 
+        public bool EmailExists(string email)
+        {
+            UserRepository userRepository = new UserRepository();
+            return userRepository.GetByEmail(email) != null;
+        }
+
         public bool Login(string email, string password)
         {
             UserRepository userRepository = new UserRepository();
@@ -32,6 +39,14 @@ namespace SocialApp
                 return true;
             }
             return false;
+        }
+
+        public void Register(string username, string email, string password)
+        {
+            UserRepository userRepository = new UserRepository();
+            UserService userService = new UserService(userRepository);
+            userService.ValidateAdd(username, email, password, "");
+            
         }
 
         public void Logout()
