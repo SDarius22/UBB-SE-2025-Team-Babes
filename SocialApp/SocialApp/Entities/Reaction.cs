@@ -7,11 +7,10 @@ using SocialApp.Enums;
 
 namespace SocialApp.Entities
 {
-    internal class Reaction
+    public class Reaction
     {
         public long UserId { get; set; }
         public long PostId { get; set; }
-
         public ReactionType Type { get; set; }
     }
 }
