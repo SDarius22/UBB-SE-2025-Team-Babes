@@ -16,6 +16,8 @@ using Windows.UI;
 using System.Drawing;
 using SocialApp.Windows;
 using SocialApp.Pages;
+using SocialApp.Services;
+using SocialApp.Repository;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -29,16 +31,26 @@ namespace SocialApp.Pages
     {
 
         private AppController controller;
+        private UserRepository userRepository;
+        private UserService userService;
+        private PostRepository postRepository;
+        private PostService postService;
+        private GroupRepository groupRepository;
 
         public UserPage()
         {
             this.InitializeComponent();
 
+            userRepository = new UserRepository();
+            userService = new UserService(userRepository);
+            postRepository = new PostRepository();
+            groupRepository = new GroupRepository();
+            postService = new PostService(postRepository, userRepository, groupRepository);
+
             SetNavigation();
-            SetContent();
             SetPostsContent();
 
-            controller = new AppController();
+            this.Loaded += SetContent;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -58,27 +70,45 @@ namespace SocialApp.Pages
 
         private void HomeClick(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(HomeScreen));
+            Frame.Navigate(typeof(HomeScreen), controller);
         }
 
         private void GroupsClick(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(GroupsScreen));
+            Frame.Navigate(typeof(GroupsScreen), controller);
         }
 
         private void UserClick(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(UserPage));
+            Frame.Navigate(typeof(UserPage), controller);
         }
 
-        private void SetContent()
+        private async void SetContent(object sender, RoutedEventArgs e)
         {
-            FollowLogOutButton.Content = IsFollowed() ? "Unfollow" : "Follow";
+            if (controller.CurrentUser != null)
+            {
+                if (controller.CurrentUser.Image != string.Empty)
+                    ProfileImage.Source = await AppController.DecodeBase64ToImageAsync(controller.CurrentUser.Image);
+                Username.Text = controller.CurrentUser.Username;
+                FollowLogOutButton.Content = "Logout";
+                FollowLogOutButton.Click += Logout;
+            }
+            else
+            {
+                FollowLogOutButton.Content = IsFollowed() ? "Unfollow" : "Follow";
+            }
+
         }
 
         private bool IsFollowed()
         {
             return false;
+        }
+
+        private void Logout(object sender, RoutedEventArgs e)
+        {
+            controller.Logout();
+            Frame.Navigate(typeof (HomeScreen), controller);
         }
 
         private void PostsClick(object sender, RoutedEventArgs e)
@@ -92,6 +122,10 @@ namespace SocialApp.Pages
             WorkoutsButton.IsEnabled = true;
             MealsButton.IsEnabled = true;
             FollowersButton.IsEnabled = true;
+
+
+
+            PostsFeed.DisplayCurrentPage();
         }
 
         private void WorkoutsClick(object sender, RoutedEventArgs e)

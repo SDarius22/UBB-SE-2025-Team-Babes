@@ -10,6 +10,7 @@ using Windows.Storage.Streams;
 using Windows.Storage;
 using SocialApp.Repository;
 using SocialApp.Services;
+using Microsoft.UI.Xaml.Media.Imaging;
 
 namespace SocialApp
 {
@@ -57,24 +58,51 @@ namespace SocialApp
 
         public static async Task<string> EncodeImageToBase64Async(StorageFile imageFile)
         {
-            using (IRandomAccessStream stream = await imageFile.OpenAsync(FileAccessMode.Read))
+            try
             {
-                var decoder = await BitmapDecoder.CreateAsync(stream);
-                var pixelData = await decoder.GetPixelDataAsync();
-                byte[] bytes = pixelData.DetachPixelData();
-                return Convert.ToBase64String(bytes);
+                // Read the entire file as a byte array
+                using (IRandomAccessStream stream = await imageFile.OpenAsync(FileAccessMode.Read))
+                {
+                    byte[] bytes = new byte[stream.Size];
+                    await stream.ReadAsync(bytes.AsBuffer(), (uint)stream.Size, InputStreamOptions.None);
+                    return Convert.ToBase64String(bytes);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error encoding image to Base64: {ex.Message}");
+                throw;
             }
         }
 
-        public static async Task<SoftwareBitmap> DecodeBase64ToImageAsync(string base64String)
+        public static async Task<BitmapImage> DecodeBase64ToImageAsync(string base64String)
         {
-            byte[] bytes = Convert.FromBase64String(base64String);
-            using (InMemoryRandomAccessStream stream = new InMemoryRandomAccessStream())
+            if (string.IsNullOrEmpty(base64String))
             {
-                await stream.WriteAsync(bytes.AsBuffer());
-                stream.Seek(0);
-                BitmapDecoder decoder = await BitmapDecoder.CreateAsync(stream);
-                return await decoder.GetSoftwareBitmapAsync();
+                return new BitmapImage(new Uri("ms-appx:///Assets/User.png"));
+            }
+
+            try
+            {
+                // Decode Base64 to byte array
+                byte[] bytes = Convert.FromBase64String(base64String);
+
+                // Create BitmapImage from byte array
+                var bitmapImage = new BitmapImage();
+                using (var stream = new InMemoryRandomAccessStream())
+                {
+                    await stream.WriteAsync(bytes.AsBuffer());
+                    stream.Seek(0);
+                    await bitmapImage.SetSourceAsync(stream);
+                }
+
+                return bitmapImage;
+            }
+            catch (Exception ex)
+            {
+                // Fallback to default image on error
+                System.Diagnostics.Debug.WriteLine($"Error decoding Base64: {ex.Message}");
+                return new BitmapImage(new Uri("ms-appx:///Assets/User.png"));
             }
         }
 

@@ -10,17 +10,31 @@
     d:DesignWidth="800">
 
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="15*"/>
-            <ColumnDefinition Width="70*"/>
-            <ColumnDefinition Width="15*"/>
-        </Grid.ColumnDefinitions>
-        <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <!-- Scrollable posts area -->
+            <RowDefinition Height="Auto"/>
+            <!-- Navigation buttons -->
+        </Grid.RowDefinitions>
+
+        <!-- Posts ScrollViewer -->
+        <ScrollViewer
+            Grid.Row="0"
+            HorizontalAlignment="Center"
+            Width="500"
+            VerticalScrollBarVisibility="Auto">
             <StackPanel x:Name="PostsStackPanel" Margin="10">
                 <!-- Posts will be dynamically added here -->
             </StackPanel>
         </ScrollViewer>
-        <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="10">
+
+        <!-- Navigation Buttons -->
+        <StackPanel
+            Grid.Row="1"
+            Orientation="Horizontal"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Bottom"
+            Margin="10">
             <Button x:Name="PreviousPageButton" Content="Previous" Click="PreviousPageButton_Click" Margin="5"/>
             <Button x:Name="NextPageButton" Content="Next" Click="NextPageButton_Click" Margin="5"/>
         </StackPanel>
