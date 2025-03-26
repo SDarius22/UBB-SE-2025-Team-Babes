@@ -11,12 +11,14 @@ namespace SocialApp.Repository
 {
     public class CommentRepository
     {
-        private string loginString = "Data Source=DESKTOP-CL1KD74\\SQLEXPRESS01;Initial Catalog=SocialApp;Integrated Security=True;TrustServerCertificate=True";
+        private string loginString = "Data Source=ATHOS;" +
+            "Initial Catalog=ISSDB;" +
+            "Integrated Security=True;" +
+            "TrustServerCertificate=True";
         private SqlConnection connection;
 
-        public CommentRepository(string loginString)
+        public CommentRepository()
         {
-            this.loginString = loginString;
             this.connection = new SqlConnection(loginString);
         }
 

@@ -8,9 +8,9 @@ namespace SocialApp.Enums
 {
     public enum PostVisibility
     {
-        Private,
-        Friends,
-        Groups, // cum facem cu asta ???
-        Public
+        Private = 1,
+        Friends = 2,
+        Public = 3,
+	Groups = 4
     }
 }

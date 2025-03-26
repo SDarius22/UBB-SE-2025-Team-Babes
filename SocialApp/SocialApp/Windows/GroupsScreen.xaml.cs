@@ -25,11 +25,24 @@ namespace SocialApp.Windows
     /// </summary>
     public sealed partial class GroupsScreen : Page
     {
+        private AppController controller;
+
         public GroupsScreen()
         {
             this.InitializeComponent();
             SetNavigation();
         }
+            controller = new AppController();
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            if (e.Parameter is AppController controller)
+            {
+                this.controller = controller;
+            }
+        }
+
         private void SetNavigation()
         {
             TopBar.HomeButtonInstance.Click += HomeClick;
@@ -50,6 +63,19 @@ namespace SocialApp.Windows
         private void UserClick(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(UserPage));
+            if (IsLoggedIn())
+            {
+                Frame.Navigate(typeof(UserPage));
+            }
+            else
+            {
+                Frame.Navigate(typeof(LoginRegisterPage));
+            }
+        }
+
+        private bool IsLoggedIn()
+        {
+            return false;
         }
     }
 }

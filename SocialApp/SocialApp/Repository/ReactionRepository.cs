@@ -11,14 +11,10 @@ namespace SocialApp.Repository
 {
     class ReactionRepository
     {
-<<<<<<< Updated upstream
-        private string loginString = "Data Source=DESKTOP-CL1KD74\\SQLEXPRESS01;Initial Catalog=SocialApp;Integrated Security=True;TrustServerCertificate=True";
-=======
-        private string loginString = "Data Source=(localdb)\\localDB1;" +
+        private string loginString = "Data Source=ATHOS;" +
             "Initial Catalog=ISSDB;" +
             "Integrated Security=True;" +
             "TrustServerCertificate=True";
->>>>>>> Stashed changes
         private SqlConnection connection;
 
         public ReactionRepository(string loginString)

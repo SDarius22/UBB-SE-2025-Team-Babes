@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+
 <Page
     x:Class="SocialApp.Pages.UserPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -13,103 +13,119 @@
     <Grid x:Name="RootGrid" Background="#222831">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <!-- Top Bar -->
             <RowDefinition Height="*"/>
+            <!-- Main Content -->
         </Grid.RowDefinitions>
 
         <!-- Top Bar -->
         <components:TopBar Grid.Row="0" x:Name="TopBar"/>
 
         <!-- Main Content -->
-        <Grid
-            Grid.Row="1">
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <!-- Profile Section -->
+                <RowDefinition Height="*"/>
+                <!-- Content Area -->
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" MinWidth="150"/>
+                <!-- Side Buttons -->
+                <ColumnDefinition MinWidth="800"/>
+                <!-- Center Content -->
+                <ColumnDefinition Width="Auto" MinWidth="150"/>
+                <!-- Right Side (empty) -->
+            </Grid.ColumnDefinitions>
 
+            <!-- Profile Section -->
             <StackPanel
-                Orientation="Vertical">
-                <!-- Profile image -->
-                <Border
-                    Background="#222831"
-                    MaxHeight="150">
-                    <Image
-                        x:Name="ProfileImage"
-                        Stretch="Uniform"
-                        Source="../Assets/User.png"/>
+                Orientation="Vertical"
+                Background="#222831"
+                HorizontalAlignment="Center"
+                Grid.Row="0"
+                Grid.Column="1">
+                <Border Background="#222831" MaxHeight="150">
+                    <Image x:Name="ProfileImage" Stretch="Uniform" Source="../Assets/User.png"/>
                 </Border>
-
-                <Grid>
-
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" MinWidth="150"/>
-                        <ColumnDefinition MinWidth="800"/>
-                        <ColumnDefinition Width="Auto" MinWidth="150"/>
-                    </Grid.ColumnDefinitions>
-
-                    <StackPanel
-                        Orientation="Vertical"
-                        Background="#222831"
-                        HorizontalAlignment="Center"
-                        Grid.Column="1">
-                        <TextBlock
-                            x:Name="Username"
-                            Text="User Name" 
-                            FontFamily="Segoe Script"
-                            TextAlignment="Center"
-                            FontSize="24" 
-                            Foreground="#00ADB5"/>
-
-                        <Button
-                            x:Name="FollowLogOutButton"
-                            Background="#D9D9D9"
-                            Foreground="Black"
-                            Content="Follow/LogOut"
-                            HorizontalAlignment="Center"/>
-                    </StackPanel>
-
-                    <StackPanel
-                        x:Name="SideButtons"
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Padding="10 50 0 0">
-                        <Button
-                            x:Name="PostsButton"
-                            Background="#D9D9D9"
-                            Foreground="Black"
-                            Content="Posts"
-                            Margin="0 20 0 0"
-                            Width="100"
-                            CornerRadius="5"
-                            Click="PostsClick"/>
-                        <Button
-                            x:Name="WorkoutsButton"
-                            Background="#D9D9D9"
-                            Foreground="Black"
-                            Content="Workouts"
-                            Margin="0 20 0 0"
-                            Width="100"
-                            CornerRadius="5"
-                            Click="WorkoutsClick"/>
-                        <Button
-                            x:Name="MealsButton"
-                            Background="#D9D9D9"
-                            Foreground="Black"
-                            Content="Meals"
-                            Margin="0 20 0 0"
-                            Width="100"
-                            CornerRadius="5"
-                            Click="MealsClick"/>
-                        <Button
-                            x:Name="FollowersButton"
-                            Background="#D9D9D9"
-                            Foreground="Black"
-                            Content="Followers"
-                            Margin="0 20 0 0"
-                            Width="100"
-                            CornerRadius="5"
-                            Click="FollowersClick"/>
-                    </StackPanel>
-
-                </Grid>
+                <TextBlock
+                    x:Name="Username"
+                    Text="User Name"
+                    FontFamily="Segoe Script"
+                    TextAlignment="Center"
+                    FontSize="24"
+                    Foreground="#00ADB5"/>
+                <Button
+                    x:Name="FollowLogOutButton"
+                    Background="#D9D9D9"
+                    Foreground="Black"
+                    Content="Follow/LogOut"
+                    HorizontalAlignment="Center"/>
             </StackPanel>
 
+            <!-- Posts Feed -->
+            <components:PostsFeed
+                x:Name="PostsFeed"
+                Grid.Row="1"
+                Grid.Column="1"
+                Margin="0 10 0 0"/>
+
+            <!-- Followers -->
+            <ScrollViewer
+                x:Name="FollowersScrollViewer"
+                Grid.Row="1"
+                Grid.Column="1"
+                Margin="0 10 0 0"
+                Width="500"                   
+                HorizontalAlignment="Center"
+                VerticalScrollBarVisibility="Auto">
+                <StackPanel x:Name="FollowersStack" Margin="10"/>
+            </ScrollViewer>
+
+            <!-- Side Buttons -->
+            <StackPanel
+                x:Name="SideButtons"
+                Grid.Row="0"
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                Padding="10 50 0 0">
+                <Button
+                    x:Name="PostsButton"
+                    Background="#D9D9D9"
+                    Foreground="Black"
+                    Content="Posts"
+                    Margin="0 20 0 0"
+                    Width="100"
+                    CornerRadius="5"
+                    Click="PostsClick"/>
+                <Button
+                    x:Name="WorkoutsButton"
+                    Background="#D9D9D9"
+                    Foreground="Black"
+                    Content="Workouts"
+                    Margin="0 20 0 0"
+                    Width="100"
+                    CornerRadius="5"
+                    Click="WorkoutsClick"/>
+                <Button
+                    x:Name="MealsButton"
+                    Background="#D9D9D9"
+                    Foreground="Black"
+                    Content="Meals"
+                    Margin="0 20 0 0"
+                    Width="100"
+                    CornerRadius="5"
+                    Click="MealsClick"/>
+                <Button
+                    x:Name="FollowersButton"
+                    Background="#D9D9D9"
+                    Foreground="Black"
+                    Content="Followers"
+                    Margin="0 20 0 0"
+                    Width="100"
+                    CornerRadius="5"
+                    Click="FollowersClick"/>
+            </StackPanel>
         </Grid>
     </Grid>
 </Page>

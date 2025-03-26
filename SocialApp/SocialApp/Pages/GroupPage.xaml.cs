@@ -13,6 +13,11 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using SocialApp.Windows;
+using SocialApp.Repository;
+using SocialApp.Services;
+using SocialApp.Components;
+using SocialApp.Entities;
+using Windows.Networking.NetworkOperators;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -26,11 +31,44 @@ namespace SocialApp.Pages
     {
         private const Visibility collapsed = Visibility.Collapsed;
         private const Visibility visible = Visibility.Visible;
+        private AppController controller;
+        private UserRepository userRepository;
+        private UserService userService;
+        private PostRepository postRepository;
+        private PostService postService;
+        private GroupRepository groupRepository;
+        private GroupService groupService;
 
-        public GroupPage()
+        public int GroupId { get; set; }
+        private Entities.Group group;
+
+        public GroupPage(int groupId)
         {
             this.InitializeComponent();
             SetNavigation();
+            this.Loaded += DisplayPage;
+            GroupId = groupId;
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            if (e.Parameter is AppController controller)
+            {
+                this.controller = controller;
+            }
+        }
+
+        private void DisplayPage(object sender, RoutedEventArgs e)
+        {
+            userRepository = new UserRepository();
+            userService = new UserService(userRepository);
+            groupRepository = new GroupRepository();
+            groupService = new GroupService(groupRepository, userRepository);
+            postRepository = new PostRepository();
+            postService = new PostService(postRepository, userRepository, groupRepository);
+            group = groupService.GetById(GroupId);
+
+            SetNavigationButtons();
             SetVisibilities();
             SetContent();
         }
@@ -56,6 +94,40 @@ namespace SocialApp.Pages
             Frame.Navigate(typeof(UserPage));
         }
 
+        private void SetNavigationButtons()
+        {
+            TopBar.HomeButtonInstance.Click += HomeClick;
+            TopBar.UserButtonInstance.Click += UserClick;
+            TopBar.GroupsButtonInstance.Click += GroupsClick;
+        }
+
+        private void HomeClick(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(HomeScreen), controller);
+        }
+
+        private void GroupsClick(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(GroupsScreen), controller);
+        }
+
+        private void UserClick(object sender, RoutedEventArgs e)
+        {
+            if (IsLoggedIn())
+            {
+                Frame.Navigate(typeof(UserPage), controller);
+            }
+            else
+            {
+                Frame.Navigate(typeof(LoginRegisterPage), controller);
+            }
+        }
+
+        private bool IsLoggedIn()
+        {
+            return controller.CurrentUser != null;
+        }
+
         private void SetVisibilities()
         {
             if (UserIsAdmin())
@@ -72,7 +144,7 @@ namespace SocialApp.Pages
 
         private bool UserIsAdmin()
         {
-            return false;
+            return groupRepository.GetById(GroupId).AdminId == controller.CurrentUser.Id;
         }
 
         private void SetRemoveButtonsVisible()
@@ -85,8 +157,30 @@ namespace SocialApp.Pages
 
         }
 
-        private void SetContent()
+        private async void SetContent()
         {
+            GroupTitle.Text = group.Name;
+            GroupDescription.Text = group.Description;
+            if (group.Image != string.Empty)
+                GroupImage.Source = await AppController.DecodeBase64ToImageAsync(group.Image);
+            PopulateFeed();
+        }
+        private void PopulateFeed()
+        {
+
+            PostsFeed.ClearPosts();
+
+            List<Post> groupPosts = postService.GetByGroupId(GroupId);
+
+            foreach (Post post in groupPosts)
+            {
+                PostsFeed.AddPost(new PostComponent(post.Title, post.Visibility, post.UserId, post.Content, post.CreatedDate));
+            }
+
+
+            PostsFeed.Visibility = Visibility.Visible;
+
+            PostsFeed.DisplayCurrentPage();
 
         }
     }
