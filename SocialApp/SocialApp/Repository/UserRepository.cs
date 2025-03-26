@@ -73,6 +73,39 @@ namespace SocialApp.Repository
             return users;
         }
 
+        public List<User> GetUserFollowing(long id)
+        {
+            connection.Open();
+            List<User> users = new List<User>();
+            SqlCommand selectCommand = new SqlCommand("SELECT * FROM Users WHERE Id IN (SELECT UserId FROM UserFollowers WHERE FollowerId = @Id)", connection);
+            selectCommand.Parameters.AddWithValue("@Id", id);
+            SqlDataReader reader = selectCommand.ExecuteReader();
+            while (reader.Read()) {
+                User user = new User
+                {
+                    Id = reader.GetInt64(reader.GetOrdinal("Id")),
+                    Username = reader.GetString(reader.GetOrdinal("Username")),
+                    Email = reader.GetString(reader.GetOrdinal("Email")),
+                    PasswordHash = reader.GetString(reader.GetOrdinal("PasswordHash")),
+                    Image = reader.GetString(reader.GetOrdinal("Image"))
+                };
+                users.Add(user);
+            }
+            reader.Close();
+            connection.Close();
+            return users;
+        }
+
+        public void Follow(long userId, long whoToFollowId)
+        {
+            connection.Open();
+            SqlCommand insertCommand = new SqlCommand("INSERT INTO UserFollowers (UserId, FollowerId) VALUES (@UserId, @FollowerId)", connection);
+            insertCommand.Parameters.AddWithValue("@UserId", whoToFollowId);
+            insertCommand.Parameters.AddWithValue("@FollowerId", userId);
+            insertCommand.ExecuteNonQuery();
+            connection.Close();
+        }
+
         public User GetByEmail(string email)
         {
             connection.Open();

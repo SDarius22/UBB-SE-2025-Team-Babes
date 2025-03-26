@@ -66,5 +66,15 @@ namespace SocialApp.Services
         {
             return userRepository.GetUserFollowers(id);
         }
+
+        public List<User> GetUserFollowing(long id)
+        {
+            return userRepository.GetUserFollowing(id);
+        }
+
+        public void FollowUser(long userId, long whoToFollowId)
+        {
+            userRepository.Follow(userId, whoToFollowId);
+        }
     }
 }
