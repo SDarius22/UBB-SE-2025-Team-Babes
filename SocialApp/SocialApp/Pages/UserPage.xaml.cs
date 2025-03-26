@@ -208,6 +208,7 @@ namespace SocialApp.Pages
 
             foreach (User user in followers)
             {
+                // check if followed and set button accordingly
                 FollowersStack.Children.Add(new Follower(user.Username));
             }
         }

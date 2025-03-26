@@ -17,6 +17,7 @@ using SocialApp.Repository;
 using SocialApp.Services;
 using SocialApp.Components;
 using SocialApp.Entities;
+using Windows.Networking.NetworkOperators;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -38,12 +39,14 @@ namespace SocialApp.Pages
         private GroupRepository groupRepository;
         private GroupService groupService;
 
-        public long GroupId { get; set; }
+        public int GroupId { get; set; }
+        private Entities.Group group;
 
-        public GroupPage()
+        public GroupPage(int groupId)
         {
             this.InitializeComponent();
             this.Loaded += DisplayPage;
+            GroupId = groupId;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -62,13 +65,14 @@ namespace SocialApp.Pages
             groupService = new GroupService(groupRepository, userRepository);
             postRepository = new PostRepository();
             postService = new PostService(postRepository, userRepository, groupRepository);
+            group = groupService.GetById(GroupId);
 
-            SetNavigation();
+            SetNavigationButtons();
             SetVisibilities();
             SetContent();
         }
 
-        private void SetNavigation()
+        private void SetNavigationButtons()
         {
             TopBar.HomeButtonInstance.Click += HomeClick;
             TopBar.UserButtonInstance.Click += UserClick;
@@ -77,23 +81,23 @@ namespace SocialApp.Pages
 
         private void HomeClick(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(HomeScreen));
+            Frame.Navigate(typeof(HomeScreen), controller);
         }
 
         private void GroupsClick(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(GroupsScreen));
+            Frame.Navigate(typeof(GroupsScreen), controller);
         }
 
         private void UserClick(object sender, RoutedEventArgs e)
         {
             if (IsLoggedIn())
             {
-                Frame.Navigate(typeof(UserPage));
+                Frame.Navigate(typeof(UserPage), controller);
             }
             else
             {
-                Frame.Navigate(typeof(LoginRegisterPage));
+                Frame.Navigate(typeof(LoginRegisterPage), controller);
             }
         }
 
@@ -131,13 +135,18 @@ namespace SocialApp.Pages
 
         }
 
-        private void SetContent()
+        private async void SetContent()
         {
-            // set details;
+            GroupTitle.Text = group.Name;
+            GroupDescription.Text = group.Description;
+            if (group.Image != string.Empty)
+                GroupImage.Source = await AppController.DecodeBase64ToImageAsync(group.Image);
             PopulateFeed();
         }
         private void PopulateFeed()
         {
+
+            PostsFeed.ClearPosts();
 
             List<Post> groupPosts = postService.GetByGroupId(GroupId);
 
