@@ -84,22 +84,6 @@ namespace SocialApp.Pages
             Frame.Navigate(typeof(HomeScreen), controller);
         }
 
-        private void GroupsClick(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(typeof(GroupsScreen), controller);
-        }
-
-        private void UserClick(object sender, RoutedEventArgs e)
-        {
-            if (IsLoggedIn())
-            {
-                Frame.Navigate(typeof(UserPage), controller);
-            }
-            else
-            {
-                Frame.Navigate(typeof(LoginRegisterPage), controller);
-            }
-        }
 
         private bool IsLoggedIn()
         {
