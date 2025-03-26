@@ -1,5 +1,8 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Navigation;
+using SocialApp.Repository;
+using SocialApp.Services;
 using System.Collections.Generic;
 
 namespace SocialApp.Components
@@ -9,10 +12,22 @@ namespace SocialApp.Components
         private int currentPage = 1;
         private const int postsPerPage = 5;
         private List<PostComponent> allPosts;
+        private UserRepository userRepository;
+        private UserService userService;
+        private PostRepository postRepository;
+        private PostService postService;
+        private GroupRepository groupRepository;
 
         public PostsFeed()
         {
             this.InitializeComponent();
+
+            userRepository = new UserRepository();
+            userService = new UserService(userRepository);
+            postRepository = new PostRepository();
+            groupRepository = new GroupRepository();
+            postService = new PostService(postRepository, userRepository, groupRepository);
+
             LoadPosts();
             DisplayCurrentPage();
         }
@@ -27,7 +42,7 @@ namespace SocialApp.Components
             }
         }
 
-        private void DisplayCurrentPage()
+        public void DisplayCurrentPage()
         {
             PostsStackPanel.Children.Clear();
             int startIndex = (currentPage - 1) * postsPerPage;

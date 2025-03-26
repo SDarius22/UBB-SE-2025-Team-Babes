@@ -20,7 +20,6 @@ namespace SocialApp.Repository
 
         public GroupRepository()
         {
-            this.loginString = loginString;
             this.connection = new SqlConnection(loginString);
         }
 

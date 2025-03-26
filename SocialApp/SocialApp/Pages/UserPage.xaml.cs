@@ -123,9 +123,7 @@ namespace SocialApp.Pages
             MealsButton.IsEnabled = true;
             FollowersButton.IsEnabled = true;
 
-
-
-            PostsFeed.DisplayCurrentPage();
+            PostsFeed.Visibility = Visibility.Visible;
         }
 
         private void WorkoutsClick(object sender, RoutedEventArgs e)
