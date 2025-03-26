@@ -20,7 +20,7 @@ namespace SocialApp
 
         public User? CurrentUser { get; private set; } = null;
 
-        private AppController() { }
+        public AppController() { }
 
         public bool Login(string email, string password)
         {

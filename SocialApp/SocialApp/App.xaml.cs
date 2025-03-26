@@ -30,6 +30,8 @@ namespace SocialApp
     /// </summary>
     public partial class App : Application
     {
+        public AppController controller;
+
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -37,6 +39,7 @@ namespace SocialApp
         public App()
         {
             this.InitializeComponent();
+            controller = new AppController();
         }
 
         /// <summary>
@@ -48,12 +51,9 @@ namespace SocialApp
             m_window = new MainWindow();
             Frame rootFrame = new Frame();
             m_window.Content = rootFrame;
-            rootFrame.Navigate(typeof(HomeScreen), args.Arguments);
+            rootFrame.Navigate(typeof(HomeScreen), controller);
             m_window.Activate();
         }
-
-
-
 
         private Window? m_window;
     }

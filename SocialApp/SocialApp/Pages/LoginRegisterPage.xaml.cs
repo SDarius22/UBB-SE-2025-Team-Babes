@@ -25,10 +25,20 @@ namespace SocialApp.Pages
     {
         private const Visibility collapsed = Visibility.Collapsed;
         private const Visibility visible = Visibility.Visible;
+        private AppController controller;
         public LoginRegisterPage()
         {
             this.InitializeComponent();
             this.InitialFlow();
+            controller = new AppController();
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            if (e.Parameter is AppController controller)
+            {
+                this.controller = controller;
+            }
         }
 
         private void InitialFlow()

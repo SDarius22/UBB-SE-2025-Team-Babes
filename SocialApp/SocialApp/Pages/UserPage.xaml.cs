@@ -28,6 +28,8 @@ namespace SocialApp.Pages
     public sealed partial class UserPage : Page
     {
 
+        private AppController controller;
+
         public UserPage()
         {
             this.InitializeComponent();
@@ -35,11 +37,16 @@ namespace SocialApp.Pages
             SetNavigation();
             SetContent();
             SetPostsContent();
+
+            controller = new AppController();
         }
 
-        private bool IsLoggedIn()
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            return false;
+            if (e.Parameter is AppController controller)
+            {
+                this.controller = controller;
+            }
         }
 
         private void SetNavigation()

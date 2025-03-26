@@ -25,11 +25,23 @@ namespace SocialApp.Windows
     /// </summary>
     public sealed partial class GroupsScreen : Page
     {
+        private AppController controller;
+
         public GroupsScreen()
         {
             this.InitializeComponent();
             SetNavigation();
+            controller = new AppController();
         }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            if (e.Parameter is AppController controller)
+            {
+                this.controller = controller;
+            }
+        }
+
         private void SetNavigation()
         {
             TopBar.HomeButtonInstance.Click += HomeClick;
