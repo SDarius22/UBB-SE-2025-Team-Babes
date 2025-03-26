@@ -13,6 +13,10 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using SocialApp.Services;
+using Microsoft.UI.Xaml.Media.Imaging;
+using Windows.Storage.Pickers;
+using Windows.Storage.Streams;
+using Windows.Storage;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -27,6 +31,7 @@ namespace SocialApp.Pages
         private const Visibility collapsed = Visibility.Collapsed;
         private const Visibility visible = Visibility.Visible;
         private AppController controller;
+        private string image;
         public LoginRegisterPage()
         {
             this.InitializeComponent();
@@ -146,6 +151,11 @@ namespace SocialApp.Pages
             PageName.Text = "Register";
             ContinueButton.Content = "Register";
             ErrorTextbox.Text = "";
+            UploadedImage.Child = new Image
+            {
+                Source = new BitmapImage(new Uri("ms-appx:///Assets/User.png"))
+            };
+            image = string.Empty;
         }
 
         private void SetRegisterHandlers()
@@ -154,14 +164,50 @@ namespace SocialApp.Pages
             ContinueButton.Click += RegisterClick;
         }
 
-        private void UploadImage(object sender, RoutedEventArgs e)
+        private async void UploadImage(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                //Create and configure the file picker
+                var picker = new FileOpenPicker
+                {
+                    ViewMode = PickerViewMode.Thumbnail,
+                    SuggestedStartLocation = PickerLocationId.PicturesLibrary
+                };
+                picker.FileTypeFilter.Add(".jpg");
+                picker.FileTypeFilter.Add(".jpeg");
+                picker.FileTypeFilter.Add(".png");
 
+                var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(App.CurrentWindow);
+                WinRT.Interop.InitializeWithWindow.Initialize(picker, hwnd);
+
+                // Show the file picker and get the selected file
+                StorageFile file = await picker.PickSingleFileAsync();
+                if (file != null)
+                {
+                    image = await AppController.EncodeImageToBase64Async(file);
+                    // Update the displayed image
+                    var bitmapImage = new BitmapImage();
+                    using (IRandomAccessStream stream = await file.OpenAsync(FileAccessMode.Read))
+                    {
+                        await bitmapImage.SetSourceAsync(stream);
+                    }
+                    UploadedImage.Child = new Image { Source = bitmapImage };
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorTextbox.Text = $"Error uploading image: {ex.Message}";
+            }
         }
 
         private void RemoveImage(object sender, RoutedEventArgs e)
         {
-
+            image = string.Empty;
+            UploadedImage.Child = new Image
+            {
+                Source = new BitmapImage(new Uri("ms-appx:///Assets/User.png"))
+            };
         }
 
         private void RegisterClick(object sender, RoutedEventArgs e)
@@ -196,7 +242,7 @@ namespace SocialApp.Pages
         {
             try
             {
-                controller.Register(UsernameTextbox.Text, EmailTextbox.Text, PasswordTextbox.Text);
+                controller.Register(UsernameTextbox.Text, EmailTextbox.Text, PasswordTextbox.Text, image);
                 Frame.Navigate(typeof(HomeScreen), controller);
             }
             catch (Exception ex)

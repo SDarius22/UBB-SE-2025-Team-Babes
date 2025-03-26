@@ -41,11 +41,11 @@ namespace SocialApp
             return false;
         }
 
-        public void Register(string username, string email, string password)
+        public void Register(string username, string email, string password, string image)
         {
             UserRepository userRepository = new UserRepository();
             UserService userService = new UserService(userRepository);
-            userService.ValidateAdd(username, email, password, "");
+            userService.ValidateAdd(username, email, password, image);
             
         }
 
