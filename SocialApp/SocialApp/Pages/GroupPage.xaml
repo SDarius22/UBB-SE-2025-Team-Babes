@@ -17,7 +17,7 @@
         </Grid.RowDefinitions>
 
         <!-- Top Bar -->
-        <components:TopBar Grid.Row="0"/>
+        <components:TopBar Grid.Row="0" x:Name="TopBar"/>
 
         <!-- Main Content -->
         <Grid
@@ -52,9 +52,8 @@
             </StackPanel>
 
             <!-- Feed-->
-            <StackPanel>
-
-            </StackPanel>
+            <components:PostsFeed
+                x:Name="PostsFeed"/>
 
             <!-- Members Panel -->
             <StackPanel

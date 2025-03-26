@@ -12,6 +12,11 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using SocialApp.Services;
+using Microsoft.UI.Xaml.Media.Imaging;
+using Windows.Storage.Pickers;
+using Windows.Storage.Streams;
+using Windows.Storage;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -25,10 +30,21 @@ namespace SocialApp.Pages
     {
         private const Visibility collapsed = Visibility.Collapsed;
         private const Visibility visible = Visibility.Visible;
+        private AppController controller;
+        private string image;
         public LoginRegisterPage()
         {
             this.InitializeComponent();
             this.InitialFlow();
+            //controller = new AppController();
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            if (e.Parameter is AppController controller)
+            {
+                this.controller = controller;
+            }
         }
 
         private void InitialFlow()
@@ -64,7 +80,7 @@ namespace SocialApp.Pages
 
         public void ContinueClick(object sender, RoutedEventArgs e)
         {
-            if (EmailExists(EmailTextbox.Text))
+            if (controller.EmailExists(EmailTextbox.Text))
             {
                 LoginFlow();
             }
@@ -72,11 +88,6 @@ namespace SocialApp.Pages
             {
                 RegisterFlow();
             }
-        }
-
-        private bool EmailExists(String email)
-        {
-            return !email.Equals(String.Empty);
         }
 
         private void LoginFlow()
@@ -106,26 +117,16 @@ namespace SocialApp.Pages
 
         private void LoginClick(object sender, RoutedEventArgs e)
         {
-            if (IsValidPassword(EmailTextbox.Text, PasswordTextbox.Text))
-            {
-                Login();
-            }
-            else
+            if (!controller.Login(EmailTextbox.Text, PasswordTextbox.Text))
             {
                 ErrorTextbox.Visibility = visible;
                 ErrorTextbox.Text = "Incorrect password.";
                 PasswordTextbox.Text = "";
             }
-        }
-
-        private bool IsValidPassword(String username, String password)
-        {
-            return true;
-        }
-
-        private void Login()
-        {
-            // switch to HOME PAGE
+            else
+            {
+                Frame.Navigate(typeof(HomeScreen), controller);
+            }
         }
 
         private void RegisterFlow()
@@ -150,6 +151,11 @@ namespace SocialApp.Pages
             PageName.Text = "Register";
             ContinueButton.Content = "Register";
             ErrorTextbox.Text = "";
+            UploadedImage.Child = new Image
+            {
+                Source = new BitmapImage(new Uri("ms-appx:///Assets/User.png"))
+            };
+            image = string.Empty;
         }
 
         private void SetRegisterHandlers()
@@ -158,21 +164,56 @@ namespace SocialApp.Pages
             ContinueButton.Click += RegisterClick;
         }
 
-        private void UploadImage(object sender, RoutedEventArgs e)
+        private async void UploadImage(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                //Create and configure the file picker
+                var picker = new FileOpenPicker
+                {
+                    ViewMode = PickerViewMode.Thumbnail,
+                    SuggestedStartLocation = PickerLocationId.PicturesLibrary
+                };
+                picker.FileTypeFilter.Add(".jpg");
+                picker.FileTypeFilter.Add(".jpeg");
+                picker.FileTypeFilter.Add(".png");
 
+                var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(App.CurrentWindow);
+                WinRT.Interop.InitializeWithWindow.Initialize(picker, hwnd);
+
+                // Show the file picker and get the selected file
+                StorageFile file = await picker.PickSingleFileAsync();
+                if (file != null)
+                {
+                    image = await AppController.EncodeImageToBase64Async(file);
+                    // Update the displayed image
+                    var bitmapImage = new BitmapImage();
+                    using (IRandomAccessStream stream = await file.OpenAsync(FileAccessMode.Read))
+                    {
+                        await bitmapImage.SetSourceAsync(stream);
+                    }
+                    UploadedImage.Child = new Image { Source = bitmapImage };
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorTextbox.Text = $"Error uploading image: {ex.Message}";
+            }
         }
 
         private void RemoveImage(object sender, RoutedEventArgs e)
         {
-
+            image = string.Empty;
+            UploadedImage.Child = new Image
+            {
+                Source = new BitmapImage(new Uri("ms-appx:///Assets/User.png"))
+            };
         }
 
         private void RegisterClick(object sender, RoutedEventArgs e)
         {
             try
             {
-                IsValidUsername(UsernameTextbox.Text);
                 PasswordsMatch(PasswordTextbox.Text, ConfirmPasswordTextbox.Text);
                 AreTermAccepted();
                 Register();
@@ -181,24 +222,33 @@ namespace SocialApp.Pages
             }
         }
 
-        private bool IsValidUsername(String username)
+        private void PasswordsMatch(String password, String confirmedPassword)
         {
-            return true;
+            if (password != confirmedPassword)
+            {
+                throw new Exception("Passwords must match");
+            }
         }
 
-        private bool PasswordsMatch(String password, String confirmedPassword)
+        private void AreTermAccepted()
         {
-            return true;
-        }
-
-        private bool AreTermAccepted()
-        {
-            return true;
+            if (CheckBox.IsChecked == null || CheckBox.IsChecked == false)
+            {
+                throw new Exception("You must accept the terms and conditions!");
+            }
         }
 
         private void Register()
         {
-
+            try
+            {
+                controller.Register(UsernameTextbox.Text, EmailTextbox.Text, PasswordTextbox.Text, image);
+                Frame.Navigate(typeof(HomeScreen), controller);
+            }
+            catch (Exception ex)
+            {
+                ErrorTextbox.Text = ex.Message;
+            }
         }
     }
 }

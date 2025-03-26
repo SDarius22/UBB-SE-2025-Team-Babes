@@ -14,6 +14,12 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using Windows.UI;
 using System.Drawing;
+using SocialApp.Windows;
+using SocialApp.Pages;
+using SocialApp.Services;
+using SocialApp.Repository;
+using SocialApp.Components;
+using SocialApp.Entities;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -26,21 +32,74 @@ namespace SocialApp.Pages
     public sealed partial class UserPage : Page
     {
 
+        private AppController controller;
+        private UserRepository userRepository;
+        private UserService userService;
+        private PostRepository postRepository;
+        private PostService postService;
+        private GroupRepository groupRepository;
+
         public UserPage()
         {
             this.InitializeComponent();
-            SetContent();
-            SetPostsContent();
+
+            userRepository = new UserRepository();
+            userService = new UserService(userRepository);
+            postRepository = new PostRepository();
+            groupRepository = new GroupRepository();
+            postService = new PostService(postRepository, userRepository, groupRepository);
+
+
+            this.Loaded += SetContent;
+            this.Loaded += SetPostsContent;
+            this.Loaded += SetNavigation;
         }
 
-        private void SetContent()
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            FollowLogOutButton.Content = IsLoggedIn() ? "Log Out" : (IsFollowed() ? "Unfollow" : "Follow");
+            if (e.Parameter is AppController controller)
+            {
+                this.controller = controller;
+            }
         }
 
-        private bool IsLoggedIn()
+        private void SetNavigation(object sender, RoutedEventArgs e)
         {
-            return false;
+            TopBar.HomeButtonInstance.Click += HomeClick;
+            TopBar.UserButtonInstance.Click += UserClick;
+            TopBar.GroupsButtonInstance.Click += GroupsClick;
+        }
+
+        private void HomeClick(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(HomeScreen), controller);
+        }
+
+        private void GroupsClick(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(GroupsScreen), controller);
+        }
+
+        private void UserClick(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(UserPage), controller);
+        }
+
+        private async void SetContent(object sender, RoutedEventArgs e)
+        {
+            if (controller.CurrentUser != null)
+            {
+                if (controller.CurrentUser.Image != string.Empty)
+                    ProfileImage.Source = await AppController.DecodeBase64ToImageAsync(controller.CurrentUser.Image);
+                Username.Text = controller.CurrentUser.Username;
+                FollowLogOutButton.Content = "Logout";
+                FollowLogOutButton.Click += Logout;
+            }
+            else
+            {
+                FollowLogOutButton.Content = IsFollowed() ? "Unfollow" : "Follow";
+            }
+
         }
 
         private bool IsFollowed()
@@ -48,19 +107,36 @@ namespace SocialApp.Pages
             return false;
         }
 
-        private void PostsClick(object sender, RoutedEventArgs e)
+        private void Logout(object sender, RoutedEventArgs e)
         {
-            SetPostsContent();
+            controller.Logout();
+            Frame.Navigate(typeof (HomeScreen), controller);
         }
 
-        private void SetPostsContent()
+        private void PostsClick(object sender, RoutedEventArgs e)
+        {
+            SetPostsContent(sender, e);
+        }
+
+        private void SetPostsContent(object sender, RoutedEventArgs e)
         {
             PostsButton.IsEnabled = false;
             WorkoutsButton.IsEnabled = true;
             MealsButton.IsEnabled = true;
             FollowersButton.IsEnabled = true;
-        }
 
+            List<Post> userPosts = postService.GetByUserId(controller.CurrentUser.Id);
+
+            foreach (Post post in userPosts)
+            {
+                PostsFeed.AddPost(new PostComponent(post.Title, post.Visibility, post.UserId, post.Content, post.CreatedDate));
+            }
+
+
+            PostsFeed.Visibility = Visibility.Visible;
+
+            PostsFeed.DisplayCurrentPage();
+        }
         private void WorkoutsClick(object sender, RoutedEventArgs e)
         {
             SetWorkoutsContent();
