@@ -1,27 +1,32 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media; // Add this for SolidColorBrush
-using Microsoft.UI; // Add this for Colors
+using Microsoft.UI.Xaml.Media;
+using Microsoft.UI;
 using System.Collections.Generic;
+using SocialApp.Entities;
+using SocialApp.Services;
+using SocialApp.Repository; // Add this for GroupRepository and UserRepository
+
 namespace SocialApp.Components
 {
     public sealed partial class GroupsDrawer : UserControl
     {
+        private GroupService _groupService;
+
         public GroupsDrawer()
         {
             this.InitializeComponent();
+            var groupRepository = new GroupRepository();
+            var userRepository = new UserRepository();
+            _groupService = new GroupService(groupRepository, userRepository);
             LoadGroups();
         }
 
         private void LoadGroups()
         {
-            // Example data, replace with actual data loading logic
-            var groups = new List<Group>
-                {
-                    new Group { Name = "Group 1", Description = "Description for Group 1" },
-                    new Group { Name = "Group 2", Description = "Description for Group 2" },
-                    new Group { Name = "Group 3", Description = "Description for Group 3" }
-                };
+            GroupsList.Children.Clear(); // Clear old items
+
+            var groups = _groupService.GetAll(); // Fetch from DB
 
             foreach (var group in groups)
             {

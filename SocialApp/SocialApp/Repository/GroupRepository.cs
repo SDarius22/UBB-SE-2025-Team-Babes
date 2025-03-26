@@ -12,7 +12,14 @@ namespace SocialApp.Repository
 {
     public class GroupRepository
     {
+<<<<<<< Updated upstream
         private string loginString = "Data Source=DESKTOP-CL1KD74\\SQLEXPRESS01;Initial Catalog=SocialApp;Integrated Security=True;TrustServerCertificate=True";
+=======
+        private string loginString = "Data Source=(localdb)\\localDB1;" +
+            "Initial Catalog=ISSDB;" +
+            "Integrated Security=True;" +
+            "TrustServerCertificate=True";
+>>>>>>> Stashed changes
         private SqlConnection connection;
 
         public GroupRepository()
@@ -33,10 +40,10 @@ namespace SocialApp.Repository
                 Group group = new Group
                 {
                     Id = reader.GetInt64(reader.GetOrdinal("Id")),
-                    Name = reader.GetString(reader.GetOrdinal("Name")),
+                    Name = reader.IsDBNull(reader.GetOrdinal("Name")) ? string.Empty : reader.GetString(reader.GetOrdinal("Name")),
                     AdminId = reader.GetInt64(reader.GetOrdinal("AdminId")),
-                    Image = reader.GetString(reader.GetOrdinal("Image")),
-                    Description = reader.GetString(reader.GetOrdinal("Description"))
+                    Image = reader.IsDBNull(reader.GetOrdinal("Image")) ? string.Empty : reader.GetString(reader.GetOrdinal("Image")),
+                    Description = reader.IsDBNull(reader.GetOrdinal("Description")) ? string.Empty : reader.GetString(reader.GetOrdinal("Description"))
                 };
 
                 ans.Add(group);
@@ -76,7 +83,6 @@ namespace SocialApp.Repository
 
         }
 
-
         public List<Group> GetGroupsForUser(long userId)
         {
             connection.Open();
@@ -93,10 +99,10 @@ namespace SocialApp.Repository
                 Group group = new Group
                 {
                     Id = reader.GetInt64(reader.GetOrdinal("Id")),
-                    Name = reader.GetString(reader.GetOrdinal("Name")),
+                    Name = reader.IsDBNull(reader.GetOrdinal("Name")) ? string.Empty : reader.GetString(reader.GetOrdinal("Name")),
                     AdminId = reader.GetInt64(reader.GetOrdinal("AdminId")),
-                    Image = reader.GetString(reader.GetOrdinal("Image")),
-                    Description = reader.GetString(reader.GetOrdinal("Description"))
+                    Image = reader.IsDBNull(reader.GetOrdinal("Image")) ? string.Empty : reader.GetString(reader.GetOrdinal("Image")),
+                    Description = reader.IsDBNull(reader.GetOrdinal("Description")) ? string.Empty : reader.GetString(reader.GetOrdinal("Description"))
                 };
                 ans.Add(group);
             }
@@ -131,10 +137,10 @@ namespace SocialApp.Repository
                 group = new Group
                 {
                     Id = reader.GetInt64(reader.GetOrdinal("Id")),
-                    Name = reader.GetString(reader.GetOrdinal("Name")),
+                    Name = reader.IsDBNull(reader.GetOrdinal("Name")) ? string.Empty : reader.GetString(reader.GetOrdinal("Name")),
                     AdminId = reader.GetInt64(reader.GetOrdinal("AdminId")),
-                    Image = reader.GetString(reader.GetOrdinal("Image")),
-                    Description = reader.GetString(reader.GetOrdinal("Description"))
+                    Image = reader.IsDBNull(reader.GetOrdinal("Image")) ? string.Empty : reader.GetString(reader.GetOrdinal("Image")),
+                    Description = reader.IsDBNull(reader.GetOrdinal("Description")) ? string.Empty : reader.GetString(reader.GetOrdinal("Description"))
                 };
             }
 
