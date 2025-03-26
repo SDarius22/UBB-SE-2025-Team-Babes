@@ -43,20 +43,21 @@ namespace SocialApp.Pages
         {
             this.InitializeComponent();
             SetNavigation();
-            SetContent();
-            SetPostsContent();
+            this.Loaded += UserPage_Loaded;
 
             userRepository = new UserRepository();
             userService = new UserService(userRepository);
             postRepository = new PostRepository();
             groupRepository = new GroupRepository();
             postService = new PostService(postRepository, userRepository, groupRepository);
-
-
-            this.Loaded += SetContent;
-            this.Loaded += PostsClick;
-            this.Loaded += SetNavigation;
         }
+
+        private void UserPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            SetContent(sender, e);
+            SetPostsContent(sender, e);
+        }
+
         private void SetNavigation()
         {
             TopBar.HomeButtonInstance.Click += HomeClick;
@@ -87,28 +88,6 @@ namespace SocialApp.Pages
             }
         }
 
-        private void SetNavigation(object sender, RoutedEventArgs e)
-        {
-            TopBar.HomeButtonInstance.Click += HomeClick;
-            TopBar.UserButtonInstance.Click += UserClick;
-            TopBar.GroupsButtonInstance.Click += GroupsClick;
-        }
-
-        private void HomeClick(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(typeof(HomeScreen), controller);
-        }
-
-        private void GroupsClick(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(typeof(GroupsScreen), controller);
-        }
-
-        private void UserClick(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(typeof(UserPage), controller);
-        }
-
         private async void SetContent(object sender, RoutedEventArgs e)
         {
             if (controller.CurrentUser != null)
@@ -124,7 +103,6 @@ namespace SocialApp.Pages
             {
                 FollowLogOutButton.Content = IsFollowed() ? "Unfollow" : "Follow";
             }
-
         }
 
         private bool IsFollowed()
@@ -135,7 +113,7 @@ namespace SocialApp.Pages
         private void Logout(object sender, RoutedEventArgs e)
         {
             controller.Logout();
-            Frame.Navigate(typeof (HomeScreen), controller);
+            Frame.Navigate(typeof(HomeScreen), controller);
         }
 
         private void PostsClick(object sender, RoutedEventArgs e)
@@ -168,12 +146,10 @@ namespace SocialApp.Pages
                 PostsFeed.AddPost(new PostComponent(post.Title, post.Visibility, post.UserId, post.Content, post.CreatedDate));
             }
 
-
             PostsFeed.Visibility = Visibility.Visible;
-
             PostsFeed.DisplayCurrentPage();
-
         }
+
         private void WorkoutsClick(object sender, RoutedEventArgs e)
         {
             SetWorkoutsContent();

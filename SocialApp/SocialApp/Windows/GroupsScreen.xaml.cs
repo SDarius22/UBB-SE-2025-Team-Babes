@@ -30,9 +30,8 @@ namespace SocialApp.Windows
         public GroupsScreen()
         {
             this.InitializeComponent();
-            SetNavigation();
-        }
             controller = new AppController();
+            SetNavigation();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -62,7 +61,6 @@ namespace SocialApp.Windows
 
         private void UserClick(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(UserPage));
             if (IsLoggedIn())
             {
                 Frame.Navigate(typeof(UserPage));
