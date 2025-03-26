@@ -18,6 +18,8 @@ namespace SocialApp.Components
         private PostService postService;
         private GroupRepository groupRepository;
 
+        public StackPanel PostsStackPanelPublic => PostsStackPanel;
+
         public PostsFeed()
         {
             this.InitializeComponent();
@@ -57,6 +59,11 @@ namespace SocialApp.Components
             {
                 PostsStackPanel.Children.Add(allPosts[i]);
             }
+        }
+
+        public void ClearPosts()
+        {
+            allPosts = new List<PostComponent>();
         }
 
         private void PreviousPageButton_Click(object sender, RoutedEventArgs e)

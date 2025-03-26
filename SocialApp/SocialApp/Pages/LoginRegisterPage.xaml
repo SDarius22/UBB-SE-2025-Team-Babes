@@ -67,35 +67,35 @@
             <!-- Username TextBox -->
             <TextBox 
                 x:Name="UsernameTextbox"
-                 PlaceholderText="Choose a username..." 
-                 Width="250" 
-                 Margin="0,0,0,20" 
-                 Background="#D9D9D9" 
-                 Foreground="#222831" 
-                 BorderThickness="0"
-                 RequestedTheme="Dark"/>
+                PlaceholderText="Choose a username..." 
+                Width="250" 
+                Margin="0,0,0,20" 
+                Background="#D9D9D9" 
+                Foreground="#222831" 
+                BorderThickness="0"
+                RequestedTheme="Dark"/>
 
-            <!-- Password TextBox -->
-            <TextBox 
+            <!-- Password PasswordBox -->
+            <PasswordBox 
                 x:Name="PasswordTextbox"
-                 PlaceholderText="Enter your password..." 
-                 Width="250" 
-                 Margin="0,0,0,20" 
-                 Background="#D9D9D9" 
-                 Foreground="#222831" 
-                 BorderThickness="0"
-                 RequestedTheme="Dark"/>
+                PlaceholderText="Enter your password..." 
+                Width="250" 
+                Margin="0,0,0,20" 
+                Background="#D9D9D9" 
+                Foreground="#222831" 
+                BorderThickness="0"
+                RequestedTheme="Dark"/>
 
-            <!-- Confirm Password TextBox -->
-            <TextBox 
-                 x:Name="ConfirmPasswordTextbox"
-                 PlaceholderText="Confirm your password..." 
-                 Width="250" 
-                 Margin="0,0,0,20" 
-                 Background="#D9D9D9" 
-                 Foreground="#222831" 
-                 BorderThickness="0"
-                 RequestedTheme="Dark"/>
+            <!-- Confirm Password PasswordBox -->
+            <PasswordBox 
+                x:Name="ConfirmPasswordTextbox"
+                PlaceholderText="Confirm your password..." 
+                Width="250" 
+                Margin="0,0,0,20" 
+                Background="#D9D9D9" 
+                Foreground="#222831" 
+                BorderThickness="0"
+                RequestedTheme="Dark"/>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <!-- Uploaded Image-->
@@ -137,16 +137,16 @@
                 x:Name="CheckBox"
                 Margin="5,20,0,0">
                 <CheckBox.Content>
-                    <TextBlock Text="I accept the terms and conditions"></TextBlock>
+                    <TextBlock Text="I accept the terms and conditions"/>
                 </CheckBox.Content>
             </CheckBox>
 
             <!-- Error TextBox -->
             <TextBlock
-                 x:Name="ErrorTextbox"
-                 Width="250" 
-                 Margin="0,0,0,20" 
-                 Foreground="Red"/>
+                x:Name="ErrorTextbox"
+                Width="250" 
+                Margin="0,0,0,20" 
+                Foreground="Red"/>
 
             <!-- Continue Button -->
             <Button 

@@ -51,7 +51,7 @@ namespace SocialApp.Pages
 
 
             this.Loaded += SetContent;
-            this.Loaded += SetPostsContent;
+            this.Loaded += PostsClick;
             this.Loaded += SetNavigation;
         }
 
@@ -94,6 +94,7 @@ namespace SocialApp.Pages
                 Username.Text = controller.CurrentUser.Username;
                 FollowLogOutButton.Content = "Logout";
                 FollowLogOutButton.Click += Logout;
+                SetPostsContent(sender, e);
             }
             else
             {
@@ -116,6 +117,7 @@ namespace SocialApp.Pages
         private void PostsClick(object sender, RoutedEventArgs e)
         {
             SetPostsContent(sender, e);
+            PostsFeed.DisplayCurrentPage();
         }
 
         private void SetPostsContent(object sender, RoutedEventArgs e)
@@ -124,6 +126,16 @@ namespace SocialApp.Pages
             WorkoutsButton.IsEnabled = true;
             MealsButton.IsEnabled = true;
             FollowersButton.IsEnabled = true;
+
+            PostsFeed.Visibility = Visibility.Visible;
+            FollowersStack.Visibility = Visibility.Collapsed;
+
+            PopulateFeed();
+        }
+
+        private void PopulateFeed()
+        {
+            PostsFeed.ClearPosts();
 
             List<Post> userPosts = postService.GetByUserId(controller.CurrentUser.Id);
 
@@ -136,6 +148,7 @@ namespace SocialApp.Pages
             PostsFeed.Visibility = Visibility.Visible;
 
             PostsFeed.DisplayCurrentPage();
+
         }
         private void WorkoutsClick(object sender, RoutedEventArgs e)
         {
@@ -148,6 +161,9 @@ namespace SocialApp.Pages
             WorkoutsButton.IsEnabled = false;
             MealsButton.IsEnabled = true;
             FollowersButton.IsEnabled = true;
+
+            PostsFeed.Visibility = Visibility.Collapsed;
+            FollowersStack.Visibility = Visibility.Collapsed;
         }
 
         private void MealsClick(object sender, RoutedEventArgs e)
@@ -161,6 +177,9 @@ namespace SocialApp.Pages
             WorkoutsButton.IsEnabled = true;
             MealsButton.IsEnabled = false;
             FollowersButton.IsEnabled = true;
+
+            PostsFeed.Visibility = Visibility.Collapsed;
+            FollowersStack.Visibility = Visibility.Collapsed;
         }
 
         private void FollowersClick(object sender, RoutedEventArgs e)
@@ -174,6 +193,24 @@ namespace SocialApp.Pages
             WorkoutsButton.IsEnabled = true;
             MealsButton.IsEnabled = true;
             FollowersButton.IsEnabled = false;
+
+            PostsFeed.Visibility = Visibility.Collapsed;
+            FollowersStack.Visibility = Visibility.Visible;
+
+            PopulateFollowers();
+        }
+
+        private void PopulateFollowers()
+        {
+            FollowersStack.Children.Clear();
+
+            List<User> followers = userService.GetUserFollowers(controller.CurrentUser.Id);
+
+            foreach (User user in followers)
+            {
+                // check if followed and set button accordingly
+                FollowersStack.Children.Add(new Follower(user.Username));
+            }
         }
     }
 }
