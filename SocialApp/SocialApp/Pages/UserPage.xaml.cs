@@ -18,6 +18,8 @@ using SocialApp.Windows;
 using SocialApp.Pages;
 using SocialApp.Services;
 using SocialApp.Repository;
+using SocialApp.Components;
+using SocialApp.Entities;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -47,10 +49,10 @@ namespace SocialApp.Pages
             groupRepository = new GroupRepository();
             postService = new PostService(postRepository, userRepository, groupRepository);
 
-            SetNavigation();
-            SetPostsContent();
 
             this.Loaded += SetContent;
+            this.Loaded += SetPostsContent;
+            this.Loaded += SetNavigation;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -61,7 +63,7 @@ namespace SocialApp.Pages
             }
         }
 
-        private void SetNavigation()
+        private void SetNavigation(object sender, RoutedEventArgs e)
         {
             TopBar.HomeButtonInstance.Click += HomeClick;
             TopBar.UserButtonInstance.Click += UserClick;
@@ -113,19 +115,28 @@ namespace SocialApp.Pages
 
         private void PostsClick(object sender, RoutedEventArgs e)
         {
-            SetPostsContent();
+            SetPostsContent(sender, e);
         }
 
-        private void SetPostsContent()
+        private void SetPostsContent(object sender, RoutedEventArgs e)
         {
             PostsButton.IsEnabled = false;
             WorkoutsButton.IsEnabled = true;
             MealsButton.IsEnabled = true;
             FollowersButton.IsEnabled = true;
 
-            PostsFeed.Visibility = Visibility.Visible;
-        }
+            List<Post> userPosts = postService.GetByUserId(controller.CurrentUser.Id);
 
+            foreach (Post post in userPosts)
+            {
+                PostsFeed.AddPost(new PostComponent(post.Title, post.Visibility, post.UserId, post.Content, post.CreatedDate));
+            }
+
+
+            PostsFeed.Visibility = Visibility.Visible;
+
+            PostsFeed.DisplayCurrentPage();
+        }
         private void WorkoutsClick(object sender, RoutedEventArgs e)
         {
             SetWorkoutsContent();

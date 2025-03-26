@@ -1,11 +1,18 @@
 using System;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using SocialApp.Enums;
 
 namespace SocialApp.Components
 {
     public sealed partial class PostComponent : UserControl
     {
+        private string title;
+        private PostVisibility visibility;
+        private long userId;
+        private string content;
+        private DateTime createdDate;
+
         public DateTime PostCreationTime { get; set; }
 
         public string TimeSincePost
@@ -32,7 +39,21 @@ namespace SocialApp.Components
         {
             this.InitializeComponent();
             this.DataContext = this;
-            PostCreationTime = DateTime.Now; // For demonstration purposes, set the post creation time to now
+        }
+
+        public PostComponent(string title, PostVisibility visibility, long userId, string content, DateTime createdDate)
+        {
+            this.title = title;
+            this.DataContext = this;
+            this.InitializeComponent();
+            this.visibility = visibility;
+            this.userId = userId;
+            this.content = content;
+            this.createdDate = createdDate;
+
+            Title.Text = title;
+            Content.Text = content;
+            TimeSince.Text = createdDate.ToString();
         }
     }
 }

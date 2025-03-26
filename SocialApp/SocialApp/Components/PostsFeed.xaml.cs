@@ -27,19 +27,25 @@ namespace SocialApp.Components
             postRepository = new PostRepository();
             groupRepository = new GroupRepository();
             postService = new PostService(postRepository, userRepository, groupRepository);
+            allPosts = new List<PostComponent>();
 
             LoadPosts();
             DisplayCurrentPage();
         }
 
+        public void AddPost(PostComponent post)
+        {
+            allPosts.Add(post);
+        }
+
         private void LoadPosts()
         {
             // Load all posts (this is just a placeholder, replace with actual data loading logic)
-            allPosts = new List<PostComponent>();
-            for (int i = 1; i <= 20; i++)
-            {
-                allPosts.Add(new PostComponent { Margin = new Thickness(0, 0, 0, 10) });
-            }
+            //allPosts = new List<PostComponent>();
+            //for (int i = 1; i <= 20; i++)
+            //{
+            //    allPosts.Add(new PostComponent { Margin = new Thickness(0, 0, 0, 10) });
+            //}
         }
 
         public void DisplayCurrentPage()
