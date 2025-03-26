@@ -106,6 +106,16 @@ namespace SocialApp.Repository
             connection.Close();
         }
 
+        public void Unfollow(long userId, long whoToUnfollowId)
+        {
+            connection.Open();
+            SqlCommand deleteCommand = new SqlCommand("DELETE FROM UserFollowers WHERE UserId = @UserId AND FollowerId = @FollowerId", connection);
+            deleteCommand.Parameters.AddWithValue("@UserId", whoToUnfollowId);
+            deleteCommand.Parameters.AddWithValue("@FollowerId", userId);
+            deleteCommand.ExecuteNonQuery();
+            connection.Close();
+        }
+
         public User GetByEmail(string email)
         {
             connection.Open();
