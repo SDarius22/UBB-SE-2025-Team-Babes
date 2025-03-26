@@ -15,6 +15,8 @@ using Microsoft.UI.Xaml.Navigation;
 using SocialApp.Windows;
 using SocialApp.Repository;
 using SocialApp.Services;
+using SocialApp.Components;
+using SocialApp.Entities;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -31,6 +33,8 @@ namespace SocialApp.Pages
         private AppController controller;
         private UserRepository userRepository;
         private UserService userService;
+        private PostRepository postRepository;
+        private PostService postService;
         private GroupRepository groupRepository;
         private GroupService groupService;
 
@@ -56,6 +60,8 @@ namespace SocialApp.Pages
             userService = new UserService(userRepository);
             groupRepository = new GroupRepository();
             groupService = new GroupService(groupRepository, userRepository);
+            postRepository = new PostRepository();
+            postService = new PostService(postRepository, userRepository, groupRepository);
 
             SetNavigation();
             SetVisibilities();
@@ -127,6 +133,23 @@ namespace SocialApp.Pages
 
         private void SetContent()
         {
+            // set details;
+            PopulateFeed();
+        }
+        private void PopulateFeed()
+        {
+
+            List<Post> groupPosts = postService.GetByGroupId(GroupId);
+
+            foreach (Post post in groupPosts)
+            {
+                PostsFeed.AddPost(new PostComponent(post.Title, post.Visibility, post.UserId, post.Content, post.CreatedDate));
+            }
+
+
+            PostsFeed.Visibility = Visibility.Visible;
+
+            PostsFeed.DisplayCurrentPage();
 
         }
     }

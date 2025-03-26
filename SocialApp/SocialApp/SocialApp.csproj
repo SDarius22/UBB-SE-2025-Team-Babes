@@ -13,6 +13,7 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Components\Follower.xaml" />
     <None Remove="HomeScreen.xaml" />
     <None Remove="Windows\GroupsScreen.xaml" />
   </ItemGroup>
@@ -50,7 +51,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Components\" />
+    <Page Update="Components\Follower.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Windows\GroupsScreen.xaml">

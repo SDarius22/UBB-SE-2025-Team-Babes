@@ -17,7 +17,6 @@ namespace SocialApp.Components
         private PostRepository postRepository;
         private PostService postService;
         private GroupRepository groupRepository;
-
         public PostsFeed()
         {
             this.InitializeComponent();

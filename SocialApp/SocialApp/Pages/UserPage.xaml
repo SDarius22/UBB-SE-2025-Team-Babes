@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+
 <Page
     x:Class="SocialApp.Pages.UserPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -27,7 +27,7 @@
                 <RowDefinition Height="Auto"/>
                 <!-- Profile Section -->
                 <RowDefinition Height="*"/>
-                <!-- Posts Feed (takes remaining space) -->
+                <!-- Content Area -->
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" MinWidth="150"/>
@@ -45,11 +45,9 @@
                 HorizontalAlignment="Center"
                 Grid.Row="0"
                 Grid.Column="1">
-                <!-- Profile Image -->
                 <Border Background="#222831" MaxHeight="150">
                     <Image x:Name="ProfileImage" Stretch="Uniform" Source="../Assets/User.png"/>
                 </Border>
-                <!-- Username -->
                 <TextBlock
                     x:Name="Username"
                     Text="User Name"
@@ -67,11 +65,22 @@
 
             <!-- Posts Feed -->
             <components:PostsFeed
+                x:Name="PostsFeed"
+                Grid.Row="1"
+                Grid.Column="1"
+                Margin="0 10 0 0"/>
+
+            <!-- Followers -->
+            <ScrollViewer
+                x:Name="FollowersScrollViewer"
                 Grid.Row="1"
                 Grid.Column="1"
                 Margin="0 10 0 0"
-                x:Name="PostsFeed"/>
-            <!-- Added margin to separate from profile -->
+                Width="500"                   
+                HorizontalAlignment="Center"
+                VerticalScrollBarVisibility="Auto">
+                <StackPanel x:Name="FollowersStack" Margin="10"/>
+            </ScrollViewer>
 
             <!-- Side Buttons -->
             <StackPanel
