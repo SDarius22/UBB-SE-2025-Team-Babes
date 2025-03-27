@@ -3,6 +3,7 @@ using SocialApp.Entities;
 using SocialApp.Enums;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,10 +12,7 @@ namespace SocialApp.Repository
 {
     public class PostRepository
     {
-        private string loginString = "Data Source=(localdb)\\localDB1;" +
-            "Initial Catalog=ISSDB;" +
-            "Integrated Security=True;" +
-            "TrustServerCertificate=True";
+        private string loginString = @"Data Source=SALA-S-TUF-A15;Initial Catalog=ISSDB;Integrated Security=True;Encrypt=False;TrustServerCertificate=True";
         private SqlConnection connection;
 
         public PostRepository()

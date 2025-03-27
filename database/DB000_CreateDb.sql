@@ -158,7 +158,7 @@ CREATE TABLE [dbo].[Posts](
 
 CREATE TABLE [dbo].[Reactions](
 	[UserId] BIGINT NOT NULL REFERENCES [Users]([Id]),
-	[PostId] BIGINT NOT NULL REFERENCES[Posts]([Id]),
+	[PostId] BIGINT NOT NULL REFERENCES [Posts]([Id]),
 	[ReactionType] INT NOT NULL
 
 	PRIMARY KEY CLUSTERED ([UserId],[PostId]) 

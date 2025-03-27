@@ -1,4 +1,6 @@
 -- deleting all data
+USE [ISSDB]
+GO
 
 ALTER TABLE [dbo].[Comments] NOCHECK CONSTRAINT ALL
 ALTER TABLE [dbo].[Groups] NOCHECK CONSTRAINT ALL
@@ -136,6 +138,8 @@ VALUES
 
 SET IDENTITY_INSERT [dbo].[Comments] ON
 
+select * from UserFollowers;
+
 INSERT INTO [dbo].[Comments] ([Id], [UserId], [PostId], [Content], [CreatedDate]) VALUES 
     (1, 1, 5, 'Great post!', GETDATE()),  
     (2, 2, 12, 'I totally agree.', GETDATE()),  
@@ -190,7 +194,8 @@ INSERT INTO [dbo].[Comments] ([Id], [UserId], [PostId], [Content], [CreatedDate]
 
 
 SET IDENTITY_INSERT [dbo].[Comments] OFF
-
+SELECT * FROM Posts
+select * from UserFollowers;
 -- Followers
 
 INSERT INTO [dbo].[UserFollowers] ([UserId],[FollowerId]) VALUES
