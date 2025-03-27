@@ -6,7 +6,10 @@ using System.Collections.Generic;
 using SocialApp.Entities;
 using SocialApp.Services;
 using SocialApp.Repository;
-using SocialApp.Pages; // For GroupPage
+using SocialApp.Pages;
+using Windows.Networking.Sockets;
+using Microsoft.Extensions.DependencyInjection;
+using System; // For GroupPage
 
 namespace SocialApp.Components
 {
@@ -23,17 +26,12 @@ namespace SocialApp.Components
             set => _navigationFrame = value;
         }
 
-        public AppController Controller
-        {
-            get => controller;
-            set => controller = value;
-        }
-
         public GroupsDrawer()
         {
             this.InitializeComponent();
             var groupRepository = new GroupRepository();
             var userRepository = new UserRepository();
+            controller = App.Services.GetService<AppController>();
             _groupService = new GroupService(groupRepository, userRepository);
             LoadGroups();
         }
@@ -42,7 +40,16 @@ namespace SocialApp.Components
         {
             GroupsList.Children.Clear(); // Clear old items
 
-            var groups = _groupService.GetAll(); // Fetch from DB
+            //long userId;
+            //if (controller.CurrentUser == null)
+            //{
+            //    userId = -1;
+            //}
+            //else
+            //{
+            //    userId = controller.CurrentUser.Id;
+            //}
+            var groups = _groupService.GetGroupsForUser(controller.CurrentUser.Id);
 
             foreach (var group in groups)
             {
@@ -94,8 +101,7 @@ namespace SocialApp.Components
 
         private void GroupButton_Click(object sender, RoutedEventArgs e)
         {
-            var ac = AppController.Instance;
-            _navigationFrame.Navigate(typeof(GroupPage), new System.ValueTuple<long, AppController>((long)((Button)sender).Tag, controller));
+            _navigationFrame.Navigate(typeof(GroupPage), (long)((Button)sender).Tag);
         }
     }
 

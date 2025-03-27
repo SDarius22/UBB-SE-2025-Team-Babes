@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Imaging;
@@ -26,10 +27,7 @@ namespace SocialApp.Pages
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if (e.Parameter is AppController controller)
-            {
-                this.controller = controller;
-            }
+            this.controller = App.Services.GetService<AppController>();
         }
 
         private void InitialFlow()

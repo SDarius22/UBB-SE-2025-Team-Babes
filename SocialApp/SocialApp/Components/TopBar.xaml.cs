@@ -1,17 +1,14 @@
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using SocialApp.Pages;
-using SocialApp.Repository;
-using SocialApp.Services;
 using SocialApp.Windows;
-using Windows.Networking.NetworkOperators;
+
 
 namespace SocialApp.Components
 {
     public sealed partial class TopBar : UserControl
     {
-
-        private AppController controller;
         private Frame frame;
 
         public TopBar()
@@ -19,9 +16,8 @@ namespace SocialApp.Components
             this.InitializeComponent();
         }
 
-        public void SetControllerAndFrame(AppController controller, Frame frame)
+        public void SetFrame(Frame frame)
         {
-            this.controller = controller;
             this.frame = frame;
             SetPhoto();
             SetNavigationButtons();
@@ -29,6 +25,7 @@ namespace SocialApp.Components
 
         private async void SetPhoto()
         {
+            var controller = App.Services.GetService<AppController>();
             if (controller?.CurrentUser != null && !string.IsNullOrEmpty(controller.CurrentUser.Image))
             {
                 UserImage.Source = await AppController.DecodeBase64ToImageAsync(controller.CurrentUser.Image);
@@ -44,31 +41,32 @@ namespace SocialApp.Components
 
         private void HomeClick(object sender, RoutedEventArgs e)
         {
-            frame.Navigate(typeof(HomeScreen), controller);
+            frame.Navigate(typeof(HomeScreen));
         }
 
         private void GroupsClick(object sender, RoutedEventArgs e)
         {
             if (IsLoggedIn())
-                frame.Navigate(typeof(GroupsScreen), controller);
+                frame.Navigate(typeof(GroupsScreen));
             else
-                frame.Navigate(typeof(LoginRegisterPage), controller);
+                frame.Navigate(typeof(LoginRegisterPage));
         }
 
         private void UserClick(object sender, RoutedEventArgs e)
         {
             if (IsLoggedIn())
             {
-                frame.Navigate(typeof(UserPage), controller);
+                frame.Navigate(typeof(UserPage));
             }
             else
             {
-                frame.Navigate(typeof(LoginRegisterPage), controller);
+                frame.Navigate(typeof(LoginRegisterPage));
             }
         }
 
         private bool IsLoggedIn()
         {
+            var controller = App.Services.GetService<AppController>();
             return controller.CurrentUser != null;
         }
 

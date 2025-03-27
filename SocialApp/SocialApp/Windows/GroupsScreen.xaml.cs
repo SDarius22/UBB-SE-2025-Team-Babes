@@ -1,4 +1,4 @@
-using System;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
@@ -9,23 +9,18 @@ namespace SocialApp.Windows
 {
     public sealed partial class GroupsScreen : Page
     {
-        private AppController controller;
 
         public GroupsScreen()
         {
             this.InitializeComponent();
-            GroupsDrawer.NavigationFrame = this.Frame; // Pass Frame to GroupsDrawer
-            SetNavigation(); // Set up TopBar navigation
+            GroupsDrawer.NavigationFrame = this.Frame;
+            SetNavigation();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if (e.Parameter is AppController controller)
-            {
-                this.controller = controller;
-                TopBar.SetControllerAndFrame(controller, this.Frame);
-                GroupsDrawer.Controller = controller;
-            }
+            var controller = App.Services.GetService<AppController>();
+            TopBar.SetFrame(this.Frame);
             GroupsDrawer.NavigationFrame = this.Frame;
         }
 
