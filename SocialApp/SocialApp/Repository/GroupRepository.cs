@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Windows.Networking.Sockets;
 using Group = SocialApp.Entities.Group;
 
 namespace SocialApp.Repository
@@ -35,10 +36,10 @@ namespace SocialApp.Repository
                 Group group = new Group
                 {
                     Id = reader.GetInt64(reader.GetOrdinal("Id")),
-                    Name = reader.GetString(reader.GetOrdinal("Name")),
+                    Name = reader.IsDBNull(reader.GetOrdinal("Name")) ? string.Empty : reader.GetString(reader.GetOrdinal("Name")),
                     AdminId = reader.GetInt64(reader.GetOrdinal("AdminId")),
-                    Image = reader.GetString(reader.GetOrdinal("Image")),
-                    Description = reader.GetString(reader.GetOrdinal("Description"))
+                    Image = reader.IsDBNull(reader.GetOrdinal("Image")) ? string.Empty : reader.GetString(reader.GetOrdinal("Image")),
+                    Description = reader.IsDBNull(reader.GetOrdinal("Description")) ? string.Empty : reader.GetString(reader.GetOrdinal("Description"))
                 };
 
                 ans.Add(group);
@@ -78,7 +79,6 @@ namespace SocialApp.Repository
 
         }
 
-
         public List<Group> GetGroupsForUser(long userId)
         {
             connection.Open();
@@ -95,10 +95,10 @@ namespace SocialApp.Repository
                 Group group = new Group
                 {
                     Id = reader.GetInt64(reader.GetOrdinal("Id")),
-                    Name = reader.GetString(reader.GetOrdinal("Name")),
+                    Name = reader.IsDBNull(reader.GetOrdinal("Name")) ? string.Empty : reader.GetString(reader.GetOrdinal("Name")),
                     AdminId = reader.GetInt64(reader.GetOrdinal("AdminId")),
-                    Image = reader.GetString(reader.GetOrdinal("Image")),
-                    Description = reader.GetString(reader.GetOrdinal("Description"))
+                    Image = reader.IsDBNull(reader.GetOrdinal("Image")) ? string.Empty : reader.GetString(reader.GetOrdinal("Image")),
+                    Description = reader.IsDBNull(reader.GetOrdinal("Description")) ? string.Empty : reader.GetString(reader.GetOrdinal("Description"))
                 };
                 ans.Add(group);
             }
@@ -133,10 +133,10 @@ namespace SocialApp.Repository
                 group = new Group
                 {
                     Id = reader.GetInt64(reader.GetOrdinal("Id")),
-                    Name = reader.GetString(reader.GetOrdinal("Name")),
+                    Name = reader.IsDBNull(reader.GetOrdinal("Name")) ? string.Empty : reader.GetString(reader.GetOrdinal("Name")),
                     AdminId = reader.GetInt64(reader.GetOrdinal("AdminId")),
-                    Image = reader.GetString(reader.GetOrdinal("Image")),
-                    Description = reader.GetString(reader.GetOrdinal("Description"))
+                    Image = reader.IsDBNull(reader.GetOrdinal("Image")) ? string.Empty : reader.GetString(reader.GetOrdinal("Image")),
+                    Description = reader.IsDBNull(reader.GetOrdinal("Description")) ? string.Empty : reader.GetString(reader.GetOrdinal("Description"))
                 };
             }
 
@@ -150,13 +150,22 @@ namespace SocialApp.Repository
             connection.Open();
 
             SqlCommand insertCommand = new SqlCommand(
-                "INSERT INTO Groups (Name, AdminId, Image, Description) VALUES (@Name, @AdminId, @Image, @Description)",
+                "INSERT INTO Groups (Name, AdminId, Image, Description) VALUES (@Name, @AdminId, @Image, @Description); " +
+                "SELECT SCOPE_IDENTITY();",
                 connection
             );
             insertCommand.Parameters.AddWithValue("@Name", entity.Name);
             insertCommand.Parameters.AddWithValue("@AdminId", entity.AdminId);
             insertCommand.Parameters.AddWithValue("@Image", entity.Image);
             insertCommand.Parameters.AddWithValue("@Description", entity.Description);
+            entity.Id = Convert.ToInt64(insertCommand.ExecuteScalar());
+
+            insertCommand = new SqlCommand(
+                "INSERT INTO GroupUsers (GroupId, UserId) VALUES (@GroupId, @UserId)",
+                connection
+            );
+            insertCommand.Parameters.AddWithValue("@GroupId", entity.Id);
+            insertCommand.Parameters.AddWithValue("@UserId", entity.AdminId);
             insertCommand.ExecuteNonQuery();
 
             connection.Close();

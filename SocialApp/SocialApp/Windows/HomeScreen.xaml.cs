@@ -1,5 +1,7 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using SocialApp.Pages;
+using SocialApp.Windows;
 using Microsoft.UI.Xaml.Navigation;
 using SocialApp.Pages;
 using SocialApp.Windows;
@@ -35,16 +37,19 @@ namespace SocialApp
 
         private void HomeClick(object sender, RoutedEventArgs e)
         {
+            Frame.Navigate(typeof(HomeScreen));
             Frame.Navigate(typeof(HomeScreen), controller);
         }
 
         private void GroupsClick(object sender, RoutedEventArgs e)
         {
+            Frame.Navigate(typeof(GroupsScreen));
             Frame.Navigate(typeof(GroupsScreen), controller);
         }
 
         private void UserClick(object sender, RoutedEventArgs e)
         {
+            Frame.Navigate(typeof(UserPage));
             if (IsLoggedIn())
             {
                 Frame.Navigate(typeof(UserPage), controller);

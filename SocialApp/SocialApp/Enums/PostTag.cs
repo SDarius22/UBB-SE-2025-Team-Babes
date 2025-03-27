@@ -8,9 +8,9 @@ namespace SocialApp.Enums
 {
     public enum PostTag
     {
-        Food,
-        Workout,
-        Misc,
-        Blessed
+        Food = 1,
+        Workout = 2,
+        Misc = 3,
+        Blessed = 4
     }
 }
