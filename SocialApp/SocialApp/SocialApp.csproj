@@ -14,6 +14,7 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Components\Follower.xaml" />
+    <None Remove="Components\Member.xaml" />
     <None Remove="HomeScreen.xaml" />
     <None Remove="Windows\GroupsScreen.xaml" />
   </ItemGroup>
@@ -44,6 +45,11 @@
     <PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.1" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1742" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.7.250310001" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Components\Member.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="HomeScreen.xaml">
