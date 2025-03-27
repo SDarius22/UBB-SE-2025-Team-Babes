@@ -55,6 +55,7 @@ namespace SocialApp.Pages
             if (e.Parameter is AppController controller)
             {
                 this.controller = controller;
+                TopBar.SetController(controller);
             }
         }
 

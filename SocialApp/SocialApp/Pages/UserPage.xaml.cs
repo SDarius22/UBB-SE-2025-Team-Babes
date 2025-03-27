@@ -53,6 +53,8 @@ namespace SocialApp.Pages
             this.Loaded += SetContent;
             this.Loaded += PostsClick;
             this.Loaded += SetNavigation;
+
+            
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -60,6 +62,7 @@ namespace SocialApp.Pages
             if (e.Parameter is AppController controller)
             {
                 this.controller = controller;
+                TopBar.SetController(controller);
             }
         }
 

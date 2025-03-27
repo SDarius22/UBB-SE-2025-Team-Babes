@@ -38,6 +38,7 @@ namespace SocialApp.Windows
             if (e.Parameter is AppController controller)
             {
                 this.controller = controller;
+                TopBar.SetController(controller);
             }
         }
 

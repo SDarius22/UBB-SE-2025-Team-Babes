@@ -17,7 +17,6 @@ namespace SocialApp
         {
             this.InitializeComponent();
             SetNavigation();
-            //controller = new AppController();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -25,6 +24,7 @@ namespace SocialApp
             if (e.Parameter is AppController controller)
             {
                 this.controller = controller;
+                TopBar.SetController(controller);
             }
         }
 
