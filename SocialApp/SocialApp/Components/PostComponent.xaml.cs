@@ -79,6 +79,11 @@ namespace SocialApp.Components
             AngryCount.Text = reactions.Count(r => r.Type == ReactionType.Anger).ToString();
         }
 
+        private void LoadComments()
+        {
+            var comments = commentService.GetCommentForPost(postId);
+            CommentsListView.ItemsSource = comments;
+        }
         private void OnLikeButtonClick(object sender, RoutedEventArgs e)
         {
             reactionService.ValidateAdd(userId, postId, ReactionType.Like);
@@ -105,6 +110,7 @@ namespace SocialApp.Components
 
         private void OnCommentButtonClick(object sender, RoutedEventArgs e)
         {
+            LoadComments();
             CommentSection.Visibility = Microsoft.UI.Xaml.Visibility.Visible;
         }
 
