@@ -45,7 +45,6 @@ namespace SocialApp.Pages
         public GroupPage(int groupId)
         {
             this.InitializeComponent();
-            //SetNavigationButtons();
             this.Loaded += DisplayPage;
             GroupId = groupId;
         }
@@ -69,45 +68,9 @@ namespace SocialApp.Pages
             postService = new PostService(postRepository, userRepository, groupRepository);
             group = groupService.GetById(GroupId);
 
-            SetNavigationButtons();
             SetVisibilities();
             SetContent();
         }
-
-        private void SetNavigationButtons()
-        {
-            TopBar.HomeButtonInstance.Click += HomeClick;
-            TopBar.UserButtonInstance.Click += UserClick;
-            TopBar.GroupsButtonInstance.Click += GroupsClick;
-        }
-
-        private void HomeClick(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(typeof(HomeScreen), controller);
-        }
-
-        private void GroupsClick(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(typeof(GroupsScreen), controller);
-        }
-
-        private void UserClick(object sender, RoutedEventArgs e)
-        {
-            if (IsLoggedIn())
-            {
-                Frame.Navigate(typeof(UserPage), controller);
-            }
-            else
-            {
-                Frame.Navigate(typeof(LoginRegisterPage), controller);
-            }
-        }
-
-        private bool IsLoggedIn()
-        {
-            return controller.CurrentUser != null;
-        }
-
         private void SetVisibilities()
         {
             if (UserIsAdmin())

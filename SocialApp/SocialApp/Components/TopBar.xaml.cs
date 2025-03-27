@@ -13,8 +13,6 @@ namespace SocialApp.Components
 
         private AppController controller;
         private Frame frame;
-        private UserRepository userRepository;
-        private UserService userService;
 
         public TopBar()
         {
