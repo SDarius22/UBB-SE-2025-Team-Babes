@@ -1,32 +1,15 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
-using SocialApp.Windows;
 using SocialApp.Repository;
 using SocialApp.Services;
 using SocialApp.Components;
 using SocialApp.Entities;
-using Windows.Networking.NetworkOperators;
-
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
 
 namespace SocialApp.Pages
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class GroupPage : Page
     {
         private const Visibility collapsed = Visibility.Collapsed;
@@ -38,8 +21,7 @@ namespace SocialApp.Pages
         private PostService postService;
         private GroupRepository groupRepository;
         private GroupService groupService;
-
-        public int GroupId { get; set; }
+        private int GroupId;
         private Entities.Group group;
 
         public GroupPage(int groupId)
@@ -70,19 +52,13 @@ namespace SocialApp.Pages
 
             SetVisibilities();
             SetContent();
+            PopulateMembers();
         }
+
         private void SetVisibilities()
         {
-            if (UserIsAdmin())
-            {
-                EditGroupButton.Visibility = visible;
-                SetRemoveButtonsVisible();
-            }
-            else
-            {
-                EditGroupButton.Visibility = collapsed;
-                SetRemoveButtonsCollapsed();
-            }
+            bool isAdmin = UserIsAdmin();
+            EditGroupButton.Visibility = isAdmin ? visible : collapsed;
         }
 
         private bool UserIsAdmin()
@@ -90,37 +66,36 @@ namespace SocialApp.Pages
             return groupRepository.GetById(GroupId).AdminId == controller.CurrentUser.Id;
         }
 
-        private void SetRemoveButtonsVisible()
-        {
-
-        }
-
-        private void SetRemoveButtonsCollapsed()
-        {
-
-        }
-
         private async void SetContent()
         {
             GroupTitle.Text = group.Name;
             GroupDescription.Text = group.Description;
-            if (group.Image != string.Empty)
+            if (!string.IsNullOrEmpty(group.Image))
                 GroupImage.Source = await AppController.DecodeBase64ToImageAsync(group.Image);
             PopulateFeed();
         }
+
         private void PopulateFeed()
         {
             PostsFeed.ClearPosts();
-
             List<Post> groupPosts = postService.GetByGroupId(GroupId);
-
             foreach (Post post in groupPosts)
             {
                 PostsFeed.AddPost(new PostComponent(post.Title, post.Visibility, post.UserId, post.Content, post.CreatedDate, post.Id));
             }
-
             PostsFeed.Visibility = Visibility.Visible;
             PostsFeed.DisplayCurrentPage();
+        }
+
+        private void PopulateMembers()
+        {
+            MembersList.Children.Clear();
+            bool isAdmin = UserIsAdmin();
+            List<User> members = groupService.GetUsersFromGroup(GroupId);
+            foreach (User member in members)
+            {
+                MembersList.Children.Add(new Member(member, controller, this.Frame, GroupId, isAdmin));
+            }
         }
     }
 }

@@ -67,9 +67,8 @@
 
                 <TextBlock 
                     Text="Members"/>
-
-                <ListView 
-                    x:Name="MembersList"/>
+                
+                <StackPanel x:Name="MembersList"/>
             </StackPanel>
 
             <!-- Create and Edit Buttons-->
