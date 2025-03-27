@@ -159,7 +159,7 @@ namespace SocialApp.Repository
                 {
                     Id = reader.GetInt64(reader.GetOrdinal("Id")),
                     Title = reader.GetString(reader.GetOrdinal("Title")),
-                    Content = reader.GetString(reader.GetOrdinal("Description")),
+                    Content = reader.GetString(reader.GetOrdinal("Content")),
                     CreatedDate = reader.GetDateTime(reader.GetOrdinal("CreatedDate")),
                     UserId = reader.GetInt64(reader.GetOrdinal("UserId")),
                     GroupId = reader.IsDBNull(reader.GetOrdinal("GroupId")) ? 0 : reader.GetInt64(reader.GetOrdinal("GroupId")),
