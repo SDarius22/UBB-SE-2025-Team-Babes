@@ -11,7 +11,7 @@ namespace SocialApp.Repository
 {
     class ReactionRepository
     {
-        private string loginString = "Data Source=ATHOS;" +
+        private string loginString = "Data Source=(localdb)\\localDB1;" +
             "Initial Catalog=ISSDB;" +
             "Integrated Security=True;" +
             "TrustServerCertificate=True";

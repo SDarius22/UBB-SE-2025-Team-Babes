@@ -11,7 +11,7 @@ namespace SocialApp.Repository
 {
     public class PostRepository
     {
-        private string loginString = "Data Source=ATHOS;" +
+        private string loginString = "Data Source=(localdb)\\localDB1;" +
             "Initial Catalog=ISSDB;" +
             "Integrated Security=True;" +
             "TrustServerCertificate=True";
@@ -207,7 +207,7 @@ namespace SocialApp.Repository
             connection.Open();
 
             SqlCommand insertCommand = new SqlCommand(
-                "INSERT INTO Posts (Title, Content, CreatedDate, UserId, PostVisibility, GroupId, PostTag) VALUES (@Title, @Description, @CreatedDate, @UserId, @PostVisibility, @GroupId, @PostTag)",
+                "INSERT INTO Posts (Title, Description, CreatedDate, UserId, PostVisibility, GroupId, PostTag) VALUES (@Title, @Description, @CreatedDate, @UserId, @PostVisibility, @GroupId, @PostTag)",
                 connection
             );
             insertCommand.Parameters.AddWithValue("@Title", entity.Title);
@@ -228,7 +228,7 @@ namespace SocialApp.Repository
             connection.Open();
 
             SqlCommand updateCommand = new SqlCommand(
-                "UPDATE Posts SET Title = @Title, Content = @Description, PostVisibility = @PostVisibility, PostTag = @PostTag WHERE Id = @Id",
+                "UPDATE Posts SET Title = @Title, Description = @Description, PostVisibility = @PostVisibility, PostTag = @PostTag WHERE Id = @Id",
                 connection
             );
 
