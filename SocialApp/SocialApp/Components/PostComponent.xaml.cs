@@ -6,7 +6,6 @@ using SocialApp.Repository;
 using System.Linq;
 using SocialApp.Services;
 
-
 namespace SocialApp.Components
 {
     public sealed partial class PostComponent : UserControl
@@ -19,6 +18,7 @@ namespace SocialApp.Components
         private long postId;
 
         private ReactionService reactionService;
+        private CommentService commentService;
 
         public DateTime PostCreationTime { get; set; }
 
@@ -47,6 +47,7 @@ namespace SocialApp.Components
             this.InitializeComponent();
             this.DataContext = this;
             this.reactionService = new ReactionService(new ReactionRepository());
+            this.commentService = new CommentService(new CommentRepository(), new PostRepository(), new UserRepository());
         }
 
         public PostComponent(string title, PostVisibility visibility, long userId, string content, DateTime createdDate, long postId)
@@ -65,6 +66,7 @@ namespace SocialApp.Components
             TimeSince.Text = createdDate.ToString();
 
             this.reactionService = new ReactionService(new ReactionRepository());
+            this.commentService = new CommentService(new CommentRepository(), new PostRepository(), new UserRepository());
             LoadReactionCounts();
         }
 
@@ -99,6 +101,26 @@ namespace SocialApp.Components
         {
             reactionService.ValidateAdd(userId, postId, ReactionType.Anger);
             LoadReactionCounts();
+        }
+
+        private void OnCommentButtonClick(object sender, RoutedEventArgs e)
+        {
+            CommentSection.Visibility = Microsoft.UI.Xaml.Visibility.Visible;
+        }
+
+        private void OnSubmitCommentButtonClick(object sender, RoutedEventArgs e)
+        {
+            // Handle comment submission
+            string commentText = CommentTextBox.Text;
+            if (!string.IsNullOrEmpty(commentText))
+            {
+                // Save the comment using CommentService
+                commentService.ValidateAdd(commentText, userId, postId);
+
+                // Clear the TextBox and hide the comment section
+                CommentTextBox.Text = string.Empty;
+                CommentSection.Visibility = Microsoft.UI.Xaml.Visibility.Collapsed;
+            }
         }
     }
 }
