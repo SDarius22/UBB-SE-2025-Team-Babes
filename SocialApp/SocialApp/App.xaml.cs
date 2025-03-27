@@ -40,8 +40,7 @@ namespace SocialApp
             CurrentWindow = m_window;
             Frame rootFrame = new Frame();
             m_window.Content = rootFrame;
-            var controller = Services.GetService<AppController>();
-            rootFrame.Navigate(typeof(HomeScreen), controller);
+            rootFrame.Navigate(typeof(HomeScreen));
             m_window.Activate();
         }
 

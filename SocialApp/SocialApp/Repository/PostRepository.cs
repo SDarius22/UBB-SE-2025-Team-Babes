@@ -53,13 +53,13 @@ namespace SocialApp.Repository
             connection.Open();
             List<Post> posts = new List<Post>();
             SqlCommand selectCommand = new SqlCommand(
-                "SELECT * FROM Posts WHERE UserId IN (SELECT UserId FROM UserFollowers WHERE FollowerId = @UserId) OR UserId = @UserId OR PostVisibility = 0",
+                "SELECT * FROM Posts WHERE UserId IN (SELECT UserId FROM UserFollowers WHERE FollowerId = @UserId AND (PostVisibility = 2 OR PostVisibility = 3)) OR UserId = @UserId OR PostVisibility = 3",
                 connection
             );
             if (userId == -1)
             {
                 selectCommand = new SqlCommand(
-                    "SELECT * FROM Posts WHERE PostVisibility = 0",
+                    "SELECT * FROM Posts WHERE PostVisibility = 3",
                     connection
                 );
             }
@@ -102,7 +102,7 @@ namespace SocialApp.Repository
                 {
                     Id = reader.GetInt64(reader.GetOrdinal("Id")),
                     Title = reader.GetString(reader.GetOrdinal("Title")),
-                    Content = reader.GetString(reader.GetOrdinal("Description")),
+                    Content = reader.GetString(reader.GetOrdinal("Content")),
                     CreatedDate = reader.GetDateTime(reader.GetOrdinal("CreatedDate")),
                     UserId = reader.GetInt64(reader.GetOrdinal("UserId")),
                     GroupId = reader.GetInt64(reader.GetOrdinal("GroupId")),

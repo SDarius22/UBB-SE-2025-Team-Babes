@@ -1,3 +1,4 @@
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
@@ -19,7 +20,6 @@ namespace SocialApp.Components
         private PostRepository postRepository;
         private PostService postService;
         private GroupRepository groupRepository;
-        private long userId = 1; // Replace with actual userId
 
         public StackPanel PostsStackPanelPublic => PostsStackPanel;
 
@@ -45,6 +45,16 @@ namespace SocialApp.Components
 
         private void LoadPosts()
         {
+            var controller = App.Services.GetService<AppController>();
+            long userId;
+            if (controller.CurrentUser == null)
+            {
+                userId = -1;
+            }
+            else
+            {
+                userId = controller.CurrentUser.Id;
+            }
             var posts = postService.GetHomeFeed(userId).ToList();
             foreach (var post in posts)
             {

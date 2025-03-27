@@ -140,6 +140,8 @@ SET IDENTITY_INSERT [dbo].[Comments] ON
 
 select * from UserFollowers;
 
+SELECT * FROM Posts WHERE UserId IN ((SELECT UserId FROM UserFollowers WHERE FollowerId = @UserId AND (PostVisibility = 2 OR PostVisibility = 3)) OR UserId = @UserId OR PostVisibility = 3
+
 INSERT INTO [dbo].[Comments] ([Id], [UserId], [PostId], [Content], [CreatedDate]) VALUES 
     (1, 1, 5, 'Great post!', GETDATE()),  
     (2, 2, 12, 'I totally agree.', GETDATE()),  

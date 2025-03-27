@@ -1,3 +1,4 @@
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using SocialApp.Enums;
@@ -14,24 +15,20 @@ namespace SocialApp.Components
         private const int itemsPerPage = 5;
         private List<PostComponent> allItems;
         private UserRepository userRepository;
-        private UserService userService;
         private PostRepository postRepository;
         private PostService postService;
         private GroupRepository groupRepository;
-        private GroupService groupService;
-        private long groupId = 1; // Replace with actual groupId
 
         public GroupsFeed()
         {
             this.InitializeComponent();
 
             userRepository = new UserRepository();
-            userService = new UserService(userRepository);
             postRepository = new PostRepository();
             groupRepository = new GroupRepository();
             postService = new PostService(postRepository, userRepository, groupRepository);
-            groupService = new GroupService(groupRepository, userRepository);
             allItems = new List<PostComponent>();
+            
 
             LoadItems();
             DisplayCurrentPage();
@@ -39,7 +36,8 @@ namespace SocialApp.Components
 
         private void LoadItems()
         {
-            var posts = postService.GetByGroupId(groupId).Where(p => p.Visibility == PostVisibility.Groups).ToList();
+            var controller = App.Services.GetService<AppController>();
+            var posts = postService.GetGroupsFeed(controller.CurrentUser.Id);
             foreach (var post in posts)
             {
                 var postComponent = new PostComponent(post.Title, post.Visibility, post.UserId, post.Content, post.CreatedDate, post.Id);

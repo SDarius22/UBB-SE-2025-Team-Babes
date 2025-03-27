@@ -16,6 +16,7 @@ using SocialApp.Pages;
 using SocialApp.Repository;
 using SocialApp.Services;
 using SocialApp.Entities;
+using Microsoft.Extensions.DependencyInjection;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -30,11 +31,11 @@ namespace SocialApp.Components
         private readonly long groupId;
         private readonly bool isAdmin;
 
-        public Member(User member, AppController controller, Frame frame, long groupId, bool isAdmin)
+        public Member(User member, Frame frame, long groupId, bool isAdmin)
         {
             this.InitializeComponent();
             this.member = member;
-            this.controller = controller;
+            this.controller = App.Services.GetService<AppController>();
             this.navigationFrame = frame;
             this.groupId = groupId;
             this.isAdmin = isAdmin;
