@@ -59,9 +59,9 @@ namespace SocialApp.Repository
             {
                 Reaction reaction = new Reaction
                 {
-                    UserId = reader.GetInt64(reader.GetOrdinal("UserId")),
-                    PostId = reader.GetInt64(reader.GetOrdinal("PostId")),
-                    Type = (ReactionType)reader.GetInt32(reader.GetOrdinal("Type"))
+                    UserId = reader.IsDBNull(reader.GetOrdinal("UserId")) ? 0 : reader.GetInt64(reader.GetOrdinal("UserId")),
+                    PostId = reader.IsDBNull(reader.GetOrdinal("PostId")) ? 0 : reader.GetInt64(reader.GetOrdinal("PostId")),
+                    Type = reader.IsDBNull(reader.GetOrdinal("ReactionType")) ? ReactionType.Like : (ReactionType)reader.GetInt32(reader.GetOrdinal("ReactionType"))
                 };
                 reactions.Add(reaction);
             }
