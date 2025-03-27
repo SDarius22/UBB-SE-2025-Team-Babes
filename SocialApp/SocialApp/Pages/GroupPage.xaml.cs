@@ -21,21 +21,21 @@ namespace SocialApp.Pages
         private PostService postService;
         private GroupRepository groupRepository;
         private GroupService groupService;
-        private int GroupId;
+        private long GroupId;
         private Entities.Group group;
 
-        public GroupPage(int groupId)
+        public GroupPage()
         {
             this.InitializeComponent();
             this.Loaded += DisplayPage;
-            GroupId = groupId;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if (e.Parameter is AppController controller)
+            if (e.Parameter is ValueTuple<long, AppController> tupleParams)
             {
-                this.controller = controller;
+                GroupId = tupleParams.Item1;
+                controller = tupleParams.Item2;
                 TopBar.SetControllerAndFrame(controller, this.Frame);
             }
         }
@@ -63,6 +63,7 @@ namespace SocialApp.Pages
 
         private bool UserIsAdmin()
         {
+            if (controller.CurrentUser == null) return false;
             return groupRepository.GetById(GroupId).AdminId == controller.CurrentUser.Id;
         }
 

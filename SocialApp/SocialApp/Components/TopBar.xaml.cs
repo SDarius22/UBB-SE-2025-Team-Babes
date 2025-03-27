@@ -49,7 +49,10 @@ namespace SocialApp.Components
 
         private void GroupsClick(object sender, RoutedEventArgs e)
         {
-            frame.Navigate(typeof(GroupsScreen), controller);
+            if (IsLoggedIn())
+                frame.Navigate(typeof(GroupsScreen), controller);
+            else
+                frame.Navigate(typeof(LoginRegisterPage), controller);
         }
 
         private void UserClick(object sender, RoutedEventArgs e)

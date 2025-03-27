@@ -62,7 +62,7 @@ namespace SocialApp.Services
         {
             return GroupRepository.GetAll();
         }
-        public Group GetById(int id)
+        public Group GetById(long id)
         {
             return GroupRepository.GetById(id);
         }
