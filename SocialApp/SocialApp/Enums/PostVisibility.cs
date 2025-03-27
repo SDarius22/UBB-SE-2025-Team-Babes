@@ -11,6 +11,6 @@ namespace SocialApp.Enums
         Private = 1,
         Friends = 2,
         Public = 3,
-	Groups = 4
+	    Groups = 4
     }
 }

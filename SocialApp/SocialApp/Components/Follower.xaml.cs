@@ -1,3 +1,4 @@
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using SocialApp.Entities;
@@ -20,7 +21,7 @@ namespace SocialApp.Components
         private PostService postService;
         private GroupRepository groupRepository;
 
-        public Follower(string username, bool isFollowing, User user, AppController controller, Frame frame = null)
+        public Follower(string username, bool isFollowing, User user, Frame frame = null)
         {
             this.InitializeComponent();
 
@@ -31,7 +32,7 @@ namespace SocialApp.Components
             postService = new PostService(postRepository, userRepository, groupRepository);
 
             this.user = user;
-            this.controller = controller;
+            this.controller = App.Services.GetService<AppController>();
             this.navigationFrame = frame ?? Window.Current.Content as Frame; // Fallback to app-level Frame if not provided
             Name.Text = username;
             Button.Content = IsFollowed() ? "Unfollow" : "Follow";
