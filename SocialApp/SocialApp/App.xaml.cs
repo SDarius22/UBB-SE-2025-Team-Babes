@@ -1,24 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
-using Microsoft.UI.Xaml.Shapes;
-using SocialApp.Entities;
-using SocialApp.Services;
-using SocialApp.Repository;
-using Windows.ApplicationModel;
-using Windows.ApplicationModel.Activation;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -30,7 +14,7 @@ namespace SocialApp
     /// </summary>
     public partial class App : Application
     {
-        public AppController controller;
+        public static IServiceProvider Services { get; private set; }
         public Window? m_window; 
         public static Window CurrentWindow { get; private set; } 
 
@@ -41,19 +25,22 @@ namespace SocialApp
         public App()
         {
             this.InitializeComponent();
-            controller = new AppController();
+            var services = new ServiceCollection();
+            services.AddSingleton<AppController>();
+            Services = services.BuildServiceProvider();
         }
 
         /// <summary>
         /// Invoked when the application is launched.
         /// </summary>
         /// <param name="args">Details about the launch request and process.</param>
-        protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
+        protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
             m_window = new MainWindow(); 
             CurrentWindow = m_window;
             Frame rootFrame = new Frame();
             m_window.Content = rootFrame;
+            var controller = Services.GetService<AppController>();
             rootFrame.Navigate(typeof(HomeScreen), controller);
             m_window.Activate();
         }
