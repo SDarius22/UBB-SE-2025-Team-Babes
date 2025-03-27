@@ -76,6 +76,7 @@
             BorderThickness="0"
             Padding="0">
             <Image 
+                x:Name="UserImage"
                 Source="../Assets/User.png" 
                 Stretch="UniformToFill"
                 HorizontalAlignment="Center"/>

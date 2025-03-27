@@ -52,7 +52,8 @@ namespace SocialApp.Pages
 
             this.Loaded += SetContent;
             this.Loaded += PostsClick;
-            this.Loaded += SetNavigation;
+
+            
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -60,29 +61,8 @@ namespace SocialApp.Pages
             if (e.Parameter is AppController controller)
             {
                 this.controller = controller;
+                TopBar.SetControllerAndFrame(controller, this.Frame);
             }
-        }
-
-        private void SetNavigation(object sender, RoutedEventArgs e)
-        {
-            TopBar.HomeButtonInstance.Click += HomeClick;
-            TopBar.UserButtonInstance.Click += UserClick;
-            TopBar.GroupsButtonInstance.Click += GroupsClick;
-        }
-
-        private void HomeClick(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(typeof(HomeScreen), controller);
-        }
-
-        private void GroupsClick(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(typeof(GroupsScreen), controller);
-        }
-
-        private void UserClick(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(typeof(UserPage), controller);
         }
 
         private async void SetContent(object sender, RoutedEventArgs e)
@@ -104,7 +84,7 @@ namespace SocialApp.Pages
         }
 
         private bool IsFollowed()
-        {
+        {//TODO
             return false;
         }
 
