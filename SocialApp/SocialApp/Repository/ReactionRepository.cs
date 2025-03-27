@@ -18,6 +18,7 @@ namespace SocialApp.Repository
         private SqlConnection connection;
 
         public ReactionRepository(string loginString)
+        public ReactionRepository()
         {
             this.loginString = loginString;
             this.connection = new SqlConnection(loginString);
