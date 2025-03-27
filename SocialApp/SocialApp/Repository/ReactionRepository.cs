@@ -11,15 +11,14 @@ namespace SocialApp.Repository
 {
     class ReactionRepository
     {
-        private string loginString = "Data Source=ATHOS;" +
+        private string loginString = "Data Source=(localdb)\\localDB1;" +
             "Initial Catalog=ISSDB;" +
             "Integrated Security=True;" +
             "TrustServerCertificate=True";
         private SqlConnection connection;
 
-        public ReactionRepository(string loginString)
+        public ReactionRepository()
         {
-            this.loginString = loginString;
             this.connection = new SqlConnection(loginString);
         }
 
@@ -60,9 +59,9 @@ namespace SocialApp.Repository
             {
                 Reaction reaction = new Reaction
                 {
-                    UserId = reader.GetInt64(reader.GetOrdinal("UserId")),
-                    PostId = reader.GetInt64(reader.GetOrdinal("PostId")),
-                    Type = (ReactionType)reader.GetInt32(reader.GetOrdinal("Type"))
+                    UserId = reader.IsDBNull(reader.GetOrdinal("UserId")) ? 0 : reader.GetInt64(reader.GetOrdinal("UserId")),
+                    PostId = reader.IsDBNull(reader.GetOrdinal("PostId")) ? 0 : reader.GetInt64(reader.GetOrdinal("PostId")),
+                    Type = reader.IsDBNull(reader.GetOrdinal("ReactionType")) ? ReactionType.Like : (ReactionType)reader.GetInt32(reader.GetOrdinal("ReactionType"))
                 };
                 reactions.Add(reaction);
             }
@@ -118,7 +117,7 @@ namespace SocialApp.Repository
             connection.Open();
 
             SqlCommand updateCommand = new SqlCommand(
-                "UPDATE Reactions SET Type = @Type WHERE UserId = @UserId AND PostId = @PostId",
+                "UPDATE Reactions SET ReactionType = @Type WHERE UserId = @UserId AND PostId = @PostId",
                 connection
             );
 

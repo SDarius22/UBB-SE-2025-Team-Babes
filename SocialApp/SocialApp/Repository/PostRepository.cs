@@ -11,7 +11,7 @@ namespace SocialApp.Repository
 {
     public class PostRepository
     {
-        private string loginString = "Data Source=ATHOS;" +
+        private string loginString = "Data Source=(localdb)\\localDB1;" +
             "Initial Catalog=ISSDB;" +
             "Integrated Security=True;" +
             "TrustServerCertificate=True";
@@ -35,12 +35,12 @@ namespace SocialApp.Repository
                 {
                     Id = reader.GetInt64(reader.GetOrdinal("Id")),
                     Title = reader.GetString(reader.GetOrdinal("Title")),
-                    Content = reader.GetString(reader.GetOrdinal("Description")),
+                    Content = reader.GetString(reader.GetOrdinal("Content")),
                     CreatedDate = reader.GetDateTime(reader.GetOrdinal("CreatedDate")),
                     UserId = reader.GetInt64(reader.GetOrdinal("UserId")),
-                    GroupId = reader.GetInt64(reader.GetOrdinal("GroupId")),
+                    GroupId = reader.IsDBNull(reader.GetOrdinal("GroupId")) ? 0 : reader.GetInt64(reader.GetOrdinal("GroupId")),
                     Visibility = (PostVisibility)reader.GetInt32(reader.GetOrdinal("PostVisibility")),
-                    Tag = (PostTag)reader.GetInt32(reader.GetOrdinal("PostTag"))
+                    Tag = reader.IsDBNull(reader.GetOrdinal("PostTag")) ? PostTag.Misc : (PostTag)reader.GetInt32(reader.GetOrdinal("PostTag"))
                 };
                 posts.Add(post);
             }
@@ -55,9 +55,16 @@ namespace SocialApp.Repository
             connection.Open();
             List<Post> posts = new List<Post>();
             SqlCommand selectCommand = new SqlCommand(
-                "SELECT * FROM Posts WHERE UserId IN (SELECT FollowedId FROM UserFollowers WHERE FollowerId = @UserId) OR UserId = @UserId OR PostVisibility = 0",
+                "SELECT * FROM Posts WHERE UserId IN (SELECT UserId FROM UserFollowers WHERE FollowerId = @UserId) OR UserId = @UserId OR PostVisibility = 0",
                 connection
             );
+            if (userId == -1)
+            {
+                selectCommand = new SqlCommand(
+                    "SELECT * FROM Posts WHERE PostVisibility = 0",
+                    connection
+                );
+            }
             selectCommand.Parameters.AddWithValue("@UserId", userId);
             SqlDataReader reader = selectCommand.ExecuteReader();
             while (reader.Read())
@@ -66,12 +73,12 @@ namespace SocialApp.Repository
                 {
                     Id = reader.GetInt64(reader.GetOrdinal("Id")),
                     Title = reader.GetString(reader.GetOrdinal("Title")),
-                    Content = reader.GetString(reader.GetOrdinal("Description")),
+                    Content = reader.GetString(reader.GetOrdinal("Content")),
                     CreatedDate = reader.GetDateTime(reader.GetOrdinal("CreatedDate")),
                     UserId = reader.GetInt64(reader.GetOrdinal("UserId")),
-                    GroupId = reader.GetInt64(reader.GetOrdinal("GroupId")),
+                    GroupId = reader.IsDBNull(reader.GetOrdinal("GroupId")) ? 0 : reader.GetInt64(reader.GetOrdinal("GroupId")),
                     Visibility = (PostVisibility)reader.GetInt32(reader.GetOrdinal("PostVisibility")),
-                    Tag = (PostTag)reader.GetInt32(reader.GetOrdinal("PostTag"))
+                    Tag = reader.IsDBNull(reader.GetOrdinal("PostTag")) ? PostTag.Misc : (PostTag)reader.GetInt32(reader.GetOrdinal("PostTag"))
                 };
                 posts.Add(post);
             }
@@ -125,12 +132,12 @@ namespace SocialApp.Repository
                 {
                     Id = reader.GetInt64(reader.GetOrdinal("Id")),
                     Title = reader.GetString(reader.GetOrdinal("Title")),
-                    Content = reader.GetString(reader.GetOrdinal("Description")),
+                    Content = reader.GetString(reader.GetOrdinal("Content")),
                     CreatedDate = reader.GetDateTime(reader.GetOrdinal("CreatedDate")),
                     UserId = reader.GetInt64(reader.GetOrdinal("UserId")),
-                    GroupId = reader.GetInt64(reader.GetOrdinal("GroupId")),
+                    GroupId = reader.IsDBNull(reader.GetOrdinal("GroupId")) ? 0 : reader.GetInt64(reader.GetOrdinal("GroupId")),
                     Visibility = (PostVisibility)reader.GetInt32(reader.GetOrdinal("PostVisibility")),
-                    Tag = (PostTag)reader.GetInt32(reader.GetOrdinal("PostTag"))
+                    Tag = reader.IsDBNull(reader.GetOrdinal("PostTag")) ? PostTag.Misc : (PostTag)reader.GetInt32(reader.GetOrdinal("PostTag"))
                 };
                 posts.Add(post);
             }
@@ -155,9 +162,9 @@ namespace SocialApp.Repository
                     Content = reader.GetString(reader.GetOrdinal("Description")),
                     CreatedDate = reader.GetDateTime(reader.GetOrdinal("CreatedDate")),
                     UserId = reader.GetInt64(reader.GetOrdinal("UserId")),
-                    GroupId = reader.GetInt64(reader.GetOrdinal("GroupId")),
+                    GroupId = reader.IsDBNull(reader.GetOrdinal("GroupId")) ? 0 : reader.GetInt64(reader.GetOrdinal("GroupId")),
                     Visibility = (PostVisibility)reader.GetInt32(reader.GetOrdinal("PostVisibility")),
-                    Tag = (PostTag)reader.GetInt32(reader.GetOrdinal("PostTag"))
+                    Tag = reader.IsDBNull(reader.GetOrdinal("PostTag")) ? PostTag.Misc : (PostTag)reader.GetInt32(reader.GetOrdinal("PostTag"))
                 };
                 posts.Add(post);
             }
@@ -181,12 +188,12 @@ namespace SocialApp.Repository
                 {
                     Id = reader.GetInt64(reader.GetOrdinal("Id")),
                     Title = reader.GetString(reader.GetOrdinal("Title")),
-                    Content = reader.GetString(reader.GetOrdinal("Description")),
+                    Content = reader.GetString(reader.GetOrdinal("Content")),
                     CreatedDate = reader.GetDateTime(reader.GetOrdinal("CreatedDate")),
                     UserId = reader.GetInt64(reader.GetOrdinal("UserId")),
-                    GroupId = reader.GetInt64(reader.GetOrdinal("GroupId")),
+                    GroupId = reader.IsDBNull(reader.GetOrdinal("GroupId")) ? 0 : reader.GetInt64(reader.GetOrdinal("GroupId")),
                     Visibility = (PostVisibility)reader.GetInt32(reader.GetOrdinal("PostVisibility")),
-                    Tag = (PostTag)reader.GetInt32(reader.GetOrdinal("PostTag"))
+                    Tag = reader.IsDBNull(reader.GetOrdinal("PostTag")) ? PostTag.Misc : (PostTag)reader.GetInt32(reader.GetOrdinal("PostTag"))
                 };
             }
 
