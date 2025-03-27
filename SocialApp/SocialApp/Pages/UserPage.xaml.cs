@@ -1,43 +1,27 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+using System.Threading.Tasks;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml.Navigation;
-using Windows.UI;
-using System.Drawing;
-using SocialApp.Windows;
-using SocialApp.Pages;
 using SocialApp.Services;
 using SocialApp.Repository;
 using SocialApp.Components;
 using SocialApp.Entities;
-
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
+using System.Linq;
 
 namespace SocialApp.Pages
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class UserPage : Page
     {
-
         private AppController controller;
         private UserRepository userRepository;
         private UserService userService;
         private PostRepository postRepository;
         private PostService postService;
         private GroupRepository groupRepository;
+        private User displayedUser; // User to display (may differ from CurrentUser)
 
         public UserPage()
         {
@@ -49,49 +33,81 @@ namespace SocialApp.Pages
             groupRepository = new GroupRepository();
             postService = new PostService(postRepository, userRepository, groupRepository);
 
-
             this.Loaded += SetContent;
             this.Loaded += PostsClick;
-
-            
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if (e.Parameter is AppController controller)
+            if (e.Parameter is UserPageNavigationArgs args)
+            {
+                this.controller = args.Controller;
+                this.displayedUser = args.SelectedUser;
+                TopBar.SetControllerAndFrame(controller, this.Frame);
+            }
+            else if (e.Parameter is AppController controller)
             {
                 this.controller = controller;
+                this.displayedUser = controller.CurrentUser; // Default to CurrentUser if no specific user provided
                 TopBar.SetControllerAndFrame(controller, this.Frame);
             }
         }
 
         private async void SetContent(object sender, RoutedEventArgs e)
         {
-            if (controller.CurrentUser != null)
+            if (displayedUser != null)
             {
-                if (controller.CurrentUser.Image != string.Empty)
-                    ProfileImage.Source = await AppController.DecodeBase64ToImageAsync(controller.CurrentUser.Image);
-                Username.Text = controller.CurrentUser.Username;
-                FollowLogOutButton.Content = "Logout";
-                FollowLogOutButton.Click += Logout;
+                if (!string.IsNullOrEmpty(displayedUser.Image))
+                    ProfileImage.Source = await AppController.DecodeBase64ToImageAsync(displayedUser.Image);
+                Username.Text = displayedUser.Username;
+
+                if (controller.CurrentUser != null && controller.CurrentUser.Id == displayedUser.Id)
+                {
+                    FollowLogOutButton.Content = "Logout";
+                    FollowLogOutButton.Click -= Logout;
+                    FollowLogOutButton.Click += Logout;
+                }
+                else
+                {
+                    FollowLogOutButton.Content = IsFollowed() ? "Unfollow" : "Follow";
+                    FollowLogOutButton.Click -= FollowUnfollow;
+                    FollowLogOutButton.Click += FollowUnfollow;
+                }
                 SetPostsContent(sender, e);
             }
             else
             {
-                FollowLogOutButton.Content = IsFollowed() ? "Unfollow" : "Follow";
+                FollowLogOutButton.Content = "Follow";
             }
-
         }
 
         private bool IsFollowed()
-        {//TODO
-            return false;
+        {
+            // Check if CurrentUser follows displayedUser
+            return controller?.CurrentUser != null && userService.GetUserFollowing(controller.CurrentUser.Id).Any(u => u.Id == displayedUser.Id);
+        }
+
+        private void FollowUnfollow(object sender, RoutedEventArgs e)
+        {
+            if (controller?.CurrentUser != null && displayedUser != null)
+            {
+                if (IsFollowed())
+                {
+                    userService.UnfollowUser(controller.CurrentUser.Id, displayedUser.Id);
+                    FollowLogOutButton.Content = "Follow";
+                }
+                else
+                {
+                    userService.FollowUser(controller.CurrentUser.Id, displayedUser.Id);
+                    FollowLogOutButton.Content = "Unfollow";
+                }
+            }
         }
 
         private void Logout(object sender, RoutedEventArgs e)
         {
             controller.Logout();
-            Frame.Navigate(typeof (HomeScreen), controller);
+            Frame.Navigate(typeof(HomeScreen), controller);
         }
 
         private void PostsClick(object sender, RoutedEventArgs e)
@@ -108,7 +124,7 @@ namespace SocialApp.Pages
             FollowersButton.IsEnabled = true;
 
             PostsFeed.Visibility = Visibility.Visible;
-            FollowersStack.Visibility = Visibility.Collapsed;
+            FollowersScrollViewer.Visibility = Visibility.Collapsed;
 
             PopulateFeed();
         }
@@ -117,19 +133,17 @@ namespace SocialApp.Pages
         {
             PostsFeed.ClearPosts();
 
-            List<Post> userPosts = postService.GetByUserId(controller.CurrentUser.Id);
-
-            foreach (Post post in userPosts)
+            if (displayedUser != null)
             {
-                PostsFeed.AddPost(new PostComponent(post.Title, post.Visibility, post.UserId, post.Content, post.CreatedDate));
+                List<Post> userPosts = postService.GetByUserId(displayedUser.Id);
+                foreach (Post post in userPosts)
+                {
+                    PostsFeed.AddPost(new PostComponent(post.Title, post.Visibility, post.UserId, post.Content, post.CreatedDate));
+                }
+                PostsFeed.DisplayCurrentPage();
             }
-
-
-            PostsFeed.Visibility = Visibility.Visible;
-
-            PostsFeed.DisplayCurrentPage();
-
         }
+
         private void WorkoutsClick(object sender, RoutedEventArgs e)
         {
             SetWorkoutsContent();
@@ -143,7 +157,7 @@ namespace SocialApp.Pages
             FollowersButton.IsEnabled = true;
 
             PostsFeed.Visibility = Visibility.Collapsed;
-            FollowersStack.Visibility = Visibility.Collapsed;
+            FollowersScrollViewer.Visibility = Visibility.Collapsed;
         }
 
         private void MealsClick(object sender, RoutedEventArgs e)
@@ -159,7 +173,7 @@ namespace SocialApp.Pages
             FollowersButton.IsEnabled = true;
 
             PostsFeed.Visibility = Visibility.Collapsed;
-            FollowersStack.Visibility = Visibility.Collapsed;
+            FollowersScrollViewer.Visibility = Visibility.Collapsed;
         }
 
         private void FollowersClick(object sender, RoutedEventArgs e)
@@ -175,7 +189,7 @@ namespace SocialApp.Pages
             FollowersButton.IsEnabled = false;
 
             PostsFeed.Visibility = Visibility.Collapsed;
-            FollowersStack.Visibility = Visibility.Visible;
+            FollowersScrollViewer.Visibility = Visibility.Visible;
 
             PopulateFollowers();
         }
@@ -184,11 +198,13 @@ namespace SocialApp.Pages
         {
             FollowersStack.Children.Clear();
 
-            List<User> followers = userService.GetUserFollowers(controller.CurrentUser.Id);
-
-            foreach (User user in followers)
+            if (displayedUser != null)
             {
-                FollowersStack.Children.Add(new Follower(user.Username, userService.GetUserFollowing(controller.CurrentUser.Id).Contains(user), user, controller));
+                List<User> followers = userService.GetUserFollowers(displayedUser.Id);
+                foreach (User user in followers)
+                {
+                    FollowersStack.Children.Add(new Follower(user.Username, userService.GetUserFollowing(controller.CurrentUser?.Id ?? -1).Contains(user), user, controller, this.Frame));
+                }
             }
         }
     }
