@@ -10,7 +10,7 @@ namespace SocialApp.Repository
 {
     public class UserRepository
     {
-        private string loginString = "Data Source=(localdb)\\localDB1;" +
+        private string loginString = "Data Source=ATHOS;" +
             "Initial Catalog=ISSDB;" +
             "Integrated Security=True;" +
             "TrustServerCertificate=True";
