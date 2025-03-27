@@ -208,7 +208,7 @@ namespace SocialApp.Pages
 
             foreach (User user in followers)
             {
-                FollowersStack.Children.Add(new Follower(user.Username, userService.GetUserFollowing(controller.CurrentUser.Id).Contains(user), user.Id));
+                FollowersStack.Children.Add(new Follower(user.Username, userService.GetUserFollowing(controller.CurrentUser.Id).Contains(user), user, controller));
             }
         }
     }

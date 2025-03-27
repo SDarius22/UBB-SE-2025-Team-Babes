@@ -1,13 +1,15 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using SocialApp.Entities;
 using SocialApp.Repository;
 using SocialApp.Services;
+using System.Collections.Generic;
 
 namespace SocialApp.Components
 {
     public sealed partial class Follower : UserControl
     {
-        private long userId;
+        private User user;
         private bool followed;
 
         private AppController controller;
@@ -17,8 +19,12 @@ namespace SocialApp.Components
         private PostService postService;
         private GroupRepository groupRepository;
 
-        public Follower(string username, bool followed, long userId)
+        public Follower(string username, bool followed, User user, AppController controller)
         {
+            this.user = user;
+            this.followed = followed;
+            this.controller = controller;
+
             this.InitializeComponent();
 
             userRepository = new UserRepository();
@@ -28,23 +34,31 @@ namespace SocialApp.Components
             postService = new PostService(postRepository, userRepository, groupRepository);
 
             Name.Text = username;
-            Button.Content = followed ? "Unfollow" : "Follow";
-            this.userId = userId;
-            this.followed = followed;
+            Button.Content = IsFollowed() ? "Unfollow" : "Follow";
+        }
+
+        private bool IsFollowed()
+        {
+            List<User> following = userService.GetUserFollowing(controller.CurrentUser.Id);
+            foreach (User user in following)
+            {
+                if (user.Id == this.user.Id) return true;
+            }
+
+            return false;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Button.Content = Button.Content.ToString() == "Follow" ? "Unfollow" : "Follow";
-            if (!followed)
+            if (!IsFollowed())
             {
-                userService.FollowUser(controller.CurrentUser.Id, userId);
+                userService.FollowUser(controller.CurrentUser.Id, user.Id);
             }
             else
             {
-                 // unfollow
+                userService.UnfollowUser(controller.CurrentUser.Id, user.Id);
             }
-            followed = !followed;
         }
     }
 }
