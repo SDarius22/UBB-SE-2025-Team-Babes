@@ -30,7 +30,7 @@ namespace SocialApp.Windows
         public GroupsScreen()
         {
             this.InitializeComponent();
-            SetNavigation();
+            //SetNavigation();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -38,7 +38,7 @@ namespace SocialApp.Windows
             if (e.Parameter is AppController controller)
             {
                 this.controller = controller;
-                TopBar.SetController(controller);
+                TopBar.SetControllerAndFrame(controller, this.Frame);
             }
         }
 

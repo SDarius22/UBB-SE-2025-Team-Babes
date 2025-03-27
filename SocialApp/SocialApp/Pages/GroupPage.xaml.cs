@@ -45,7 +45,7 @@ namespace SocialApp.Pages
         public GroupPage(int groupId)
         {
             this.InitializeComponent();
-            SetNavigationButtons();
+            //SetNavigationButtons();
             this.Loaded += DisplayPage;
             GroupId = groupId;
         }
@@ -55,7 +55,7 @@ namespace SocialApp.Pages
             if (e.Parameter is AppController controller)
             {
                 this.controller = controller;
-                TopBar.SetController(controller);
+                TopBar.SetControllerAndFrame(controller, this.Frame);
             }
         }
 

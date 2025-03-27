@@ -16,7 +16,6 @@ namespace SocialApp
         public HomeScreen()
         {
             this.InitializeComponent();
-            SetNavigation();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -24,7 +23,7 @@ namespace SocialApp
             if (e.Parameter is AppController controller)
             {
                 this.controller = controller;
-                TopBar.SetController(controller);
+                TopBar.SetControllerAndFrame(controller, this.Frame);
             }
         }
 

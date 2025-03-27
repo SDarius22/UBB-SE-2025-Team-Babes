@@ -52,7 +52,7 @@ namespace SocialApp.Pages
 
             this.Loaded += SetContent;
             this.Loaded += PostsClick;
-            this.Loaded += SetNavigation;
+            //this.Loaded += SetNavigation;
 
             
         }
@@ -62,7 +62,7 @@ namespace SocialApp.Pages
             if (e.Parameter is AppController controller)
             {
                 this.controller = controller;
-                TopBar.SetController(controller);
+                TopBar.SetControllerAndFrame(controller, this.Frame);
             }
         }
 
