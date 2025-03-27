@@ -110,21 +110,17 @@ namespace SocialApp.Pages
         }
         private void PopulateFeed()
         {
-
             PostsFeed.ClearPosts();
 
             List<Post> groupPosts = postService.GetByGroupId(GroupId);
 
             foreach (Post post in groupPosts)
             {
-                PostsFeed.AddPost(new PostComponent(post.Title, post.Visibility, post.UserId, post.Content, post.CreatedDate));
+                PostsFeed.AddPost(new PostComponent(post.Title, post.Visibility, post.UserId, post.Content, post.CreatedDate, post.Id));
             }
 
-
             PostsFeed.Visibility = Visibility.Visible;
-
             PostsFeed.DisplayCurrentPage();
-
         }
     }
 }

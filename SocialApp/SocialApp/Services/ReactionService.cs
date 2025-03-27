@@ -23,6 +23,7 @@ namespace SocialApp.Services
             if (ReactionRepository.GetByUserAndPost(userId, postId) != null)
             {
                 ReactionRepository.UpdateByUserAndPost(userId, postId, type);
+                return ReactionRepository.GetByUserAndPost(userId, postId);
             }
             Reaction reaction = new Reaction() { UserId = userId, PostId = postId, Type = type };
             ReactionRepository.Save(reaction);

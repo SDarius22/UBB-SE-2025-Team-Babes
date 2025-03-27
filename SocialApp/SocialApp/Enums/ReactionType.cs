@@ -8,9 +8,9 @@ namespace SocialApp.Enums
 {
     public enum ReactionType
     {
-        Like,
-        Love,
-        Laugh,
-        Anger
+        Like = 1,
+        Love = 2,
+        Laugh = 3,
+        Anger = 4
     }
 }
