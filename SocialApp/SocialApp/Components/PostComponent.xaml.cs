@@ -4,6 +4,7 @@ using Microsoft.UI.Xaml.Controls;
 using SocialApp.Enums;
 using SocialApp.Repository;
 using System.Linq;
+using SocialApp.Services;
 
 
 namespace SocialApp.Components
@@ -17,7 +18,7 @@ namespace SocialApp.Components
         private DateTime createdDate;
         private long postId;
 
-        private ReactionRepository reactionRepository;
+        private ReactionService reactionService;
 
         public DateTime PostCreationTime { get; set; }
 
@@ -45,7 +46,7 @@ namespace SocialApp.Components
         {
             this.InitializeComponent();
             this.DataContext = this;
-            this.reactionRepository = new ReactionRepository();
+            this.reactionService = new ReactionService(new ReactionRepository());
         }
 
         public PostComponent(string title, PostVisibility visibility, long userId, string content, DateTime createdDate, long postId)
@@ -63,13 +64,13 @@ namespace SocialApp.Components
             Content.Text = content;
             TimeSince.Text = createdDate.ToString();
 
-            this.reactionRepository = new ReactionRepository();
+            this.reactionService = new ReactionService(new ReactionRepository());
             LoadReactionCounts();
         }
 
         private void LoadReactionCounts()
         {
-            var reactions = reactionRepository.GetByPost(postId);
+            var reactions = reactionService.GetReactionsForPost(postId);
             LikeCount.Text = reactions.Count(r => r.Type == ReactionType.Like).ToString();
             LoveCount.Text = reactions.Count(r => r.Type == ReactionType.Love).ToString();
             LaughCount.Text = reactions.Count(r => r.Type == ReactionType.Laugh).ToString();
@@ -78,22 +79,26 @@ namespace SocialApp.Components
 
         private void OnLikeButtonClick(object sender, RoutedEventArgs e)
         {
-            // Handle like button click
+            reactionService.ValidateAdd(userId, postId, ReactionType.Like);
+            LoadReactionCounts();
         }
 
         private void OnLoveButtonClick(object sender, RoutedEventArgs e)
         {
-            // Handle love button click
+            reactionService.ValidateAdd(userId, postId, ReactionType.Love);
+            LoadReactionCounts();
         }
 
         private void OnLaughButtonClick(object sender, RoutedEventArgs e)
         {
-            // Handle laugh button click
+            reactionService.ValidateAdd(userId, postId, ReactionType.Laugh);
+            LoadReactionCounts();
         }
 
         private void OnAngryButtonClick(object sender, RoutedEventArgs e)
         {
-            // Handle angry button click
+            reactionService.ValidateAdd(userId, postId, ReactionType.Anger);
+            LoadReactionCounts();
         }
     }
 }

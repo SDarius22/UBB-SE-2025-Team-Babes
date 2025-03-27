@@ -117,7 +117,7 @@ namespace SocialApp.Repository
             connection.Open();
 
             SqlCommand updateCommand = new SqlCommand(
-                "UPDATE Reactions SET Type = @Type WHERE UserId = @UserId AND PostId = @PostId",
+                "UPDATE Reactions SET ReactionType = @Type WHERE UserId = @UserId AND PostId = @PostId",
                 connection
             );
 
