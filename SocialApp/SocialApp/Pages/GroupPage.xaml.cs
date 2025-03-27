@@ -45,7 +45,7 @@ namespace SocialApp.Pages
         public GroupPage(int groupId)
         {
             this.InitializeComponent();
-            SetNavigation();
+            SetNavigationButtons();
             this.Loaded += DisplayPage;
             GroupId = groupId;
         }
@@ -71,27 +71,6 @@ namespace SocialApp.Pages
             SetNavigationButtons();
             SetVisibilities();
             SetContent();
-        }
-        private void SetNavigation()
-        {
-            TopBar.HomeButtonInstance.Click += HomeClick;
-            TopBar.UserButtonInstance.Click += UserClick;
-            TopBar.GroupsButtonInstance.Click += GroupsClick;
-        }
-
-        private void HomeClick(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(typeof(HomeScreen));
-        }
-
-        private void GroupsClick(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(typeof(GroupsScreen));
-        }
-
-        private void UserClick(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(typeof(UserPage));
         }
 
         private void SetNavigationButtons()

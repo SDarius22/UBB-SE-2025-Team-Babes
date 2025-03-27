@@ -42,9 +42,6 @@ namespace SocialApp.Pages
         public UserPage()
         {
             this.InitializeComponent();
-            SetNavigation();
-            SetContent();
-            SetPostsContent();
 
             userRepository = new UserRepository();
             userService = new UserService(userRepository);
@@ -56,27 +53,6 @@ namespace SocialApp.Pages
             this.Loaded += SetContent;
             this.Loaded += PostsClick;
             this.Loaded += SetNavigation;
-        }
-        private void SetNavigation()
-        {
-            TopBar.HomeButtonInstance.Click += HomeClick;
-            TopBar.UserButtonInstance.Click += UserClick;
-            TopBar.GroupsButtonInstance.Click += GroupsClick;
-        }
-
-        private void HomeClick(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(typeof(HomeScreen));
-        }
-
-        private void GroupsClick(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(typeof(GroupsScreen));
-        }
-
-        private void UserClick(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(typeof(UserPage));
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
