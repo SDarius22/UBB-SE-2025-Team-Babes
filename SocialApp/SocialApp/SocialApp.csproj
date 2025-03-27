@@ -5,6 +5,7 @@
     <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
     <RootNamespace>SocialApp</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+	<WindowsSdkPackageVersion>10.0.19041.38</WindowsSdkPackageVersion>
     <Platforms>x86;x64;ARM64</Platforms>
     <RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
     <PublishProfile>win-$(Platform).pubxml</PublishProfile>
@@ -46,6 +47,11 @@
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.7.250310001" />
   </ItemGroup>
   <ItemGroup>
+    <Page Update="Pages\CreatePostPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
     <Page Update="HomeScreen.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -76,5 +82,6 @@
     <PublishReadyToRun Condition="'$(Configuration)' != 'Debug'">True</PublishReadyToRun>
     <PublishTrimmed Condition="'$(Configuration)' == 'Debug'">False</PublishTrimmed>
     <PublishTrimmed Condition="'$(Configuration)' != 'Debug'">True</PublishTrimmed>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
 </Project>
