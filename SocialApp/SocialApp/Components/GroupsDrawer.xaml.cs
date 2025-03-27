@@ -5,13 +5,29 @@ using Microsoft.UI;
 using System.Collections.Generic;
 using SocialApp.Entities;
 using SocialApp.Services;
-using SocialApp.Repository; // Add this for GroupRepository and UserRepository
+using SocialApp.Repository;
+using SocialApp.Pages; // For GroupPage
 
 namespace SocialApp.Components
 {
     public sealed partial class GroupsDrawer : UserControl
     {
         private GroupService _groupService;
+        private Frame _navigationFrame; // Frame for navigation
+        private AppController controller;
+
+        // Public property to set the Frame from the parent page
+        public Frame NavigationFrame
+        {
+            get => _navigationFrame;
+            set => _navigationFrame = value;
+        }
+
+        public AppController Controller
+        {
+            get => controller;
+            set => controller = value;
+        }
 
         public GroupsDrawer()
         {
@@ -30,24 +46,63 @@ namespace SocialApp.Components
 
             foreach (var group in groups)
             {
-                var groupItem = new StackPanel { Orientation = Orientation.Vertical, Margin = new Thickness(0, 0, 0, 10) };
+                // Create a Button for each group to make it clickable
+                var groupButton = new Button
+                {
+                    Tag = group.Id, // Store GroupId in Tag for navigation
+                    Margin = new Thickness(0, 0, 0, 10),
+                    Background = new SolidColorBrush(Colors.Transparent), // Match drawer style
+                    BorderThickness = new Thickness(0),
+                    Padding = new Thickness(5)
+                };
+
+                var groupItem = new StackPanel { Orientation = Orientation.Vertical };
 
                 var groupHeader = new StackPanel { Orientation = Orientation.Horizontal };
-                groupHeader.Children.Add(new TextBlock { Text = "★", Foreground = new SolidColorBrush(Colors.Gold), FontSize = 18, VerticalAlignment = VerticalAlignment.Center });
-                groupHeader.Children.Add(new TextBlock { Text = group.Name, FontSize = 18, Foreground = new SolidColorBrush(Colors.White), Margin = new Thickness(5, 0, 0, 0) });
+                groupHeader.Children.Add(new TextBlock
+                {
+                    Text = "★",
+                    Foreground = new SolidColorBrush(Colors.Gold),
+                    FontSize = 18,
+                    VerticalAlignment = VerticalAlignment.Center
+                });
+                groupHeader.Children.Add(new TextBlock
+                {
+                    Text = group.Name,
+                    FontSize = 18,
+                    Foreground = new SolidColorBrush(Colors.White),
+                    Margin = new Thickness(5, 0, 0, 0)
+                });
 
-                var groupDescription = new TextBlock { Text = group.Description, FontSize = 14, Foreground = new SolidColorBrush(Colors.Gray), Margin = new Thickness(23, 0, 0, 0) };
+                var groupDescription = new TextBlock
+                {
+                    Text = group.Description,
+                    FontSize = 14,
+                    Foreground = new SolidColorBrush(Colors.Gray),
+                    Margin = new Thickness(23, 0, 0, 0)
+                };
 
                 groupItem.Children.Add(groupHeader);
                 groupItem.Children.Add(groupDescription);
 
-                GroupsList.Children.Add(groupItem);
+                groupButton.Content = groupItem;
+                groupButton.Click += GroupButton_Click; // Handle click event
+
+                GroupsList.Children.Add(groupButton);
             }
+        }
+
+        private void GroupButton_Click(object sender, RoutedEventArgs e)
+        {
+            var ac = AppController.Instance;
+            _navigationFrame.Navigate(typeof(GroupPage), new System.ValueTuple<long, AppController>((long)((Button)sender).Tag, controller));
         }
     }
 
+    // Ensure Group class has an Id property
     public class Group
     {
+        public int Id { get; set; } // Added for navigation
         public string Name { get; set; }
         public string Description { get; set; }
     }

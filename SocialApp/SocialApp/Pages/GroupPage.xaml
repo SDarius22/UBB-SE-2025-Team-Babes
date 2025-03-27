@@ -29,31 +29,42 @@
                 <ColumnDefinition Width="Auto" MinWidth="150"/>
             </Grid.ColumnDefinitions>
 
-            <!-- Details -->
-            <StackPanel
-                Grid.Column="1"
-                VerticalAlignment="Top" 
-                HorizontalAlignment="Center" 
-                Background="#393E46" 
-                Padding="20" 
-                CornerRadius="10" 
-                Margin="0,10,0,0"
-                Width="800">
-                <Image
-                    x:Name="GroupImage"/>
-                <TextBlock
-                    x:Name="GroupTitle"
-                    FontSize="24" 
-                    FontFamily="Segoe Script"
-                    Text="[TITLE]"/>
-                <TextBlock
-                    x:Name="GroupDescription"
-                    Text="[DESCRIPTION]"/>
-            </StackPanel>
+            <Grid
+                Grid.Column="1">
 
-            <!-- Feed-->
-            <components:PostsFeed
-                x:Name="PostsFeed"/>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                
+                <!-- Details -->
+                <StackPanel
+                    VerticalAlignment="Top" 
+                    HorizontalAlignment="Center" 
+                    Background="#393E46" 
+                    Padding="20" 
+                    CornerRadius="10" 
+                    Margin="0,10,0,0"
+                    Width="800"
+                    Grid.Row="0">
+                    <Image
+                        x:Name="GroupImage"/>
+                    <TextBlock
+                        x:Name="GroupTitle"
+                        FontSize="24" 
+                        FontFamily="Segoe Script"
+                        Text="[TITLE]"/>
+                    <TextBlock
+                        x:Name="GroupDescription"
+                        Text="[DESCRIPTION]"/>
+                </StackPanel>
+
+                <!-- Feed-->
+                <components:PostsFeed
+                    x:Name="PostsFeed"
+                    Grid.Row="1"/>
+            </Grid>
+            
 
             <!-- Members Panel -->
             <StackPanel
@@ -63,7 +74,8 @@
                 Padding="10"
                 Margin="10 10 0 20 "
                 Width="150"
-                HorizontalAlignment="Center">
+                HorizontalAlignment="Center"
+                Grid.Column="0">
 
                 <TextBlock 
                     Text="Members"/>

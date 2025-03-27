@@ -27,10 +27,10 @@ namespace SocialApp.Components
         private readonly User member;
         private readonly AppController controller;
         private readonly Frame navigationFrame;
-        private readonly int groupId;
+        private readonly long groupId;
         private readonly bool isAdmin;
 
-        public Member(User member, AppController controller, Frame frame, int groupId, bool isAdmin)
+        public Member(User member, AppController controller, Frame frame, long groupId, bool isAdmin)
         {
             this.InitializeComponent();
             this.member = member;

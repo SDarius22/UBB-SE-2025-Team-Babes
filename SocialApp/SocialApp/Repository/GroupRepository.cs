@@ -14,7 +14,7 @@ namespace SocialApp.Repository
     public class GroupRepository
     {
       
-        private string loginString = "Data Source=(localdb)\\localDB1;" +
+        private string loginString = "Data Source=ATHOS;" +
             "Initial Catalog=ISSDB;" +
             "Integrated Security=True;" +
             "TrustServerCertificate=True";
@@ -70,7 +70,7 @@ namespace SocialApp.Repository
                     Username = reader.GetString(reader.GetOrdinal("Username")),
                     Email = reader.GetString(reader.GetOrdinal("Email")),
                     PasswordHash = reader.GetString(reader.GetOrdinal("PasswordHash")),
-                    Image = reader.GetString(reader.GetOrdinal("Image"))
+                    Image = reader.IsDBNull(reader.GetOrdinal("Image")) ? string.Empty : reader.GetString(reader.GetOrdinal("Image"))
                 };
                 ans.Add(user);
             }
