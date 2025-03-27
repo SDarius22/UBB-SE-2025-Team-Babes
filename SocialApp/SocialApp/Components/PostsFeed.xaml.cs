@@ -45,7 +45,7 @@ namespace SocialApp.Components
 
         private void LoadPosts()
         {
-            var posts = postService.GetHomeFeed(userId).Where(p => p.Visibility == PostVisibility.Public).ToList();
+            var posts = postService.GetHomeFeed(userId).ToList();
             foreach (var post in posts)
             {
                 var postComponent = new PostComponent(post.Title, post.Visibility, post.UserId, post.Content, post.CreatedDate, post.Id);
