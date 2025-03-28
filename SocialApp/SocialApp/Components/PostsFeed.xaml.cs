@@ -58,7 +58,7 @@ namespace SocialApp.Components
             var posts = postService.GetHomeFeed(userId).ToList();
             foreach (var post in posts)
             {
-                var postComponent = new PostComponent(post.Title, post.Visibility, post.UserId, post.Content, post.CreatedDate, post.Id);
+                var postComponent = new PostComponent(post.Title, post.Visibility, post.UserId, post.Content, post.CreatedDate, post.Tag, post.Id);
                 allPosts.Add(postComponent);
             }
         }

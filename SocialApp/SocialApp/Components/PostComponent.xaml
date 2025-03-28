@@ -9,7 +9,7 @@
     d:DesignHeight="200"
     d:DesignWidth="400">
 
-    <Border BorderBrush="#393E46" BorderThickness="1" Padding="10" Background="#393E46">
+    <Border BorderBrush="#393E46" BorderThickness="1" Padding="10" Background="#393E46" Name="PostBorder">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>

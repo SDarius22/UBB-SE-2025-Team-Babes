@@ -6,6 +6,12 @@ using SocialApp.Repository;
 using SocialApp.Services;
 using Microsoft.UI.Xaml.Media.Imaging;
 using System.Linq;
+using Microsoft.UI.Xaml.Media;
+using Microsoft.UI;
+using System.Drawing;
+using Windows.Storage;
+using Microsoft.Extensions.DependencyInjection;
+using System.Text.Json.Serialization;
 
 namespace SocialApp.Components
 {
@@ -17,6 +23,8 @@ namespace SocialApp.Components
         private string content;
         private DateTime createdDate;
         private long postId;
+        private PostTag tag;
+        private AppController AppController;
 
         private ReactionService reactionService;
         private CommentService commentService;
@@ -53,9 +61,10 @@ namespace SocialApp.Components
             this.DataContext = this;
             this.reactionService = new ReactionService(new ReactionRepository());
             this.commentService = new CommentService(new CommentRepository(), new PostRepository(), new UserRepository());
+            this.AppController = App.Services.GetService<AppController>();
         }
 
-        public PostComponent(string title, PostVisibility visibility, long userId, string content, DateTime createdDate, long postId = 0)
+        public PostComponent(string title, PostVisibility visibility, long userId, string content, DateTime createdDate, PostTag tag, long postId = 0)
         {
             this.title = title;
             this.DataContext = this;
@@ -66,12 +75,26 @@ namespace SocialApp.Components
             this.createdDate = createdDate;
             this.postId = postId;
             this.PostCreationTime = createdDate;
+            this.tag = tag;
 
             this.reactionService = new ReactionService(new ReactionRepository());
             this.commentService = new CommentService(new CommentRepository(), new PostRepository(), new UserRepository());
+            this.AppController = App.Services.GetService<AppController>();
 
             Title.Text = title;
             TimeSince.Text = TimeSincePost; // Use the property for time display
+            // change background color based on tag
+            switch (tag)
+            {
+                case PostTag.Food:
+                    PostBorder.Background = new SolidColorBrush(Colors.Orange);
+                    break;
+                case PostTag.Workout:
+                    PostBorder.Background = new SolidColorBrush(Colors.LightGreen);
+                    break;
+                default:
+                    break;
+            }
             SetContent(); // Set text or image
             LoadReactionCounts();
         }
@@ -111,26 +134,41 @@ namespace SocialApp.Components
 
         private void OnLikeButtonClick(object sender, RoutedEventArgs e)
         {
-            reactionService.ValidateAdd(userId, postId, ReactionType.Like);
-            LoadReactionCounts();
+            if(AppController.CurrentUser != null)
+            {
+                reactionService.ValidateAdd(AppController.CurrentUser.Id, postId, ReactionType.Like);
+                LoadReactionCounts();
+            }
+
         }
 
         private void OnLoveButtonClick(object sender, RoutedEventArgs e)
         {
-            reactionService.ValidateAdd(userId, postId, ReactionType.Love);
-            LoadReactionCounts();
+            if (AppController.CurrentUser != null)
+            {
+                reactionService.ValidateAdd(AppController.CurrentUser.Id, postId, ReactionType.Love);
+                LoadReactionCounts();
+            }
+
         }
 
         private void OnLaughButtonClick(object sender, RoutedEventArgs e)
         {
-            reactionService.ValidateAdd(userId, postId, ReactionType.Laugh);
-            LoadReactionCounts();
+            if (AppController.CurrentUser != null)
+            {
+                reactionService.ValidateAdd(AppController.CurrentUser.Id, postId, ReactionType.Laugh);
+                LoadReactionCounts();
+            }
+
         }
 
         private void OnAngryButtonClick(object sender, RoutedEventArgs e)
         {
-            reactionService.ValidateAdd(userId, postId, ReactionType.Anger);
-            LoadReactionCounts();
+            if (AppController.CurrentUser != null)
+            {
+                reactionService.ValidateAdd(AppController.CurrentUser.Id, postId, ReactionType.Anger);
+                LoadReactionCounts();
+            }
         }
 
         private void OnCommentButtonClick(object sender, RoutedEventArgs e)

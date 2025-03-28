@@ -24,6 +24,7 @@ using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
 using Windows.Storage;
 using Group = SocialApp.Entities.Group;
+using System.Diagnostics;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -137,7 +138,11 @@ namespace SocialApp.Pages
             {
                 ValidateInputs();
                 var selectedVisibility = (PostVisibility)VisibilityComboBox.SelectedItem;
-                _postService.ValidateAdd(TitleInput.Text, DescriptionInput.Text == "" ? image : DescriptionInput.Text, _controller.CurrentUser.Id, 0, selectedVisibility, GetSelectedTag());
+                var posts = CreatePosts(selectedVisibility);
+                for (int i = 0; i < posts.Count; i++)
+                {
+                    _postService.ValidateAdd(posts[i].Title, posts[i].Content, posts[i].UserId, posts[i].GroupId, posts[i].Visibility, posts[i].Tag);
+                }
                 Frame.Navigate(typeof(HomeScreen));
             }
             catch (Exception ex)
@@ -162,56 +167,57 @@ namespace SocialApp.Pages
             }
         }
 
-        //private List<Post> CreatePosts(PostVisibility visibility)
-        //{
-        //    var posts = new List<Post>();
-        //    var basePost = new Post
-        //    {
-        //        Title = TitleInput.Text.Trim(),
-        //        Content = DescriptionInput.Text.Trim(),
-        //        UserId = _controller.CurrentUser.Id,
-        //        GroupId = -1, // Start with null for non-group posts
-        //        CreatedDate = DateTime.Now,
-        //        Visibility = visibility,
-        //        Tag = GetSelectedTag()
-        //    };
+        private List<Post> CreatePosts(PostVisibility visibility)
+        {
+            var posts = new List<Post>();
+            var basePost = new Post
+            {
+                Title = TitleInput.Text.Trim(),
+                Content = DescriptionInput.Text.Trim(),
+                UserId = _controller.CurrentUser.Id,
+                GroupId = 0,
+                CreatedDate = DateTime.Now,
+                Visibility = visibility,
+                Tag = GetSelectedTag()
+            };
 
-        //    if (visibility == PostVisibility.Groups)
-        //    {
-        //        // Ensure you are assigning a valid GroupId here
-        //        if (GroupsListBox.SelectedItems.Count == 0)
-        //        {
-        //            throw new Exception("Please select at least one group!");
-        //        }
+            if (visibility == PostVisibility.Groups)
+            {
+                Debug.WriteLine(GroupsListBox.Items);
 
-        //        foreach (Group group in GroupsListBox.SelectedItems)
-        //        {
-        //            posts.Add(new Post
-        //            {
-        //                Title = basePost.Title,
-        //                Content = basePost.Content,
-        //                UserId = basePost.UserId,
-        //                GroupId = group.Id, // Assign valid GroupId here
-        //                CreatedDate = basePost.CreatedDate,
-        //                Visibility = PostVisibility.Groups, // Maintain Groups visibility
-        //                Tag = basePost.Tag
-        //            });
-        //        }
-        //    }
-        //    else
-        //    {
-        //        posts.Add(basePost);
-        //    }
+                if (GroupsListBox.SelectedItems.Count == 0)
+                {
+                    throw new Exception("Please select at least one group!");
+                }
 
-        //    return posts;
-        //}
+                foreach (Group group in GroupsListBox.SelectedItems)
+                {
+                    posts.Add(new Post
+                    {
+                        Title = basePost.Title,
+                        Content = basePost.Content,
+                        UserId = basePost.UserId,
+                        GroupId = group.Id, // Assign valid GroupId here
+                        CreatedDate = basePost.CreatedDate,
+                        Visibility = PostVisibility.Groups, // Maintain Groups visibility
+                        Tag = basePost.Tag
+                    });
+                }
+            }
+            else
+            {
+                posts.Add(basePost);
+            }
+
+            return posts;
+        }
 
 
         private PostTag GetSelectedTag()
         {
-            if (MiscRadioButton.IsChecked == true) return PostTag.Misc;
+            if (WorkoutRadioButton.IsChecked == true) return PostTag.Workout;
             if (FoodRadioButton.IsChecked == true) return PostTag.Food;
-            return PostTag.Workout;
+            return PostTag.Misc;
         }
 
         private void ShowError(string message)

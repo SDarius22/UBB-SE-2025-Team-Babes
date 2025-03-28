@@ -40,7 +40,7 @@ namespace SocialApp.Components
             var posts = postService.GetGroupsFeed(controller.CurrentUser.Id);
             foreach (var post in posts)
             {
-                var postComponent = new PostComponent(post.Title, post.Visibility, post.UserId, post.Content, post.CreatedDate, post.Id);
+                var postComponent = new PostComponent(post.Title, post.Visibility, post.UserId, post.Content, post.CreatedDate, post.Tag, post.Id);
                 allItems.Add(postComponent);
             }
         }

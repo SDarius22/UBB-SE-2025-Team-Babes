@@ -257,3 +257,6 @@ INSERT INTO [dbo].[Posts](Title,Content,CreatedDate,UserId,PostVisibility,PostTa
 ('Post 2 Group 5', 'How "super recognizers" can identify faces they''ve only seen briefly - the rare skill changing criminal investigations.', '2025-03-21 21:10:59', 4, 4, 2, 5),
 ('Post 1 Group 6', 'The psychology of queueing: why British people form orderly lines while others don''t - cultural conditioning revealed.', '2025-03-23 10:11:56', 6, 4, 3, 6),
 ('Post 2 Group 6', 'How "vantablack" became the world''s darkest substance - and the artistic controversy surrounding its exclusive rights.', '2025-03-26 08:44:17', 5, 4, 4, 6)
+
+
+select * from Reactions;

@@ -82,7 +82,7 @@ namespace SocialApp.Pages
             List<Post> groupPosts = postService.GetByGroupId(GroupId);
             foreach (Post post in groupPosts)
             {
-                PostsFeed.AddPost(new PostComponent(post.Title, post.Visibility, post.UserId, post.Content, post.CreatedDate, post.Id));
+                PostsFeed.AddPost(new PostComponent(post.Title, post.Visibility, post.UserId, post.Content, post.CreatedDate, post.Tag, post.Id));
             }
             PostsFeed.Visibility = Visibility.Visible;
             PostsFeed.DisplayCurrentPage();
