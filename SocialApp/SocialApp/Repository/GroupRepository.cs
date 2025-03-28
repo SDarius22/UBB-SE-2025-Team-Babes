@@ -14,7 +14,7 @@ namespace SocialApp.Repository
     public class GroupRepository
     {
       
-        private string loginString = "Data Source=SALA-S-TUF-A15;" +
+        private string loginString = "Data Source=ATHOS;" +
             "Initial Catalog=ISSDB;" +
             "Integrated Security=True;" +
             "TrustServerCertificate=True";

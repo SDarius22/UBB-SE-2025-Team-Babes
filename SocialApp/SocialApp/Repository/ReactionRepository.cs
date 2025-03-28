@@ -11,7 +11,7 @@ namespace SocialApp.Repository
 {
     class ReactionRepository
     {
-        private string loginString = "Data Source=SALA-S-TUF-A15;" +
+        private string loginString = "Data Source=ATHOS;" +
             "Initial Catalog=ISSDB;" +
             "Integrated Security=True;" +
             "TrustServerCertificate=True";
@@ -48,6 +48,7 @@ namespace SocialApp.Repository
         public List<Reaction> GetByPost(long postId)
         {
             connection.Open();
+
             List<Reaction> reactions = new List<Reaction>();
             SqlCommand selectCommand = new SqlCommand(
                 "SELECT * FROM Reactions WHERE PostId = @PostId",

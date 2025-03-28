@@ -58,7 +58,6 @@ namespace SocialApp.Pages
         private void SetVisibilities()
         {
             bool isAdmin = UserIsAdmin();
-            EditGroupButton.Visibility = isAdmin ? visible : collapsed;
         }
 
         private bool UserIsAdmin()
