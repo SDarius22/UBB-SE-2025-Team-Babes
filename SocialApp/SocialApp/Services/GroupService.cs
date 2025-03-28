@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
 using Microsoft.UI.Xaml.Controls;
 using SocialApp.Entities;
 using SocialApp.Repository;
@@ -33,6 +34,7 @@ namespace SocialApp.Services
             GroupRepository.Save(group);
             return group;
         }
+
         public void ValidateDelete(long groupId)
         {
             if (GroupRepository.GetById(groupId) == null)

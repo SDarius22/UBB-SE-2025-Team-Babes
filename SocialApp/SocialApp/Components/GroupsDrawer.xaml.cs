@@ -16,6 +16,8 @@ namespace SocialApp.Components
     public sealed partial class GroupsDrawer : UserControl
     {
         private GroupService _groupService;
+        private AppController controller;
+        private Frame frame;
         private Frame _navigationFrame; // Frame for navigation
         private AppController controller;
 
@@ -35,6 +37,12 @@ namespace SocialApp.Components
             _groupService = new GroupService(groupRepository, userRepository);
             CreateGroupButton.Click += CreateGroup_Click; // Handle click event
             LoadGroups();
+        }
+
+        public void SetControllerAndFrame(AppController controller, Frame frame)
+        {
+            this.controller = controller;
+            this.frame = frame;
         }
 
         private void LoadGroups()
@@ -99,6 +107,9 @@ namespace SocialApp.Components
                 GroupsList.Children.Add(groupButton);
             }
         }
+
+    }
+
 
         private void GroupButton_Click(object sender, RoutedEventArgs e)
         {
