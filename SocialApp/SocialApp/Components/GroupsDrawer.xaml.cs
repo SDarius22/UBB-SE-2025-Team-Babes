@@ -33,6 +33,7 @@ namespace SocialApp.Components
             var userRepository = new UserRepository();
             controller = App.Services.GetService<AppController>();
             _groupService = new GroupService(groupRepository, userRepository);
+            CreateGroupButton.Click += CreateGroup_Click; // Handle click event
             LoadGroups();
         }
 
@@ -102,6 +103,11 @@ namespace SocialApp.Components
         private void GroupButton_Click(object sender, RoutedEventArgs e)
         {
             _navigationFrame.Navigate(typeof(GroupPage), (long)((Button)sender).Tag);
+        }
+
+        private void CreateGroup_Click(object sender, RoutedEventArgs e)
+        {
+            _navigationFrame.Navigate(typeof(CreateGroup));
         }
     }
 

@@ -27,5 +27,8 @@
                 <TextBlock Text="Group description goes here." FontSize="14" Foreground="#AAAAAA" Margin="23,0,0,0"/>
             </StackPanel>
         </StackPanel>
+        <Button x:Name="CreateGroupButton">
+            Create Group
+        </Button>
     </StackPanel>
 </UserControl>
