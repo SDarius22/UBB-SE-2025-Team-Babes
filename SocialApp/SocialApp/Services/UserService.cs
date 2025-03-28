@@ -72,6 +72,15 @@ namespace SocialApp.Services
             return userRepository.GetUserFollowing(id);
         }
 
+        public List<User> SearchUsers(long userId, string query)
+        {
+            // Get the list of users the current user is following
+            var followingUsers = GetUserFollowing(userId);
+
+            // Filter those users by the search query (matching the username)
+            return followingUsers.Where(u => u.Username.Contains(query, StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+
         public void FollowUser(long userId, long whoToFollowId)
         {
             if (userRepository.GetById(userId) == null)

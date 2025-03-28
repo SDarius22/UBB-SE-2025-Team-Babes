@@ -37,6 +37,7 @@ namespace SocialApp.Components
             HomeButton.Click += HomeClick;
             UserButton.Click += UserClick;
             GroupsButton.Click += GroupsClick;
+            CreatePostButton.Click += CreatePostButton_Click;
         }
 
         private void HomeClick(object sender, RoutedEventArgs e)
@@ -75,6 +76,18 @@ namespace SocialApp.Components
             else
             {
                 frame.Navigate(typeof(LoginRegisterPage));
+            }
+        }
+
+        private void CreatePostButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (IsLoggedIn())
+            {
+                frame.Navigate(typeof(CreatePostPage), controller);
+            }
+            else
+            {
+                frame.Navigate(typeof(LoginRegisterPage), controller);
             }
         }
 

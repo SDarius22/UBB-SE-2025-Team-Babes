@@ -15,6 +15,7 @@ namespace SocialApp.Repository
     {
       
         private string loginString = "Data Source=SALA-S-TUF-A15;" +
+
             "Initial Catalog=ISSDB;" +
             "Integrated Security=True;" +
             "TrustServerCertificate=True";
