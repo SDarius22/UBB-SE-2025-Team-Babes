@@ -1,9 +1,12 @@
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
+using SocialApp.Enums;
 using SocialApp.Repository;
 using SocialApp.Services;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SocialApp.Components
 {
@@ -42,12 +45,22 @@ namespace SocialApp.Components
 
         private void LoadPosts()
         {
-            // Load all posts (this is just a placeholder, replace with actual data loading logic)
-            //allPosts = new List<PostComponent>();
-            //for (int i = 1; i <= 20; i++)
-            //{
-            //    allPosts.Add(new PostComponent { Margin = new Thickness(0, 0, 0, 10) });
-            //}
+            var controller = App.Services.GetService<AppController>();
+            long userId;
+            if (controller.CurrentUser == null)
+            {
+                userId = -1;
+            }
+            else
+            {
+                userId = controller.CurrentUser.Id;
+            }
+            var posts = postService.GetHomeFeed(userId).ToList();
+            foreach (var post in posts)
+            {
+                var postComponent = new PostComponent(post.Title, post.Visibility, post.UserId, post.Content, post.CreatedDate, post.Id);
+                allPosts.Add(postComponent);
+            }
         }
 
         public void DisplayCurrentPage()

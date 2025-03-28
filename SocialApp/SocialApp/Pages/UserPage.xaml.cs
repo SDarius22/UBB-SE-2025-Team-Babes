@@ -1,15 +1,13 @@
-using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml.Navigation;
 using SocialApp.Services;
 using SocialApp.Repository;
 using SocialApp.Components;
 using SocialApp.Entities;
 using System.Linq;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace SocialApp.Pages
 {
@@ -32,6 +30,7 @@ namespace SocialApp.Pages
             postRepository = new PostRepository();
             groupRepository = new GroupRepository();
             postService = new PostService(postRepository, userRepository, groupRepository);
+            controller = App.Services.GetService<AppController>();
 
             this.Loaded += SetContent;
             this.Loaded += PostsClick;
@@ -41,15 +40,13 @@ namespace SocialApp.Pages
         {
             if (e.Parameter is UserPageNavigationArgs args)
             {
-                this.controller = args.Controller;
                 this.displayedUser = args.SelectedUser;
-                TopBar.SetControllerAndFrame(controller, this.Frame);
+                TopBar.SetFrame(this.Frame);
             }
-            else if (e.Parameter is AppController controller)
+            else
             {
-                this.controller = controller;
                 this.displayedUser = controller.CurrentUser; // Default to CurrentUser if no specific user provided
-                TopBar.SetControllerAndFrame(controller, this.Frame);
+                TopBar.SetFrame(this.Frame);
             }
         }
 
@@ -203,7 +200,7 @@ namespace SocialApp.Pages
                 List<User> followers = userService.GetUserFollowers(displayedUser.Id);
                 foreach (User user in followers)
                 {
-                    FollowersStack.Children.Add(new Follower(user.Username, userService.GetUserFollowing(controller.CurrentUser?.Id ?? -1).Contains(user), user, controller, this.Frame));
+                    FollowersStack.Children.Add(new Follower(user.Username, userService.GetUserFollowing(controller.CurrentUser?.Id ?? -1).Contains(user), user, this.Frame));
                 }
             }
         }

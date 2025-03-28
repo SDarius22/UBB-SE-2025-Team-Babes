@@ -1,6 +1,11 @@
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using SocialApp.Enums;
+using SocialApp.Repository;
+using SocialApp.Services;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SocialApp.Components
 {
@@ -9,21 +14,34 @@ namespace SocialApp.Components
         private int currentPage = 1;
         private const int itemsPerPage = 5;
         private List<PostComponent> allItems;
+        private UserRepository userRepository;
+        private PostRepository postRepository;
+        private PostService postService;
+        private GroupRepository groupRepository;
 
         public GroupsFeed()
         {
             this.InitializeComponent();
+
+            userRepository = new UserRepository();
+            postRepository = new PostRepository();
+            groupRepository = new GroupRepository();
+            postService = new PostService(postRepository, userRepository, groupRepository);
+            allItems = new List<PostComponent>();
+            
+
             LoadItems();
             DisplayCurrentPage();
         }
 
         private void LoadItems()
         {
-            // Load all items (this is just a placeholder, replace with actual data loading logic)
-            allItems = new List<PostComponent>();
-            for (int i = 1; i <= 20; i++)
+            var controller = App.Services.GetService<AppController>();
+            var posts = postService.GetGroupsFeed(controller.CurrentUser.Id);
+            foreach (var post in posts)
             {
-                allItems.Add(new PostComponent { Margin = new Thickness(0, 0, 0, 10) });
+                var postComponent = new PostComponent(post.Title, post.Visibility, post.UserId, post.Content, post.CreatedDate, post.Id);
+                allItems.Add(postComponent);
             }
         }
 

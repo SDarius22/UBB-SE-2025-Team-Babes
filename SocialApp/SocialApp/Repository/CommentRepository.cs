@@ -11,7 +11,7 @@ namespace SocialApp.Repository
 {
     public class CommentRepository
     {
-        private string loginString = "Data Source=LEO\\SQLEXPRESS;" +
+        private string loginString = "Data Source=SALA-S-TUF-A151;" +
             "Initial Catalog=ISSDB;" +
             "Integrated Security=True;" +
             "TrustServerCertificate=True";

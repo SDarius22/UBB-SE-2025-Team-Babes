@@ -14,7 +14,8 @@ namespace SocialApp.Repository
     public class GroupRepository
     {
       
-        private string loginString = "Data Source=LEO\\SQLEXPRESS;" +
+        private string loginString = "Data Source=SALA-S-TUF-A15;" +
+
             "Initial Catalog=ISSDB;" +
             "Integrated Security=True;" +
             "TrustServerCertificate=True";
@@ -70,7 +71,7 @@ namespace SocialApp.Repository
                     Username = reader.GetString(reader.GetOrdinal("Username")),
                     Email = reader.GetString(reader.GetOrdinal("Email")),
                     PasswordHash = reader.GetString(reader.GetOrdinal("PasswordHash")),
-                    Image = reader.GetString(reader.GetOrdinal("Image"))
+                    Image = reader.IsDBNull(reader.GetOrdinal("Image")) ? string.Empty : reader.GetString(reader.GetOrdinal("Image"))
                 };
                 ans.Add(user);
             }
