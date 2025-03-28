@@ -21,6 +21,7 @@ namespace SocialApp.Pages
         private PostService postService;
         private GroupRepository groupRepository;
         private GroupService groupService;
+
         private long GroupId;
         private Entities.Group group;
 
@@ -32,6 +33,30 @@ namespace SocialApp.Pages
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            base.OnNavigatedTo(e);
+
+            // Ensure AppController is passed correctly
+            if (e.Parameter is AppController controller)
+            {
+                this.controller = controller;
+                TopBar.SetControllerAndFrame(controller, this.Frame); // This works
+                groupsDrawer.SetControllerAndFrame(controller, this.Frame); // Set controller to GroupsDrawer
+
+                // Debugging: Ensure controller is not null
+                if (this.controller == null)
+                {
+                    System.Diagnostics.Debug.WriteLine("Controller is NULL in OnNavigatedTo");
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine($"Controller set: {controller.CurrentUser?.Username ?? "None"}");
+                }
+
+                DisplayPage(null, null); // Proceed with loading the page
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("OnNavigatedTo: e.Parameter is NOT AppController");
             if (e.Parameter is long id)
             {
                 GroupId = id;
@@ -39,6 +64,7 @@ namespace SocialApp.Pages
             TopBar.SetFrame(this.Frame);
             TopBar.SetNone();
         }
+
 
         private void DisplayPage(object sender, RoutedEventArgs e)
         {
@@ -83,7 +109,7 @@ namespace SocialApp.Pages
             List<Post> groupPosts = postService.GetByGroupId(GroupId);
             foreach (Post post in groupPosts)
             {
-                PostsFeed.AddPost(new PostComponent(post.Title, post.Visibility, post.UserId, post.Content, post.CreatedDate, post.Id));
+                PostsFeed.AddPost(new PostComponent(post.Title, post.Visibility, post.UserId, post.Description, post.CreatedDate, post.Id));
             }
             PostsFeed.Visibility = Visibility.Visible;
             PostsFeed.DisplayCurrentPage();
