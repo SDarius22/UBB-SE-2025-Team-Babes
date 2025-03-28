@@ -42,6 +42,16 @@ namespace SocialApp.Components
             }
         }
 
+        public PostVisibility PostVisibility
+        {
+            get => visibility;
+            set
+            {
+                visibility = value;
+                VisibilityText.Text = visibility.ToString(); // Update the UI element
+            }
+        }
+
         public PostComponent()
         {
             this.InitializeComponent();
@@ -55,7 +65,7 @@ namespace SocialApp.Components
             this.title = title;
             this.DataContext = this;
             this.InitializeComponent();
-            this.visibility = visibility;
+            this.PostVisibility = visibility; // Use the property to set visibility
             this.userId = userId;
             this.content = content;
             this.createdDate = createdDate;

@@ -7,6 +7,7 @@ using SocialApp.Repository;
 using SocialApp.Services;
 using SocialApp.Components;
 using SocialApp.Entities;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace SocialApp.Pages
 {
@@ -14,7 +15,6 @@ namespace SocialApp.Pages
     {
         private const Visibility collapsed = Visibility.Collapsed;
         private const Visibility visible = Visibility.Visible;
-        private AppController controller;
         private UserRepository userRepository;
         private UserService userService;
         private PostRepository postRepository;
@@ -32,12 +32,12 @@ namespace SocialApp.Pages
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if (e.Parameter is ValueTuple<long, AppController> tupleParams)
+            if (e.Parameter is long id)
             {
-                GroupId = tupleParams.Item1;
-                controller = tupleParams.Item2;
-                TopBar.SetControllerAndFrame(controller, this.Frame);
+                GroupId = id;
             }
+            TopBar.SetFrame(this.Frame);
+            TopBar.SetNone();
         }
 
         private void DisplayPage(object sender, RoutedEventArgs e)
@@ -63,6 +63,7 @@ namespace SocialApp.Pages
 
         private bool UserIsAdmin()
         {
+            var controller = App.Services.GetService<AppController>();
             if (controller.CurrentUser == null) return false;
             return groupRepository.GetById(GroupId).AdminId == controller.CurrentUser.Id;
         }
@@ -95,7 +96,7 @@ namespace SocialApp.Pages
             List<User> members = groupService.GetUsersFromGroup(GroupId);
             foreach (User member in members)
             {
-                MembersList.Children.Add(new Member(member, controller, this.Frame, GroupId, isAdmin));
+                MembersList.Children.Add(new Member(member, this.Frame, GroupId, isAdmin));
             }
         }
     }
