@@ -87,6 +87,7 @@
                                     Foreground="White"
                                     CornerRadius="5"
                                     Click="RemoveImageButton_Click"/>
+                            <TextBlock x:Name="ErrorTextBox"/>
                         </StackPanel>
 
                         <TextBlock Text="Search Users to Invite" Foreground="#00ADB5" FontSize="16"/>
