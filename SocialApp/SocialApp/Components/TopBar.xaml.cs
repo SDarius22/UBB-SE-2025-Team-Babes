@@ -83,11 +83,11 @@ namespace SocialApp.Components
         {
             if (IsLoggedIn())
             {
-                frame.Navigate(typeof(CreatePostPage), controller);
+                frame.Navigate(typeof(CreatePost));
             }
             else
             {
-                frame.Navigate(typeof(LoginRegisterPage), controller);
+                frame.Navigate(typeof(LoginRegisterPage));
             }
         }
 

@@ -89,14 +89,6 @@
                 VerticalAlignment="Bottom">
                 <StackPanel
                     Orientation="Vertical">
-                    <Button 
-                        x:Name="EditGroupButton"
-                        Content="Edit Group"
-                        Margin="20,10,20,0"
-                        Background="#D9D9D9"
-                        Foreground="Black"
-                        CornerRadius="5"
-                        Width="100"/>
                     <Button
                         Margin="20,10,20,20"
                         x:Name="CreatePostInGroupButton"
@@ -104,7 +96,8 @@
                         Background="#D9D9D9"
                         Foreground="Black"
                         CornerRadius="5"
-                        Width="100"/>
+                        Width="100"
+                        Click="CreatePostInGroupButton_Click"/>
                 </StackPanel>
             </Grid>
 

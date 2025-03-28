@@ -12,7 +12,7 @@ namespace SocialApp.Repository
 {
     public class PostRepository
     {
-        private string loginString = @"Data Source=SALA-S-TUF-A15;Initial Catalog=ISSDB;Integrated Security=True;Encrypt=False;TrustServerCertificate=True";
+        private string loginString = @"Data Source=ATHOS;Initial Catalog=ISSDB;Integrated Security=True;Encrypt=False;TrustServerCertificate=True";
         private SqlConnection connection;
 
         public PostRepository()
@@ -55,13 +55,13 @@ namespace SocialApp.Repository
             connection.Open();
             List<Post> posts = new List<Post>();
             SqlCommand selectCommand = new SqlCommand(
-                "SELECT * FROM Posts WHERE UserId IN (SELECT UserId FROM UserFollowers WHERE FollowerId = @UserId AND (PostVisibility = 2 OR PostVisibility = 3)) OR UserId = @UserId OR PostVisibility = 3",
+                "SELECT * FROM Posts WHERE UserId IN (SELECT UserId FROM UserFollowers WHERE FollowerId = @UserId AND (PostVisibility = 2 OR PostVisibility = 3)) OR UserId = @UserId OR PostVisibility = 3 ORDER BY CreatedDate DESC",
                 connection
             );
             if (userId == -1)
             {
                 selectCommand = new SqlCommand(
-                    "SELECT * FROM Posts WHERE PostVisibility = 3",
+                    "SELECT * FROM Posts WHERE PostVisibility = 3 ORDER BY CreatedDate DESC",
                     connection
                 );
             }
@@ -93,7 +93,7 @@ namespace SocialApp.Repository
             connection.Open();
             List<Post> posts = new List<Post>();
             SqlCommand selectCommand = new SqlCommand(
-                "SELECT * FROM Posts WHERE GroupId IN (SELECT GroupId FROM GroupUsers WHERE UserId = @UserId)",
+                "SELECT * FROM Posts WHERE GroupId IN (SELECT GroupId FROM GroupUsers WHERE UserId = @UserId) ORDER BY CreatedDate DESC",
                 connection
             );
             selectCommand.Parameters.AddWithValue("@UserId", userId);
@@ -124,7 +124,7 @@ namespace SocialApp.Repository
         {
             connection.Open();
             List<Post> posts = new List<Post>();
-            SqlCommand selectCommand = new SqlCommand("SELECT * FROM Posts WHERE UserId = @UserId", connection);
+            SqlCommand selectCommand = new SqlCommand("SELECT * FROM Posts WHERE UserId = @UserId ORDER BY CreatedDate DESC", connection);
             selectCommand.Parameters.AddWithValue("@UserId", userId);
             SqlDataReader reader = selectCommand.ExecuteReader();
             while (reader.Read())
@@ -151,7 +151,7 @@ namespace SocialApp.Repository
         {
             connection.Open();
             List<Post> posts = new List<Post>();
-            SqlCommand selectCommand = new SqlCommand("SELECT * FROM Posts WHERE GroupId = @GroupId", connection);
+            SqlCommand selectCommand = new SqlCommand("SELECT * FROM Posts WHERE GroupId = @GroupId ORDER BY CreatedDate DESC", connection);
             selectCommand.Parameters.AddWithValue("@GroupId", groupId);
             SqlDataReader reader = selectCommand.ExecuteReader();
             while (reader.Read())
@@ -179,7 +179,7 @@ namespace SocialApp.Repository
             connection.Open();
             Post post = null;
 
-            SqlCommand selectCommand = new SqlCommand("SELECT * FROM Posts WHERE Id = @Id", connection);
+            SqlCommand selectCommand = new SqlCommand("SELECT * FROM Posts WHERE Id = @Id ORDER BY CreatedDate DESC", connection);
             selectCommand.Parameters.AddWithValue("@Id", id);
 
             SqlDataReader reader = selectCommand.ExecuteReader();
@@ -208,7 +208,7 @@ namespace SocialApp.Repository
             connection.Open();
 
             SqlCommand insertCommand = new SqlCommand(
-                "INSERT INTO Posts (Title, Content, CreatedDate, UserId, PostVisibility, GroupId, PostTag) VALUES (@Title, @Content, @CreatedDate, @UserId, @PostVisibility, @GroupId, @PostTag)",
+                "INSERT INTO Posts (Title, Content, CreatedDate, UserId, PostVisibility, GroupId, PostTag) VALUES (@Title, @Description, @CreatedDate, @UserId, @PostVisibility, @GroupId, @PostTag)",
                 connection
             );
             insertCommand.Parameters.AddWithValue("@Title", entity.Title);

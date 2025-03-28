@@ -125,5 +125,10 @@ namespace SocialApp.Pages
                 MembersList.Children.Add(new Member(member, this.Frame, GroupId, isAdmin));
             }
         }
+
+        private void CreatePostInGroupButton_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(CreatePost));
+        }
     }
 }

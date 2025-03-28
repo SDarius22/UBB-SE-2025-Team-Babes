@@ -17,7 +17,8 @@
     <None Remove="Components\Follower.xaml" />
     <None Remove="Components\Member.xaml" />
     <None Remove="HomeScreen.xaml" />
-    <None Remove="Pages\CreateGroupPage.xaml" />
+    <None Remove="Pages\CreateGroup.xaml" />
+    <None Remove="Pages\CreatePost.xaml" />
     <None Remove="Windows\GroupsScreen.xaml" />
   </ItemGroup>
 
@@ -50,13 +51,14 @@
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.7.250310001" />
   </ItemGroup>
   <ItemGroup>
-    <Page Update="Pages\CreateGroupPage.xaml">
+    <Page Update="Pages\CreateGroup.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Pages\CreatePost.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="Pages\CreatePostPage.xaml">
-
     <Page Update="Components\Member.xaml">
 
       <Generator>MSBuild:Compile</Generator>
