@@ -138,7 +138,7 @@ namespace SocialApp.Pages
                 List<Post> userPosts = postService.GetByUserId(displayedUser.Id);
                 foreach (Post post in userPosts)
                 {
-                    PostsFeed.AddPost(new PostComponent(post.Title, post.Visibility, post.UserId, post.Content, post.CreatedDate, post.Id));
+                    PostsFeed.AddPost(new PostComponent(post.Title, post.Visibility, post.UserId, post.Description, post.CreatedDate, post.Id));
                 }
                 PostsFeed.DisplayCurrentPage();
             }

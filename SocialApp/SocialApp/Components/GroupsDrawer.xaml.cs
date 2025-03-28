@@ -5,6 +5,8 @@ using Microsoft.UI;
 using System.Collections.Generic;
 using SocialApp.Entities;
 using SocialApp.Services;
+using SocialApp.Pages;
+using SocialApp.Windows;
 using SocialApp.Repository; // Add this for GroupRepository and UserRepository
 
 namespace SocialApp.Components
@@ -12,6 +14,8 @@ namespace SocialApp.Components
     public sealed partial class GroupsDrawer : UserControl
     {
         private GroupService _groupService;
+        private AppController controller;
+        private Frame frame;
 
         public GroupsDrawer()
         {
@@ -20,6 +24,12 @@ namespace SocialApp.Components
             var userRepository = new UserRepository();
             _groupService = new GroupService(groupRepository, userRepository);
             LoadGroups();
+        }
+
+        public void SetControllerAndFrame(AppController controller, Frame frame)
+        {
+            this.controller = controller;
+            this.frame = frame;
         }
 
         private void LoadGroups()
@@ -44,7 +54,9 @@ namespace SocialApp.Components
                 GroupsList.Children.Add(groupItem);
             }
         }
+
     }
+
 
     public class Group
     {

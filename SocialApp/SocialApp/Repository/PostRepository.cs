@@ -35,7 +35,7 @@ namespace SocialApp.Repository
                 {
                     Id = reader.GetInt64(reader.GetOrdinal("Id")),
                     Title = reader.GetString(reader.GetOrdinal("Title")),
-                    Content = reader.GetString(reader.GetOrdinal("Description")),
+                    Description = reader.GetString(reader.GetOrdinal("Content")),
                     CreatedDate = reader.GetDateTime(reader.GetOrdinal("CreatedDate")),
                     UserId = reader.GetInt64(reader.GetOrdinal("UserId")),
                     GroupId = reader.GetInt64(reader.GetOrdinal("GroupId")),
@@ -66,7 +66,7 @@ namespace SocialApp.Repository
                 {
                     Id = reader.GetInt64(reader.GetOrdinal("Id")),
                     Title = reader.GetString(reader.GetOrdinal("Title")),
-                    Content = reader.GetString(reader.GetOrdinal("Description")),
+                    Description = reader.GetString(reader.GetOrdinal("Content")),
                     CreatedDate = reader.GetDateTime(reader.GetOrdinal("CreatedDate")),
                     UserId = reader.GetInt64(reader.GetOrdinal("UserId")),
                     GroupId = reader.GetInt64(reader.GetOrdinal("GroupId")),
@@ -97,7 +97,7 @@ namespace SocialApp.Repository
                 {
                     Id = reader.GetInt64(reader.GetOrdinal("Id")),
                     Title = reader.GetString(reader.GetOrdinal("Title")),
-                    Content = reader.GetString(reader.GetOrdinal("Description")),
+                    Description = reader.GetString(reader.GetOrdinal("Content")),
                     CreatedDate = reader.GetDateTime(reader.GetOrdinal("CreatedDate")),
                     UserId = reader.GetInt64(reader.GetOrdinal("UserId")),
                     GroupId = reader.GetInt64(reader.GetOrdinal("GroupId")),
@@ -125,7 +125,7 @@ namespace SocialApp.Repository
                 {
                     Id = reader.GetInt64(reader.GetOrdinal("Id")),
                     Title = reader.GetString(reader.GetOrdinal("Title")),
-                    Content = reader.GetString(reader.GetOrdinal("Content")),
+                    Description = reader.GetString(reader.GetOrdinal("Content")),
                     CreatedDate = reader.GetDateTime(reader.GetOrdinal("CreatedDate")),
                     UserId = reader.GetInt64(reader.GetOrdinal("UserId")),
                     GroupId = reader.IsDBNull(reader.GetOrdinal("GroupId")) ? 0 : reader.GetInt64(reader.GetOrdinal("GroupId")),
@@ -152,7 +152,7 @@ namespace SocialApp.Repository
                 {
                     Id = reader.GetInt64(reader.GetOrdinal("Id")),
                     Title = reader.GetString(reader.GetOrdinal("Title")),
-                    Content = reader.GetString(reader.GetOrdinal("Description")),
+                    Description = reader.GetString(reader.GetOrdinal("Content")),
                     CreatedDate = reader.GetDateTime(reader.GetOrdinal("CreatedDate")),
                     UserId = reader.GetInt64(reader.GetOrdinal("UserId")),
                     GroupId = reader.IsDBNull(reader.GetOrdinal("GroupId")) ? 0 : reader.GetInt64(reader.GetOrdinal("GroupId")),
@@ -181,7 +181,7 @@ namespace SocialApp.Repository
                 {
                     Id = reader.GetInt64(reader.GetOrdinal("Id")),
                     Title = reader.GetString(reader.GetOrdinal("Title")),
-                    Content = reader.GetString(reader.GetOrdinal("Content")),
+                    Description = reader.GetString(reader.GetOrdinal("Content")),
                     CreatedDate = reader.GetDateTime(reader.GetOrdinal("CreatedDate")),
                     UserId = reader.GetInt64(reader.GetOrdinal("UserId")),
                     GroupId = reader.IsDBNull(reader.GetOrdinal("GroupId")) ? 0 : reader.GetInt64(reader.GetOrdinal("GroupId")),
@@ -200,11 +200,11 @@ namespace SocialApp.Repository
             connection.Open();
 
             SqlCommand insertCommand = new SqlCommand(
-                "INSERT INTO Posts (Title, Description, CreatedDate, UserId, PostVisibility, GroupId, PostTag) VALUES (@Title, @Description, @CreatedDate, @UserId, @PostVisibility, @GroupId, @PostTag)",
+                "INSERT INTO Posts (Title, Content, CreatedDate, UserId, PostVisibility, GroupId, PostTag) VALUES (@Title, @Content, @CreatedDate, @UserId, @PostVisibility, @GroupId, @PostTag)",
                 connection
             );
             insertCommand.Parameters.AddWithValue("@Title", entity.Title);
-            insertCommand.Parameters.AddWithValue("@Description", entity.Content);
+            insertCommand.Parameters.AddWithValue("@Content", entity.Description);
             insertCommand.Parameters.AddWithValue("@CreatedDate", entity.CreatedDate);
             insertCommand.Parameters.AddWithValue("@UserId", entity.UserId);
             insertCommand.Parameters.AddWithValue("@PostVisibility", (int)entity.Visibility);
@@ -221,13 +221,13 @@ namespace SocialApp.Repository
             connection.Open();
 
             SqlCommand updateCommand = new SqlCommand(
-                "UPDATE Posts SET Title = @Title, Description = @Description, PostVisibility = @PostVisibility, PostTag = @PostTag WHERE Id = @Id",
+                "UPDATE Posts SET Title = @Title, Content = @Content, PostVisibility = @PostVisibility, PostTag = @PostTag WHERE Id = @Id",
                 connection
             );
 
             updateCommand.Parameters.AddWithValue("@Id", id);
             updateCommand.Parameters.AddWithValue("@Title", title);
-            updateCommand.Parameters.AddWithValue("@Description", content);
+            updateCommand.Parameters.AddWithValue("@Content", content);
             updateCommand.Parameters.AddWithValue("@PostVisibility", (int)visibility);
             updateCommand.Parameters.AddWithValue("@PostTag", (int)tag);
 
