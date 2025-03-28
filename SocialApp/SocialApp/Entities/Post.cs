@@ -20,7 +20,7 @@ namespace SocialApp.Entities
         [ForeignKey("UserId")]
         public required long UserId { get; set; }
         [ForeignKey("GroupId")]
-        public long GroupId { get; set; }
+        public required long GroupId { get; set; }
         public required PostVisibility Visibility { get; set; }
 
         public required PostTag Tag { get; set; }
