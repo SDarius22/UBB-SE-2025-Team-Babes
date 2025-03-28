@@ -88,6 +88,8 @@
                              Click="AddImageButton_Click">
                         </Button>
 
+                        <TextBlock x:Name="Confirmation"/>
+
                         <!-- Visibility Selection -->
                         <StackPanel Spacing="8">
                             <TextBlock Text="Visibility" Foreground="#00ADB5" FontSize="16"/>

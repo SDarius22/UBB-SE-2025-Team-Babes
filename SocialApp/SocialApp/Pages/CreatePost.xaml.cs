@@ -10,6 +10,7 @@ using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml.Navigation;
 using SocialApp.Components;
 using SocialApp.Entities;
@@ -18,6 +19,10 @@ using SocialApp.Repository;
 using SocialApp.Services;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using static System.Net.Mime.MediaTypeNames;
+using Windows.Storage.Pickers;
+using Windows.Storage.Streams;
+using Windows.Storage;
 using Group = SocialApp.Entities.Group;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -34,6 +39,7 @@ namespace SocialApp.Pages
         private PostService _postService;
         private GroupService _groupService;
         private List<Entities.Group> _userGroups;
+        private String image = string.Empty;
         public CreatePost()
         {
             InitializeComponent();
@@ -56,6 +62,7 @@ namespace SocialApp.Pages
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             TopBar.SetFrame(Frame);
+            TopBar.SetCreate();
             LoadUserGroups();
             InitializeVisibilityOptions();
         }
@@ -89,9 +96,34 @@ namespace SocialApp.Pages
                 : Visibility.Collapsed;
         }
 
-        private void AddImageButton_Click(object sender, RoutedEventArgs e)
+        private async void AddImageButton_Click(object sender, RoutedEventArgs e)
         {
-            // Your image handling logic
+            try
+            {
+                var picker = new FileOpenPicker
+                {
+                    ViewMode = PickerViewMode.Thumbnail,
+                    SuggestedStartLocation = PickerLocationId.PicturesLibrary
+                };
+                picker.FileTypeFilter.Add(".jpg");
+                picker.FileTypeFilter.Add(".jpeg");
+                picker.FileTypeFilter.Add(".png");
+
+                var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(App.CurrentWindow);
+                WinRT.Interop.InitializeWithWindow.Initialize(picker, hwnd);
+
+                StorageFile file = await picker.PickSingleFileAsync();
+                if (file != null)
+                {
+                    image = "image://" + await AppController.EncodeImageToBase64Async(file);
+                    DescriptionInput.Text = "";
+                    Confirmation.Text = "Image uploaded.";
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage.Text = $"Error uploading image: {ex.Message}";
+            }
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
@@ -105,7 +137,8 @@ namespace SocialApp.Pages
             {
                 ValidateInputs();
                 var selectedVisibility = (PostVisibility)VisibilityComboBox.SelectedItem;
-                _postService.ValidateAdd(TitleInput.Text, DescriptionInput.Text, _controller.CurrentUser.Id, 0, selectedVisibility, GetSelectedTag());
+                _postService.ValidateAdd(TitleInput.Text, DescriptionInput.Text == "" ? image : DescriptionInput.Text, _controller.CurrentUser.Id, 0, selectedVisibility, GetSelectedTag());
+                Frame.Navigate(typeof(HomeScreen));
             }
             catch (Exception ex)
             {
@@ -118,7 +151,7 @@ namespace SocialApp.Pages
             if (string.IsNullOrWhiteSpace(TitleInput.Text))
                 throw new Exception("Title is required!");
 
-            if (string.IsNullOrWhiteSpace(DescriptionInput.Text))
+            if (image == string.Empty && string.IsNullOrWhiteSpace(DescriptionInput.Text))
                 throw new Exception("Content cannot be empty!");
 
             var selectedVisibility = (PostVisibility)VisibilityComboBox.SelectedItem;
