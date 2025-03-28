@@ -39,7 +39,7 @@ namespace SocialApp.Services
                     throw new Exception("Group does not exist");
                 }
             }
-            Post post = new Post() { Title = title, Content = content, UserId = userId, GroupId = groupId, Visibility = postVisibility, Tag = postTag, CreatedDate = DateTime.Now };
+            Post post = new Post() { Title = title, Description = content, UserId = userId, GroupId = groupId, Visibility = postVisibility, Tag = postTag, CreatedDate = DateTime.Now };
             postRepository.Save(post);
             return post;
         }

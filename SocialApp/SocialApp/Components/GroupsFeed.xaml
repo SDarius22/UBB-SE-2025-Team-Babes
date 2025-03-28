@@ -16,6 +16,10 @@
             <ColumnDefinition Width="15*"/>
         </Grid.ColumnDefinitions>
 
+            <!-- Groups Drawer -->
+        <local:GroupsDrawer Grid.Column="0" Margin="10"/>
+
+
         <!-- Groups List -->
         <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">
             <StackPanel x:Name="GroupsStackPanel" Margin="10">
