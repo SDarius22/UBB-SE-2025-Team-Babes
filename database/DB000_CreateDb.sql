@@ -146,7 +146,7 @@ CREATE TABLE [dbo].[Groups](
 CREATE TABLE [dbo].[Posts](
 	[Id] BIGINT PRIMARY KEY CLUSTERED IDENTITY(1,1),
 	[Title] [nvarchar](55) NOT NULL,
-	[Content] [nvarchar](250) NULL,
+	[Content] [nvarchar](max) NULL,
 	[CreatedDate] DATETIME NOT NULL,
 	[UserId] BIGINT NOT NULL REFERENCES [Users](Id),
 	[PostVisibility] INT NOT NULL, 
