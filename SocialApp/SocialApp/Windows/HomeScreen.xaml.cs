@@ -14,6 +14,7 @@ namespace SocialApp
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             TopBar.SetFrame(this.Frame);
+            TopBar.SetHome();
         }
     }
 }

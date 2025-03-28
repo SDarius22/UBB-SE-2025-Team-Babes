@@ -21,6 +21,7 @@ namespace SocialApp.Windows
         {
             var controller = App.Services.GetService<AppController>();
             TopBar.SetFrame(this.Frame);
+            TopBar.SetGroups();
             GroupsDrawer.NavigationFrame = this.Frame;
         }
 

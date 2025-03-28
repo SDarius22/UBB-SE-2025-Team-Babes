@@ -37,6 +37,7 @@ namespace SocialApp.Pages
                 GroupId = id;
             }
             TopBar.SetFrame(this.Frame);
+            TopBar.SetNone();
         }
 
         private void DisplayPage(object sender, RoutedEventArgs e)

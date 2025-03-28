@@ -73,7 +73,7 @@
                 Background="#393E46"
                 Padding="10"
                 Margin="10 10 0 20 "
-                Width="150"
+                Width="300"
                 HorizontalAlignment="Center"
                 Grid.Column="0">
 
